@@ -1,0 +1,1548 @@
+<title>Der Dümmste fliegt – Quiz-Partyspiel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Der Dümmste fliegt – Quiz-Partyspiel
+   ========================================================= */
+
+:root {
+  --bg:           #0b0a1f;
+  --bg-2:         #14103a;
+  --panel:        rgba(255, 255, 255, 0.06);
+  --panel-solid:  #1b1740;
+  --border:       rgba(255, 255, 255, 0.12);
+  --text:         #f4f2ff;
+  --muted:        #a49fd0;
+  --accent:       #ffce3a;
+  --accent-2:     #ff4d8d;
+  --good:         #2fd67a;
+  --bad:          #ff4d5e;
+  --shadow:       0 18px 45px rgba(0, 0, 0, 0.45);
+  --radius:       18px;
+  --font:         "Baloo 2", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+/* Grundfarbe, damit auch unterhalb des Inhalts nichts weiß durchscheint */
+html { background: var(--bg); }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 0%, #2a1a63 0%, transparent 55%),
+    radial-gradient(circle at 85% 10%, #4a1350 0%, transparent 50%),
+    linear-gradient(170deg, var(--bg) 0%, var(--bg-2) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 22px 16px 60px;
+}
+
+/* ---------- Typografie / Bausteine ---------- */
+
+h1, h2, h3 { margin: 0 0 10px; line-height: 1.15; }
+
+.logo {
+  text-align: center;
+  margin: 10px 0 26px;
+}
+.logo .kicker {
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  font-size: .72rem;
+  color: var(--muted);
+}
+.logo h1 {
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  font-weight: 800;
+  background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 6px 30px rgba(255, 77, 141, .25);
+}
+.logo p { color: var(--muted); margin: 4px 0 0; font-size: .95rem; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow);
+}
+
+.label {
+  display: block;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.hint { color: var(--muted); font-size: .88rem; margin: 6px 0 0; }
+
+button { font-family: inherit; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 26px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #241a00;
+  background: linear-gradient(100deg, var(--accent), #ffb02e);
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease;
+  box-shadow: 0 10px 24px rgba(255, 176, 46, .25);
+}
+.btn:hover  { filter: brightness(1.07); }
+.btn:active { transform: translateY(2px); }
+.btn.block  { width: 100%; }
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  font-weight: 600;
+}
+.btn.ghost:hover { background: rgba(255,255,255,.07); }
+.btn.small { padding: 9px 16px; font-size: .9rem; }
+
+/* ---------- Auswahl-Chips (Spielerzahl, Optionen) ---------- */
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .12s ease;
+}
+.chip:hover { background: rgba(255,255,255,.1); }
+.chip[aria-pressed="true"] {
+  background: linear-gradient(100deg, var(--accent), #ffb02e);
+  border-color: transparent;
+  color: #241a00;
+}
+.chip.num { min-width: 54px; text-align: center; }
+
+/* ---------- Spielerliste ---------- */
+
+.players {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.avatar {
+  width: 34px; height: 34px;
+  flex: 0 0 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #16122e;
+  font-size: 1rem;
+}
+.player-row input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 6px 0;
+}
+.player-row input:focus { outline: none; }
+
+/* ---------- Einstellungen ---------- */
+
+details.settings summary {
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+details.settings summary::-webkit-details-marker { display: none; }
+details.settings summary::after { content: "▾"; color: var(--muted); }
+details.settings[open] summary::after { content: "▴"; }
+.setting { margin-top: 18px; }
+
+/* ---------- Kopfzeile im Spiel ---------- */
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: .88rem;
+}
+.hud strong { color: var(--text); }
+
+.scorebar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.score-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px 5px 5px;
+  font-size: .86rem;
+  font-weight: 600;
+}
+.score-pill .avatar { width: 26px; height: 26px; flex-basis: 26px; font-size: .8rem; }
+.score-pill.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255,206,58,.25);
+}
+.score-pill.out { opacity: .35; text-decoration: line-through; }
+.score-pill .lives { letter-spacing: 1px; }
+
+/* ---------- Frage ---------- */
+
+.turn-card { text-align: center; padding: 42px 22px; }
+.turn-card .avatar { width: 74px; height: 74px; flex-basis: 74px; font-size: 2rem; margin: 0 auto 14px; }
+.turn-card h2 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.tag {
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border);
+}
+.tag.diff { color: var(--accent); }
+
+.question {
+  font-size: clamp(1.25rem, 3.6vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 6px 0 22px;
+}
+
+.answers { display: grid; gap: 10px; }
+@media (min-width: 640px) { .answers { grid-template-columns: 1fr 1fr; } }
+
+.answer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  width: 100%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  padding: 15px 16px;
+  font-size: 1.02rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .1s ease, background .15s ease, border-color .15s ease;
+}
+.answer:hover:not(:disabled) { background: rgba(255,255,255,.12); transform: translateY(-2px); }
+.answer:disabled { cursor: default; }
+.answer .key {
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.1);
+  font-weight: 800;
+  font-size: .9rem;
+}
+.answer.correct {
+  background: rgba(47, 214, 122, .22);
+  border-color: var(--good);
+}
+.answer.correct .key { background: var(--good); color: #04220f; }
+.answer.wrong {
+  background: rgba(255, 77, 94, .2);
+  border-color: var(--bad);
+}
+.answer.wrong .key { background: var(--bad); color: #2b0206; }
+.answer.dim { opacity: .45; }
+
+/* ---------- Timer ---------- */
+
+.timer {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.09);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.timer > div {
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--good), var(--accent));
+  transition: width .12s linear, background .3s ease;
+}
+.timer.low > div { background: linear-gradient(90deg, var(--accent-2), var(--bad)); }
+
+/* ---------- Ergebnis / Rauswurf ---------- */
+
+.verdict {
+  text-align: center;
+  font-size: clamp(1.3rem, 4.5vw, 2rem);
+  font-weight: 800;
+  margin: 18px 0 6px;
+}
+.verdict.good { color: var(--good); }
+.verdict.bad  { color: var(--bad); }
+.verdict-sub { text-align: center; color: var(--muted); margin-bottom: 18px; }
+
+.boom {
+  text-align: center;
+  padding: 40px 20px;
+  animation: pop .45s cubic-bezier(.2, 1.4, .4, 1);
+}
+.boom .emoji { font-size: 4rem; display: block; margin-bottom: 10px; }
+.boom h2 { font-size: clamp(1.7rem, 6vw, 2.8rem); color: var(--bad); }
+
+@keyframes pop {
+  from { transform: scale(.7); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+.fade { animation: fade .25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Tabellen / Endstand ---------- */
+
+table.standings {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .95rem;
+}
+table.standings th,
+table.standings td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+table.standings th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
+table.standings td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.standings td .avatar {
+  display: inline-grid;
+  width: 26px; height: 26px;
+  font-size: .8rem;
+  vertical-align: -8px;
+  margin-right: 6px;
+}
+table.standings tr.out td { opacity: .5; }
+
+.winner {
+  text-align: center;
+  padding: 34px 20px;
+}
+.winner .crown { font-size: 3.6rem; display: block; }
+.winner h2 { font-size: clamp(1.8rem, 6vw, 2.8rem); color: var(--accent); }
+.winner .loser { color: var(--muted); margin-top: 14px; }
+.winner .loser b { color: var(--bad); }
+
+.row { display: flex; flex-wrap: wrap; gap: 10px; }
+.row .btn { flex: 1 1 180px; }
+
+.footer-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  margin-top: 26px;
+}
+kbd {
+  background: rgba(255,255,255,.1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: .8em;
+  font-family: inherit;
+}
+.hidden { display: none !important; }
+
+/* Avatar innerhalb eines Tags etwas kleiner */
+.tag .avatar {
+  width: 20px; height: 20px; flex-basis: 20px;
+  font-size: .7rem;
+  display: inline-grid;
+  vertical-align: -5px;
+}
+
+</style>
+
+<main class="wrap" id="app"></main>
+
+<script>
+/*
+ * Fragenkatalog für "Der Dümmste fliegt"
+ * ---------------------------------------
+ * q(kategorie, schwierigkeit, frage, richtigeAntwort, ...falscheAntworten)
+ * schwierigkeit: 1 = leicht, 2 = mittel, 3 = schwer
+ * Die Antworten werden im Spiel zufällig gemischt.
+ */
+const q = (k, s, f, r, ...w) => ({ k, s, f, r, w });
+
+window.FRAGEN = [
+
+  /* ---------------- Allgemeinwissen ---------------- */
+  q("Allgemeinwissen", 1, "Wie viele Farben hat ein Regenbogen klassischerweise?", "7", "5", "6", "9"),
+  q("Allgemeinwissen", 1, "Welche Farbe entsteht, wenn man Blau und Gelb mischt?", "Grün", "Orange", "Lila", "Braun"),
+  q("Allgemeinwissen", 1, "Wie viele Buchstaben hat das deutsche Alphabet ohne Umlaute und ß?", "26", "24", "28", "30"),
+  q("Allgemeinwissen", 1, "Wie viele Sekunden hat eine Stunde?", "3.600", "360", "6.000", "1.800"),
+  q("Allgemeinwissen", 1, "Welches Verkehrsschild ist achteckig?", "Das Stoppschild", "Vorfahrt achten", "Halteverbot", "Einbahnstraße"),
+  q("Allgemeinwissen", 1, "Wie viele Bundesländer hat Deutschland?", "16", "14", "17", "12"),
+  q("Allgemeinwissen", 1, "Welche Währung gilt in der Schweiz?", "Schweizer Franken", "Euro", "Krone", "Schilling"),
+  q("Allgemeinwissen", 1, "Wie viele Karten hat ein deutsches Skatblatt?", "32", "52", "36", "24"),
+  q("Allgemeinwissen", 1, "Wie viele Ecken hat ein Würfel?", "8", "6", "12", "4"),
+  q("Allgemeinwissen", 1, "Wie viele Nullen hat eine Million?", "6", "3", "9", "12"),
+  q("Allgemeinwissen", 1, "Wie viele Grad hat ein voller Kreis?", "360", "180", "270", "400"),
+  q("Allgemeinwissen", 1, "Wie viele Felder hat ein Schachbrett?", "64", "48", "81", "100"),
+  q("Allgemeinwissen", 2, "Wie viele Bit sind ein Byte?", "8", "4", "16", "10"),
+  q("Allgemeinwissen", 2, "Was misst ein Barometer?", "Den Luftdruck", "Die Temperatur", "Die Luftfeuchtigkeit", "Die Windstärke"),
+  q("Allgemeinwissen", 2, "Welche römische Zahl steht für 50?", "L", "C", "D", "X"),
+  q("Allgemeinwissen", 2, "Wie viele Streifen hat die Flagge der USA?", "13", "50", "12", "15"),
+  q("Allgemeinwissen", 2, "Wofür steht die Abkürzung „WLAN“?", "Wireless Local Area Network", "Wide Line Access Network", "Wireless Link And Net", "Web Local Access Node"),
+  q("Allgemeinwissen", 2, "Welche Blutgruppe gilt als Universalspender?", "0 negativ", "AB positiv", "A positiv", "B negativ"),
+  q("Allgemeinwissen", 2, "Wie viele Zähne hat ein erwachsener Mensch normalerweise?", "32", "28", "30", "36"),
+  q("Allgemeinwissen", 2, "Wie viele Grad hat ein rechter Winkel?", "90", "45", "180", "120"),
+  q("Allgemeinwissen", 2, "Was bedeutet „ASAP“?", "As soon as possible", "Always send a photo", "As said and posted", "After school, after practice"),
+  q("Allgemeinwissen", 2, "Wie viele Sekunden hat ein Tag?", "86.400", "36.000", "144.000", "60.000"),
+  q("Allgemeinwissen", 2, "Was bedeutet die Abkürzung „GmbH“?", "Gesellschaft mit beschränkter Haftung", "Gemeinschaft mit betrieblicher Haftung", "Gesellschaft mit betrieblichem Handel", "Genossenschaft mit begrenzter Haftung"),
+  q("Allgemeinwissen", 2, "Was bedeutet der Ausdruck „vice versa“?", "Umgekehrt", "Sofort", "Zum Wohl", "Erst recht"),
+  q("Allgemeinwissen", 3, "Wie viele Zeitzonen hat Russland?", "11", "7", "9", "14"),
+  q("Allgemeinwissen", 3, "Was ist ein Palindrom?", "Ein Wort, das vorwärts wie rückwärts gleich gelesen wird", "Ein Wort mit doppelter Bedeutung", "Ein Wort ohne Vokale", "Ein Wort aus zwei Sprachen"),
+  q("Allgemeinwissen", 3, "Welche Farbe hat die sogenannte „Blackbox“ in einem Flugzeug wirklich?", "Orange", "Schwarz", "Rot", "Silber"),
+  q("Allgemeinwissen", 3, "Wofür steht „SOS“ ursprünglich?", "Für gar nichts – es ist nur ein einprägsames Morsezeichen", "Save Our Souls", "Send Out Ships", "Stop Other Signals"),
+  q("Allgemeinwissen", 3, "Wie viel Prozent der Erdoberfläche sind ungefähr von Wasser bedeckt?", "71 %", "50 %", "61 %", "85 %"),
+  q("Allgemeinwissen", 3, "Welches deutsche Gericht entscheidet über Verfassungsfragen?", "Das Bundesverfassungsgericht", "Der Bundesgerichtshof", "Das Bundesverwaltungsgericht", "Der Bundesrat"),
+
+  /* ---------------- Geografie ---------------- */
+  q("Geografie", 1, "Wie heißt die Hauptstadt von Italien?", "Rom", "Mailand", "Neapel", "Turin"),
+  q("Geografie", 1, "Welcher ist der größte Ozean der Erde?", "Der Pazifik", "Der Atlantik", "Der Indische Ozean", "Das Nordpolarmeer"),
+  q("Geografie", 1, "Wie viele Kontinente gibt es?", "7", "5", "6", "8"),
+  q("Geografie", 1, "In welcher Stadt steht die Freiheitsstatue?", "New York", "Washington", "Boston", "Philadelphia"),
+  q("Geografie", 1, "Welcher Fluss fließt durch Paris?", "Die Seine", "Die Loire", "Die Rhône", "Die Themse"),
+  q("Geografie", 1, "Welches Land grenzt im Norden an Deutschland?", "Dänemark", "Norwegen", "Schweden", "Polen"),
+  q("Geografie", 1, "Wie heißt der höchste Berg der Welt?", "Mount Everest", "K2", "Mont Blanc", "Kilimandscharo"),
+  q("Geografie", 1, "Welcher Kontinent hat die meisten Einwohner?", "Asien", "Afrika", "Europa", "Nordamerika"),
+  q("Geografie", 1, "Welche Wüste ist die größte heiße Wüste der Welt?", "Die Sahara", "Die Gobi", "Die Kalahari", "Die Atacama"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt von Australien?", "Canberra", "Sydney", "Melbourne", "Perth"),
+  q("Geografie", 2, "Wie heißt der höchste Berg Deutschlands?", "Die Zugspitze", "Der Brocken", "Der Feldberg", "Der Watzmann"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt von Kanada?", "Ottawa", "Toronto", "Vancouver", "Montreal"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt der Türkei?", "Ankara", "Istanbul", "Izmir", "Antalya"),
+  q("Geografie", 2, "Welches Land hat heute die meisten Einwohner?", "Indien", "China", "USA", "Indonesien"),
+  q("Geografie", 2, "In welchem Land liegt die Stadt Marrakesch?", "Marokko", "Ägypten", "Tunesien", "Algerien"),
+  q("Geografie", 2, "Welches Meer liegt zwischen Europa und Afrika?", "Das Mittelmeer", "Das Schwarze Meer", "Das Rote Meer", "Die Nordsee"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt von Brasilien?", "Brasília", "Rio de Janeiro", "São Paulo", "Salvador"),
+  q("Geografie", 2, "Wie viele Sterne hat die Flagge der Europäischen Union?", "12", "15", "27", "9"),
+  q("Geografie", 2, "Welcher Fluss fließt durch Wien?", "Die Donau", "Der Rhein", "Die Elbe", "Die Mosel"),
+  q("Geografie", 2, "Welcher Fluss ist auf deutschem Gebiet am längsten?", "Der Rhein", "Die Elbe", "Die Donau", "Die Weser"),
+  q("Geografie", 3, "Welches ist das flächenmäßig kleinste Land der Welt?", "Vatikanstadt", "Monaco", "San Marino", "Liechtenstein"),
+  q("Geografie", 3, "Wie heißt die Hauptstadt von Neuseeland?", "Wellington", "Auckland", "Christchurch", "Dunedin"),
+  q("Geografie", 3, "Welches Land hat die längste Küstenlinie der Welt?", "Kanada", "Russland", "Australien", "Indonesien"),
+  q("Geografie", 3, "In welchem Bundesland liegt Erfurt?", "Thüringen", "Sachsen", "Sachsen-Anhalt", "Hessen"),
+  q("Geografie", 3, "Welches Land wird „Land der tausend Seen“ genannt?", "Finnland", "Schweden", "Kanada", "Estland"),
+  q("Geografie", 3, "Welche Meerenge trennt Europa von Afrika?", "Die Straße von Gibraltar", "Der Bosporus", "Der Ärmelkanal", "Die Straße von Hormus"),
+  q("Geografie", 3, "Wie heißt die Hauptstadt von Kasachstan?", "Astana", "Almaty", "Taschkent", "Bischkek"),
+  q("Geografie", 3, "Welcher See ist der tiefste der Welt?", "Der Baikalsee", "Der Titicacasee", "Der Viktoriasee", "Der Kaspische See"),
+  q("Geografie", 3, "An welches einzige Land grenzt Portugal?", "Spanien", "Frankreich", "Marokko", "Andorra"),
+  q("Geografie", 3, "Welcher See ist der größte, der vollständig in Deutschland liegt?", "Die Müritz", "Der Bodensee", "Der Chiemsee", "Der Starnberger See"),
+
+  /* ---------------- Geschichte ---------------- */
+  q("Geschichte", 1, "In welchem Jahr fiel die Berliner Mauer?", "1989", "1987", "1990", "1991"),
+  q("Geschichte", 1, "In welchem Jahr begann der Zweite Weltkrieg?", "1939", "1938", "1940", "1941"),
+  q("Geschichte", 1, "Wer betrat 1969 als erster Mensch den Mond?", "Neil Armstrong", "Buzz Aldrin", "Juri Gagarin", "Michael Collins"),
+  q("Geschichte", 1, "In welchem Jahr wurde Deutschland wiedervereinigt?", "1990", "1989", "1991", "1992"),
+  q("Geschichte", 1, "Welches berühmte Schiff sank im Jahr 1912?", "Die Titanic", "Die Lusitania", "Die Bismarck", "Die Mary Rose"),
+  q("Geschichte", 1, "Wer war die erste Bundeskanzlerin Deutschlands?", "Angela Merkel", "Annalena Baerbock", "Ursula von der Leyen", "Hannelore Kraft"),
+  q("Geschichte", 1, "Wer war der erste Präsident der USA?", "George Washington", "Abraham Lincoln", "Thomas Jefferson", "Benjamin Franklin"),
+  q("Geschichte", 2, "Wer war der erste Bundeskanzler der Bundesrepublik Deutschland?", "Konrad Adenauer", "Ludwig Erhard", "Willy Brandt", "Helmut Schmidt"),
+  q("Geschichte", 2, "Wer gilt als der erste römische Kaiser?", "Augustus", "Julius Caesar", "Nero", "Konstantin"),
+  q("Geschichte", 2, "In welchem Jahr endete der Erste Weltkrieg?", "1918", "1916", "1919", "1920"),
+  q("Geschichte", 2, "Wer erfand in Europa den Buchdruck mit beweglichen Lettern?", "Johannes Gutenberg", "Martin Luther", "Leonardo da Vinci", "Nikolaus Kopernikus"),
+  q("Geschichte", 2, "In welchem Jahr erreichte Christoph Kolumbus Amerika?", "1492", "1453", "1517", "1520"),
+  q("Geschichte", 2, "Wessen Grab entdeckte Howard Carter im Jahr 1922?", "Tutanchamun", "Ramses II.", "Cheops", "Echnaton"),
+  q("Geschichte", 2, "Was schlug Martin Luther 1517 in Wittenberg an?", "95 Thesen", "Die Bibelübersetzung", "Den Augsburger Religionsfrieden", "Die Goldene Bulle"),
+  q("Geschichte", 2, "Wie nennt man die Zeit der Ost-West-Spannungen nach 1945?", "Der Kalte Krieg", "Die Restauration", "Die Blockzeit", "Der Stellungskrieg"),
+  q("Geschichte", 2, "Wie hieß der berühmte Anführer der Hunnen?", "Attila", "Dschingis Khan", "Hannibal", "Spartacus"),
+  q("Geschichte", 2, "Wer war Bundeskanzler zur Zeit der deutschen Wiedervereinigung?", "Helmut Kohl", "Gerhard Schröder", "Helmut Schmidt", "Willy Brandt"),
+  q("Geschichte", 3, "Wer war der letzte deutsche Kaiser?", "Wilhelm II.", "Friedrich III.", "Wilhelm I.", "Ludwig II."),
+  q("Geschichte", 3, "In welchem Jahr wurde die DDR gegründet?", "1949", "1945", "1953", "1961"),
+  q("Geschichte", 3, "Mit wem schrieb Friedrich Engels das „Kommunistische Manifest“?", "Karl Marx", "Lenin", "Rosa Luxemburg", "August Bebel"),
+  q("Geschichte", 3, "Welches antike Weltwunder stand in Alexandria?", "Der Leuchtturm von Pharos", "Der Koloss von Rhodos", "Die Hängenden Gärten", "Der Zeus-Tempel"),
+  q("Geschichte", 3, "In welchem Jahr stürmten Pariser die Bastille?", "1789", "1776", "1799", "1815"),
+  q("Geschichte", 3, "Bei welcher Schlacht erlitt Napoleon 1815 seine endgültige Niederlage?", "Bei Waterloo", "Bei Leipzig", "Bei Austerlitz", "Bei Trafalgar"),
+  q("Geschichte", 3, "Wie hieß der erste künstliche Satellit der Erde?", "Sputnik 1", "Apollo 1", "Explorer 1", "Wostok 1"),
+  q("Geschichte", 3, "Welche Stadt wurde 79 n. Chr. durch den Ausbruch des Vesuvs verschüttet?", "Pompeji", "Rom", "Neapel", "Karthago"),
+  q("Geschichte", 3, "In welchem Jahr wurde die Berliner Mauer gebaut?", "1961", "1949", "1953", "1968"),
+  q("Geschichte", 3, "Welche Königsdynastie herrschte in Frankreich vor der Revolution?", "Die Bourbonen", "Die Habsburger", "Die Tudors", "Die Romanows"),
+  q("Geschichte", 3, "In welchem Jahrhundert lebte Martin Luther?", "Im 16. Jahrhundert", "Im 14. Jahrhundert", "Im 15. Jahrhundert", "Im 17. Jahrhundert"),
+  q("Geschichte", 3, "Welche britische Königin regierte von 1952 bis 2022?", "Elizabeth II.", "Victoria", "Elizabeth I.", "Mary II."),
+  q("Geschichte", 3, "In welchem Jahr wurde die Bundesrepublik Deutschland gegründet?", "1949", "1945", "1948", "1950"),
+
+  /* ---------------- Wissenschaft ---------------- */
+  q("Wissenschaft", 1, "Welche chemische Formel hat Wasser?", "H₂O", "CO₂", "O₂", "H₂O₂"),
+  q("Wissenschaft", 1, "Wie viele Planeten hat unser Sonnensystem?", "8", "9", "7", "10"),
+  q("Wissenschaft", 1, "Welcher Planet ist der Sonne am nächsten?", "Merkur", "Venus", "Mars", "Erde"),
+  q("Wissenschaft", 1, "Was ist das größte Organ des Menschen?", "Die Haut", "Die Leber", "Die Lunge", "Der Darm"),
+  q("Wissenschaft", 1, "Welcher Planet wird auch „der rote Planet“ genannt?", "Mars", "Jupiter", "Venus", "Merkur"),
+  q("Wissenschaft", 1, "Wie heißt die Galaxie, in der wir leben?", "Die Milchstraße", "Andromeda", "Der Orionnebel", "Die Magellansche Wolke"),
+  q("Wissenschaft", 1, "Wie heißt der größte Planet unseres Sonnensystems?", "Jupiter", "Saturn", "Neptun", "Uranus"),
+  q("Wissenschaft", 1, "Wie nennt man den Vorgang, bei dem Pflanzen Licht in Energie umwandeln?", "Fotosynthese", "Osmose", "Verdunstung", "Zellatmung"),
+  q("Wissenschaft", 1, "Bei wie viel Grad Celsius siedet Wasser auf Meereshöhe?", "100", "90", "80", "120"),
+  q("Wissenschaft", 2, "Welches chemische Symbol steht für Gold?", "Au", "Ag", "Go", "Gd"),
+  q("Wissenschaft", 2, "Wie schnell ist Licht ungefähr?", "300.000 km/s", "3.000 km/s", "30.000 km/s", "3 Mio. km/s"),
+  q("Wissenschaft", 2, "Wer entwickelte die Relativitätstheorie?", "Albert Einstein", "Isaac Newton", "Max Planck", "Niels Bohr"),
+  q("Wissenschaft", 2, "Wie viele Chromosomenpaare hat ein Mensch?", "23", "24", "46", "12"),
+  q("Wissenschaft", 2, "Was misst die Einheit Hertz?", "Die Frequenz", "Die Lautstärke", "Die Spannung", "Die Leistung"),
+  q("Wissenschaft", 2, "Welches Element hat die Ordnungszahl 1?", "Wasserstoff", "Helium", "Sauerstoff", "Kohlenstoff"),
+  q("Wissenschaft", 2, "Wofür steht die Abkürzung „CPU“?", "Central Processing Unit", "Computer Power Unit", "Control Program Unit", "Central Program Utility"),
+  q("Wissenschaft", 2, "Wie viele Knochen hat ein erwachsener Mensch ungefähr?", "206", "150", "300", "412"),
+  q("Wissenschaft", 2, "Welches Teilchen im Atom ist negativ geladen?", "Das Elektron", "Das Proton", "Das Neutron", "Das Photon"),
+  q("Wissenschaft", 2, "Welche Einheit misst die elektrische Spannung?", "Volt", "Ampere", "Watt", "Ohm"),
+  q("Wissenschaft", 2, "Welcher Naturforscher formulierte die Evolutionstheorie?", "Charles Darwin", "Gregor Mendel", "Carl von Linné", "Alexander von Humboldt"),
+  q("Wissenschaft", 3, "Welches Metall ist bei Zimmertemperatur flüssig?", "Quecksilber", "Blei", "Zinn", "Natrium"),
+  q("Wissenschaft", 3, "Welches Gas macht den größten Anteil unserer Atemluft aus?", "Stickstoff", "Sauerstoff", "Kohlendioxid", "Argon"),
+  q("Wissenschaft", 3, "Was entdeckte Alexander Fleming im Jahr 1928?", "Penicillin", "Insulin", "Die Röntgenstrahlung", "Die DNA-Struktur"),
+  q("Wissenschaft", 3, "Wie viel Prozent Sauerstoff enthält die Luft ungefähr?", "21 %", "35 %", "50 %", "78 %"),
+  q("Wissenschaft", 3, "Wofür steht die Abkürzung „DNA“ im Deutschen?", "Desoxyribonukleinsäure", "Dinatriumacetat", "Doppelnukleinsäure", "Diaminonukleosid"),
+  q("Wissenschaft", 3, "Welche Blutgefäße transportieren Blut vom Herzen weg?", "Arterien", "Venen", "Kapillaren", "Lymphgefäße"),
+  q("Wissenschaft", 3, "Welcher Stoff ist im Universum am häufigsten?", "Wasserstoff", "Sauerstoff", "Helium", "Eisen"),
+  q("Wissenschaft", 3, "Wie heißt die Wissenschaft, die Erdbeben erforscht?", "Seismologie", "Geodäsie", "Vulkanologie", "Meteorologie"),
+  q("Wissenschaft", 3, "Wie nennt man die kleinste Einheit eines chemischen Elements?", "Das Atom", "Das Molekül", "Die Zelle", "Das Ion"),
+  q("Wissenschaft", 3, "Welcher Planet hat das auffälligste Ringsystem?", "Saturn", "Jupiter", "Uranus", "Neptun"),
+
+  /* ---------------- Sport ---------------- */
+  q("Sport", 1, "Wie viele Spieler einer Fußballmannschaft stehen auf dem Platz?", "11", "10", "12", "9"),
+  q("Sport", 1, "Wie lange dauert ein Fußballspiel regulär?", "90 Minuten", "60 Minuten", "80 Minuten", "120 Minuten"),
+  q("Sport", 1, "Alle wie viele Jahre finden die Olympischen Sommerspiele statt?", "Alle 4 Jahre", "Alle 2 Jahre", "Alle 3 Jahre", "Alle 5 Jahre"),
+  q("Sport", 1, "Wie viele Ringe hat das olympische Symbol?", "5", "4", "6", "3"),
+  q("Sport", 1, "Wie viele Spieler einer Basketballmannschaft stehen auf dem Feld?", "5", "6", "7", "4"),
+  q("Sport", 2, "Welches Land wurde 2014 Fußballweltmeister?", "Deutschland", "Argentinien", "Brasilien", "Spanien"),
+  q("Sport", 2, "In welcher Sportart gibt es Grand-Slam-Turniere in Melbourne, Paris, London und New York?", "Tennis", "Golf", "Badminton", "Tischtennis"),
+  q("Sport", 2, "Wie viele Punkte bringt ein Touchdown im American Football?", "6", "7", "3", "5"),
+  q("Sport", 2, "Wie lang ist ein Marathon?", "42,195 km", "40 km", "45 km", "21,1 km"),
+  q("Sport", 2, "In welchem Land fand die Fußball-WM 2018 statt?", "Russland", "Brasilien", "Katar", "Südafrika"),
+  q("Sport", 2, "Wie viele Spieler einer Handballmannschaft stehen auf dem Feld?", "7", "6", "8", "5"),
+  q("Sport", 2, "Auf welchem Gerät fährt man eine „Halfpipe“?", "Snowboard", "Rennrad", "Schlitten", "Skier mit Stöcken"),
+  q("Sport", 2, "Welcher Verein ist deutscher Rekordmeister im Fußball?", "FC Bayern München", "Borussia Dortmund", "Hamburger SV", "FC Schalke 04"),
+  q("Sport", 3, "Welcher Fußballer wurde „der Kaiser“ genannt?", "Franz Beckenbauer", "Gerd Müller", "Uwe Seeler", "Lothar Matthäus"),
+  q("Sport", 3, "Aus wie vielen Löchern besteht eine Standard-Golfrunde?", "18", "9", "12", "24"),
+  q("Sport", 3, "In welcher Sportart wurde Michael Schumacher siebenfacher Weltmeister?", "Formel 1", "MotoGP", "Rallye", "Superbike"),
+  q("Sport", 3, "Welche Farbe hat das Trikot des Gesamtführenden bei der Tour de France?", "Gelb", "Grün", "Weiß", "Rot gepunktet"),
+  q("Sport", 3, "Wie viele Spieler einer Volleyballmannschaft stehen auf dem Feld?", "6", "5", "7", "8"),
+  q("Sport", 3, "Welches Land hat die meisten Fußball-Weltmeistertitel?", "Brasilien", "Deutschland", "Italien", "Argentinien"),
+  q("Sport", 3, "Wie lange dauert ein Drittel im Eishockey?", "20 Minuten", "15 Minuten", "25 Minuten", "30 Minuten"),
+  q("Sport", 3, "In welcher Höhe hängt ein Basketballkorb?", "3,05 m", "2,80 m", "3,50 m", "2,50 m"),
+  q("Sport", 3, "In welcher Stadt fanden die Olympischen Sommerspiele 2021 statt?", "Tokio", "Peking", "Paris", "Rio de Janeiro"),
+  q("Sport", 3, "Welcher Boxer nannte sich selbst „The Greatest“?", "Muhammad Ali", "Mike Tyson", "Joe Frazier", "George Foreman"),
+  q("Sport", 3, "Wie viele Runden dauert ein WM-Boxkampf maximal?", "12", "10", "15", "8"),
+  q("Sport", 3, "In welcher Stadt findet das Tennisturnier Wimbledon statt?", "London", "Manchester", "Melbourne", "Paris"),
+  q("Sport", 3, "Wie viele Steine spielt ein Curling-Team pro End?", "8", "6", "10", "4"),
+  q("Sport", 3, "Wie viele Gewinnsätze braucht ein Herren-Match bei einem Grand-Slam-Turnier?", "3", "2", "4", "5"),
+  q("Sport", 3, "Welche Sportart wird bei der „Vierschanzentournee“ ausgeübt?", "Skispringen", "Abfahrtslauf", "Biathlon", "Bobfahren"),
+
+  /* ---------------- Musik ---------------- */
+  q("Musik", 1, "Wie viele Tasten hat ein Standard-Klavier?", "88", "76", "64", "100"),
+  q("Musik", 1, "Welche Band sang „Bohemian Rhapsody“?", "Queen", "The Beatles", "Pink Floyd", "The Rolling Stones"),
+  q("Musik", 1, "Wie viele Saiten hat eine klassische Gitarre?", "6", "4", "7", "12"),
+  q("Musik", 1, "Wie nennt man die Person, die vor einem Orchester den Taktstock schwingt?", "Dirigent", "Komponist", "Solist", "Intendant"),
+  q("Musik", 2, "Wer ist als „King of Pop“ bekannt?", "Michael Jackson", "Elvis Presley", "Prince", "Freddie Mercury"),
+  q("Musik", 2, "Aus welcher Stadt stammen die Beatles?", "Liverpool", "London", "Manchester", "Birmingham"),
+  q("Musik", 2, "Welches Instrument spielte Louis Armstrong?", "Trompete", "Saxofon", "Klavier", "Kontrabass"),
+  q("Musik", 2, "Welche deutsche Band singt „Du hast“?", "Rammstein", "Die Toten Hosen", "Scorpions", "Die Ärzte"),
+  q("Musik", 2, "Welche Sängerin veröffentlichte das Album „21“?", "Adele", "Amy Winehouse", "Beyoncé", "Rihanna"),
+  q("Musik", 2, "Wie heißt der größte Musikwettbewerb Europas?", "Eurovision Song Contest", "MTV Europe Awards", "Grammy Europe", "Echo Festival"),
+  q("Musik", 2, "Welche Sängerin ist für „Bad Romance“ bekannt?", "Lady Gaga", "Katy Perry", "Britney Spears", "Madonna"),
+  q("Musik", 2, "Welche Band veröffentlichte „Smells Like Teen Spirit“?", "Nirvana", "Pearl Jam", "Soundgarden", "Green Day"),
+  q("Musik", 2, "Aus wie vielen Mitgliedern bestanden die Beatles?", "4", "3", "5", "6"),
+  q("Musik", 3, "Wer komponierte die Neunte Sinfonie mit der „Ode an die Freude“?", "Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Johann Sebastian Bach", "Franz Schubert"),
+  q("Musik", 3, "Wer komponierte die Oper „Die Zauberflöte“?", "Wolfgang Amadeus Mozart", "Richard Wagner", "Giuseppe Verdi", "Joseph Haydn"),
+  q("Musik", 3, "Wie nennt man ein Musikstück für vier Instrumente?", "Quartett", "Trio", "Quintett", "Duett"),
+  q("Musik", 3, "Welcher Künstler sang „Purple Rain“?", "Prince", "Jimi Hendrix", "David Bowie", "Stevie Wonder"),
+  q("Musik", 3, "Welche Band veröffentlichte „Stairway to Heaven“?", "Led Zeppelin", "Deep Purple", "Black Sabbath", "The Who"),
+  q("Musik", 3, "Wer sang „Like a Rolling Stone“?", "Bob Dylan", "Neil Young", "Bruce Springsteen", "Johnny Cash"),
+  q("Musik", 3, "Was bedeutet die Vortragsbezeichnung „forte“?", "Laut", "Leise", "Schnell", "Langsam"),
+  q("Musik", 3, "Wer komponierte „Die vier Jahreszeiten“?", "Antonio Vivaldi", "Johann Sebastian Bach", "Georg Friedrich Händel", "Johann Pachelbel"),
+  q("Musik", 3, "Was bedeutet „a cappella“?", "Gesang ohne Instrumentalbegleitung", "Gesang im Duett", "Sehr hoher Gesang", "Gesang in Latein"),
+  q("Musik", 3, "Welcher Musiker wurde „Godfather of Soul“ genannt?", "James Brown", "Marvin Gaye", "Ray Charles", "Otis Redding"),
+  q("Musik", 3, "Welches Album ist das meistverkaufte aller Zeiten?", "„Thriller“ von Michael Jackson", "„Back in Black“ von AC/DC", "„The Dark Side of the Moon“", "„Abbey Road“"),
+  q("Musik", 3, "Welche Tonart hat weder Kreuze noch Bs?", "C-Dur", "G-Dur", "F-Dur", "D-Dur"),
+  q("Musik", 3, "Aus welchem Land stammt der Tango ursprünglich?", "Argentinien", "Spanien", "Brasilien", "Kuba"),
+
+  /* ---------------- Film & TV ---------------- */
+  q("Film & TV", 1, "Wie heißt der Zauberschüler aus den Romanen von J. K. Rowling?", "Harry Potter", "Percy Jackson", "Ron Weasley", "Frodo Beutlin"),
+  q("Film & TV", 1, "In welcher Filmreihe sagt man „Möge die Macht mit dir sein“?", "Star Wars", "Star Trek", "Herr der Ringe", "Dune"),
+  q("Film & TV", 1, "Wie heißt der gelbe Schwamm aus der Zeichentrickserie?", "SpongeBob Schwammkopf", "Patrick Star", "Thaddäus", "Sandy"),
+  q("Film & TV", 1, "Wie heißt der junge Löwe in „Der König der Löwen“?", "Simba", "Mufasa", "Scar", "Nala"),
+  q("Film & TV", 1, "Wie heißt der Clownfisch, der im Pixar-Film gesucht wird?", "Nemo", "Dorie", "Marlin", "Flunder"),
+  q("Film & TV", 1, "Wie heißt der grüne Oger aus dem DreamWorks-Film?", "Shrek", "Fiona", "Donkey", "Gru"),
+  q("Film & TV", 2, "Wer spielte Jack in „Titanic“?", "Leonardo DiCaprio", "Brad Pitt", "Matt Damon", "Johnny Depp"),
+  q("Film & TV", 2, "In welcher Stadt spielt die Serie „Friends“?", "New York", "Los Angeles", "Chicago", "Boston"),
+  q("Film & TV", 2, "Welcher Schauspieler spielte den ersten Iron Man im Marvel-Universum?", "Robert Downey Jr.", "Chris Evans", "Chris Hemsworth", "Mark Ruffalo"),
+  q("Film & TV", 2, "Welcher Hobbit bringt den Ring nach Mordor?", "Frodo Beutlin", "Samweis Gamdschie", "Bilbo Beutlin", "Meriadoc Brandybock"),
+  q("Film & TV", 2, "Welche Zeichentrickfamilie lebt in Springfield?", "Die Simpsons", "Die Griffins", "Die Flintstones", "South Park"),
+  q("Film & TV", 2, "Wie heißt der Superheld aus Gotham City?", "Batman", "Superman", "Spider-Man", "Iron Man"),
+  q("Film & TV", 2, "Welcher Streamingdienst produzierte „Squid Game“?", "Netflix", "Amazon Prime Video", "Disney+", "HBO Max"),
+  q("Film & TV", 2, "Welcher Film gewann 2020 den Oscar als bester Film?", "Parasite", "1917", "Joker", "Once Upon a Time in Hollywood"),
+  q("Film & TV", 3, "Wer führte Regie bei „Der weiße Hai“?", "Steven Spielberg", "Ridley Scott", "James Cameron", "Martin Scorsese"),
+  q("Film & TV", 3, "In welcher Kleinstadt spielt „Stranger Things“?", "Hawkins", "Derry", "Twin Peaks", "Riverdale"),
+  q("Film & TV", 3, "Welcher Schauspieler spielt „John Wick“?", "Keanu Reeves", "Liam Neeson", "Jason Statham", "Tom Hardy"),
+  q("Film & TV", 3, "Wie heißt der Chemielehrer, der in „Breaking Bad“ zum Drogenkoch wird?", "Walter White", "Jesse Pinkman", "Saul Goodman", "Gus Fring"),
+  q("Film & TV", 3, "Wie heißt der Zauberer aus „Der Herr der Ringe“, der grau und später weiß ist?", "Gandalf", "Saruman", "Radagast", "Elrond"),
+  q("Film & TV", 3, "In welcher Serie kämpfen Adelshäuser um den Eisernen Thron?", "Game of Thrones", "Vikings", "The Witcher", "The Last Kingdom"),
+  q("Film & TV", 3, "Wer moderierte jahrzehntelang „Wetten, dass..?“", "Thomas Gottschalk", "Günther Jauch", "Frank Elstner", "Markus Lanz"),
+  q("Film & TV", 3, "Welches Studio produzierte „Toy Story“?", "Pixar", "DreamWorks", "Illumination", "Blue Sky"),
+  q("Film & TV", 3, "Wie heißt der Bösewicht in „Der König der Löwen“?", "Scar", "Shere Khan", "Zazu", "Rafiki"),
+  q("Film & TV", 3, "Welcher Regisseur drehte „Inception“ und „Interstellar“?", "Christopher Nolan", "Denis Villeneuve", "Quentin Tarantino", "David Fincher"),
+  q("Film & TV", 3, "Welche deutsche Netflix-Serie spielt in der Stadt Winden?", "Dark", "Biohackers", "How to Sell Drugs Online (Fast)", "Barbaren"),
+  q("Film & TV", 3, "Aus wie vielen Filmen besteht die „Der Herr der Ringe“-Trilogie?", "3", "2", "4", "6"),
+  q("Film & TV", 3, "Wie heißt der Droide aus „Star Wars“, der wie eine Mülltonne aussieht?", "R2-D2", "C-3PO", "BB-8", "K-2SO"),
+  q("Film & TV", 3, "Auf welchem Mond spielt der Film „Avatar“?", "Pandora", "Arrakis", "Endor", "Titan"),
+
+  /* ---------------- Gaming & Internet ---------------- */
+  q("Gaming & Internet", 1, "Wie heißt der berühmte Klempner aus den Nintendo-Spielen?", "Mario", "Luigi", "Link", "Sonic"),
+  q("Gaming & Internet", 1, "In welchem Spiel muss man sich vor „Creepern“ in Acht nehmen?", "Minecraft", "Roblox", "Terraria", "Fortnite"),
+  q("Gaming & Internet", 1, "Wie heißt das gelbe Elektro-Pokémon?", "Pikachu", "Raichu", "Glumanda", "Evoli"),
+  q("Gaming & Internet", 1, "Wie heißt der blaue Igel von Sega?", "Sonic", "Tails", "Knuckles", "Shadow"),
+  q("Gaming & Internet", 2, "Welche Firma entwickelt „Fortnite“?", "Epic Games", "Activision", "Ubisoft", "Valve"),
+  q("Gaming & Internet", 2, "Welche Konsole brachte Sony 1994 auf den Markt?", "Die PlayStation", "Die Xbox", "Das Nintendo 64", "Den Game Boy"),
+  q("Gaming & Internet", 2, "Wofür steht „NPC“ in Videospielen?", "Non-Player Character", "New Player Class", "Network Player Client", "Non-Playable Console"),
+  q("Gaming & Internet", 2, "Welche Spielereihe spielt im Königreich Hyrule?", "The Legend of Zelda", "Final Fantasy", "Dark Souls", "Metroid"),
+  q("Gaming & Internet", 2, "Welche Livestreaming-Plattform für Games gehört zu Amazon?", "Twitch", "YouTube Gaming", "Kick", "Trovo"),
+  q("Gaming & Internet", 2, "Welcher Chat-Dienst ist besonders bei Gamern beliebt?", "Discord", "Slack", "Telegram", "Signal"),
+  q("Gaming & Internet", 2, "Welches soziale Netzwerk gehört neben WhatsApp und Facebook zu Meta?", "Instagram", "TikTok", "Snapchat", "X"),
+  q("Gaming & Internet", 2, "Wie heißt Nintendos Konsole aus dem Jahr 2017?", "Nintendo Switch", "Wii U", "Nintendo DS", "GameCube"),
+  q("Gaming & Internet", 3, "Wer gründete Microsoft zusammen mit Paul Allen?", "Bill Gates", "Steve Jobs", "Steve Ballmer", "Larry Page"),
+  q("Gaming & Internet", 3, "Was bedeutet „GG“ im Gaming-Chat?", "Good Game", "Great Gamer", "Go Go", "Got Gold"),
+  q("Gaming & Internet", 3, "Welches Studio entwickelt „League of Legends“?", "Riot Games", "Blizzard", "Valve", "Bungie"),
+  q("Gaming & Internet", 3, "Was bedeutet „Lag“ in Onlinespielen?", "Eine Verzögerung der Verbindung", "Ein Spielabsturz", "Ein Levelaufstieg", "Ein Cheat"),
+  q("Gaming & Internet", 3, "Welches Spiel machte den Battle-Royale-Modus mit 100 Spielern populär?", "PUBG", "Overwatch", "Rust", "Apex Legends"),
+  q("Gaming & Internet", 3, "Welche Firma stellt die GeForce-Grafikkarten her?", "Nvidia", "AMD", "Intel", "Qualcomm"),
+  q("Gaming & Internet", 3, "Wofür steht „URL“?", "Uniform Resource Locator", "Universal Reference Link", "User Request Line", "Unified Router Location"),
+  q("Gaming & Internet", 3, "Welches Unternehmen kaufte YouTube im Jahr 2006?", "Google", "Yahoo", "Microsoft", "Facebook"),
+  q("Gaming & Internet", 3, "Welche Shooter-Reihe hat den Untertitel „Modern Warfare“?", "Call of Duty", "Battlefield", "Medal of Honor", "Counter-Strike"),
+  q("Gaming & Internet", 3, "Welches Videospiel mit fallenden Blöcken stammt aus der Sowjetunion?", "Tetris", "Pac-Man", "Snake", "Breakout"),
+  q("Gaming & Internet", 3, "In welcher fiktiven Stadt spielt „GTA V“?", "Los Santos", "Vice City", "Liberty City", "San Fierro"),
+  q("Gaming & Internet", 3, "Was ist ein „Speedrun“?", "Ein Spiel so schnell wie möglich durchspielen", "Ein Rennspielmodus", "Ein Turnier über 24 Stunden", "Ein Sprint-Minispiel"),
+  q("Gaming & Internet", 3, "Wie hieß Nintendos Handheld-Konsole von 1989?", "Der Game Boy", "Der Nintendo DS", "Die PSP", "Das Game Gear"),
+  q("Gaming & Internet", 3, "Wofür steht die Abkürzung „AFK“?", "Away From Keyboard", "All For Kills", "Away For Knowledge", "After Kill"),
+
+  /* ---------------- Essen & Trinken ---------------- */
+  q("Essen & Trinken", 1, "Aus welcher Frucht wird Guacamole hauptsächlich gemacht?", "Avocado", "Gurke", "Zucchini", "Limette"),
+  q("Essen & Trinken", 1, "Aus welchem Land stammt die Pizza ursprünglich?", "Italien", "Griechenland", "Spanien", "Frankreich"),
+  q("Essen & Trinken", 1, "Welches Gemüse treibt einem beim Schneiden Tränen in die Augen?", "Zwiebel", "Lauch", "Paprika", "Sellerie"),
+  q("Essen & Trinken", 1, "Aus welcher Bohne wird Schokolade hergestellt?", "Kakaobohne", "Sojabohne", "Vanillebohne", "Kaffeebohne"),
+  q("Essen & Trinken", 2, "Welches Gewürz ist das teuerste der Welt?", "Safran", "Vanille", "Kardamom", "Pfeffer"),
+  q("Essen & Trinken", 2, "Woraus wird Sauerkraut hergestellt?", "Weißkohl", "Rotkohl", "Spitzkohl", "Chinakohl"),
+  q("Essen & Trinken", 2, "Zu welcher Obstsorte gehört „Granny Smith“?", "Apfel", "Birne", "Pflaume", "Traube"),
+  q("Essen & Trinken", 2, "Wie heißt der scharfe grüne japanische Meerrettich?", "Wasabi", "Ingwer", "Miso", "Yuzu"),
+  q("Essen & Trinken", 2, "Aus welchem Land stammt Feta-Käse?", "Griechenland", "Italien", "Türkei", "Bulgarien"),
+  q("Essen & Trinken", 2, "Von welchem Tier stammt die Milch für original Mozzarella di Bufala?", "Vom Wasserbüffel", "Von der Kuh", "Von der Ziege", "Vom Schaf"),
+  q("Essen & Trinken", 2, "Welche Frucht wird auch „Chinesische Stachelbeere“ genannt?", "Kiwi", "Litschi", "Mango", "Papaya"),
+  q("Essen & Trinken", 3, "Welches Land produziert weltweit den meisten Kaffee?", "Brasilien", "Kolumbien", "Vietnam", "Äthiopien"),
+  q("Essen & Trinken", 3, "Woraus wird Tofu hergestellt?", "Aus Sojabohnen", "Aus Kichererbsen", "Aus Weizen", "Aus Reis"),
+  q("Essen & Trinken", 3, "Welche Nudelsorte ist röhrenförmig und schräg abgeschnitten?", "Penne", "Farfalle", "Fusilli", "Tagliatelle"),
+  q("Essen & Trinken", 3, "Was ist die Hauptzutat von Hummus?", "Kichererbsen", "Linsen", "Bohnen", "Erbsen"),
+  q("Essen & Trinken", 3, "Aus welcher Pflanze wird Tequila hergestellt?", "Aus der Agave", "Aus Zuckerrohr", "Aus Kaktusfeigen", "Aus Mais"),
+  q("Essen & Trinken", 3, "Welche Stadt gilt als Heimat der Currywurst?", "Berlin", "Hamburg", "Bochum", "Köln"),
+  q("Essen & Trinken", 3, "Wie viel Alkohol hat ein typisches deutsches Pils ungefähr?", "5 %", "8 %", "12 %", "2 %"),
+  q("Essen & Trinken", 3, "Aus welchem Getreide besteht Bulgur?", "Weizen", "Hafer", "Gerste", "Hirse"),
+  q("Essen & Trinken", 3, "Aus welchem Land stammt Paella?", "Spanien", "Portugal", "Mexiko", "Italien"),
+  q("Essen & Trinken", 3, "Wie heißt das japanische Gericht aus rohem Fisch ohne Reis?", "Sashimi", "Sushi", "Maki", "Tempura"),
+  q("Essen & Trinken", 3, "Welche Beere gibt Gin sein typisches Aroma?", "Die Wacholderbeere", "Die Holunderbeere", "Die Schlehe", "Die Hagebutte"),
+  q("Essen & Trinken", 3, "Welche Käsesorte ist für ihre großen Löcher bekannt?", "Emmentaler", "Gouda", "Camembert", "Cheddar"),
+  q("Essen & Trinken", 3, "Woraus wird Marzipan hauptsächlich gemacht?", "Aus Mandeln", "Aus Haselnüssen", "Aus Cashews", "Aus Pistazien"),
+  q("Essen & Trinken", 3, "Welches Land ist die Heimat des Gerichts „Gulasch“?", "Ungarn", "Österreich", "Tschechien", "Polen"),
+
+  /* ---------------- Natur & Tiere ---------------- */
+  q("Natur & Tiere", 1, "Wie viele Beine hat eine Spinne?", "8", "6", "10", "4"),
+  q("Natur & Tiere", 1, "Welches ist das größte Tier der Welt?", "Der Blauwal", "Der Afrikanische Elefant", "Der Weiße Hai", "Die Giraffe"),
+  q("Natur & Tiere", 1, "Welches Landtier ist das schnellste?", "Der Gepard", "Der Löwe", "Das Pferd", "Die Antilope"),
+  q("Natur & Tiere", 1, "Welches Tier hat den längsten Hals?", "Die Giraffe", "Das Kamel", "Der Strauß", "Das Lama"),
+  q("Natur & Tiere", 1, "Welches Insekt produziert Honig?", "Die Biene", "Die Wespe", "Die Hummel", "Die Ameise"),
+  q("Natur & Tiere", 1, "Welcher Baum trägt Eicheln?", "Die Eiche", "Die Buche", "Die Birke", "Die Kastanie"),
+  q("Natur & Tiere", 1, "Welches Tier trägt seine Jungen in einem Beutel?", "Das Känguru", "Der Waschbär", "Das Faultier", "Der Otter"),
+  q("Natur & Tiere", 1, "Was fressen Pandas fast ausschließlich?", "Bambus", "Fisch", "Gras", "Beeren"),
+  q("Natur & Tiere", 2, "Wie viele Herzen hat ein Oktopus?", "3", "1", "2", "5"),
+  q("Natur & Tiere", 2, "Welches Säugetier kann aktiv fliegen?", "Die Fledermaus", "Das Flughörnchen", "Der Kolibri", "Der Gleitbeutler"),
+  q("Natur & Tiere", 2, "Welcher ist der größte Vogel der Welt?", "Der Strauß", "Der Emu", "Der Albatros", "Der Kondor"),
+  q("Natur & Tiere", 2, "Wie heißt das Junge eines Pferdes?", "Fohlen", "Kalb", "Lamm", "Welpe"),
+  q("Natur & Tiere", 2, "Welches Tier wird auch „Wüstenschiff“ genannt?", "Das Kamel", "Das Zebra", "Die Oryxantilope", "Der Esel"),
+  q("Natur & Tiere", 2, "Wie viele Beine hat ein Insekt?", "6", "8", "4", "10"),
+  q("Natur & Tiere", 2, "Welche Blume dreht ihre Blüte nach der Sonne?", "Die Sonnenblume", "Die Tulpe", "Die Rose", "Der Mohn"),
+  q("Natur & Tiere", 3, "Wie lange dauert die Tragzeit eines Elefanten ungefähr?", "22 Monate", "12 Monate", "9 Monate", "30 Monate"),
+  q("Natur & Tiere", 3, "Wie viele Arme hat ein Seestern typischerweise?", "5", "6", "4", "8"),
+  q("Natur & Tiere", 3, "Welcher Vogel kann rückwärts fliegen?", "Der Kolibri", "Der Specht", "Die Schwalbe", "Der Falke"),
+  q("Natur & Tiere", 3, "Welche ist die größte Katzenart der Welt?", "Der Tiger", "Der Löwe", "Der Jaguar", "Der Leopard"),
+  q("Natur & Tiere", 3, "Wie viele Mägen bzw. Magenkammern hat eine Kuh?", "4", "2", "3", "1"),
+  q("Natur & Tiere", 3, "Welcher ist der größte Fisch der Welt?", "Der Walhai", "Der Weiße Hai", "Der Blauwal", "Der Mondfisch"),
+  q("Natur & Tiere", 3, "Welcher Nadelbaum verliert im Winter seine Nadeln?", "Die Lärche", "Die Fichte", "Die Kiefer", "Die Tanne"),
+  q("Natur & Tiere", 3, "Welche Baumart wird am höchsten?", "Der Küstenmammutbaum", "Die Eiche", "Die Douglasie", "Der Eukalyptus"),
+  q("Natur & Tiere", 3, "Wie alt können Riesenschildkröten werden?", "Über 100 Jahre", "Etwa 30 Jahre", "Etwa 50 Jahre", "Über 300 Jahre"),
+  q("Natur & Tiere", 3, "Wie nennt man ein Tier, das sich nur von Pflanzen ernährt?", "Pflanzenfresser (Herbivore)", "Allesfresser (Omnivore)", "Fleischfresser (Karnivore)", "Aasfresser"),
+  q("Natur & Tiere", 3, "Wie heißt die Wissenschaft von den Pflanzen?", "Botanik", "Zoologie", "Ökologie", "Geologie")
+];
+
+</script>
+<script>
+/* =========================================================
+   Der Dümmste fliegt – Spiellogik
+   ========================================================= */
+(function () {
+  'use strict';
+
+  const AVATAR_COLORS = [
+    '#ffce3a', '#ff4d8d', '#4ad6ff', '#2fd67a', '#c08bff',
+    '#ff9a3d', '#7ef2c9', '#ff6b6b', '#8ea2ff', '#ffd9a0'
+  ];
+  const KEYS = ['A', 'B', 'C', 'D'];
+  const SPEICHER = 'ddf-setup-v1';
+
+  const app = document.getElementById('app');
+  const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
+
+  /* ---------------------------------------------------------
+     Zustand
+     --------------------------------------------------------- */
+  const S = {
+    screen: 'setup',
+    einstellungen: {
+      modus: 'runde',          // 'runde' = Dümmster fliegt raus | 'leben' = Leben verlieren
+      leben: 3,
+      zeit: 20,                // Sekunden, 0 = ohne Zeitlimit
+      fragenProRunde: 2,
+      schwierigkeit: 'auto',   // 'auto' | 1 | 2 | 3 | 'mix'
+      kategorien: alleKategorien.slice(),
+      sound: true,
+      uebergabe: true          // Zwischenbildschirm "XY ist dran"
+    },
+    namen: ['Spieler 1', 'Spieler 2', 'Spieler 3'],
+    spieler: [],
+    runde: 1,
+    reihenfolge: [],
+    rIndex: 0,
+    rundenPunkte: {},
+    stechen: null,             // { kandidaten:[id], ergebnisse:{id:bool}, reihe:[id], idx:0 }
+    rausFolge: [],
+    pool: [],
+    aktuell: null,
+    timerId: null,
+    restMs: 0,
+    letzterTick: 0
+  };
+
+  /* ---------------------------------------------------------
+     Hilfsfunktionen
+     --------------------------------------------------------- */
+  const esc = s => String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function mischen(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const lebende = () => S.spieler.filter(p => p.dabei);
+  const spielerVon = id => S.spieler.find(p => p.id === id);
+
+  function avatar(p, extra) {
+    return `<span class="avatar${extra ? ' ' + extra : ''}" style="background:${p.farbe}">${esc(p.name.trim().charAt(0).toUpperCase() || '?')}</span>`;
+  }
+
+  /* ---------------------------------------------------------
+     Sound (kleine Töne per WebAudio, keine Dateien nötig)
+     --------------------------------------------------------- */
+  const Sound = {
+    ctx: null,
+    an() { return S.einstellungen.sound; },
+    hole() {
+      if (!this.an()) return null;
+      try {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return null;
+          this.ctx = new AC();
+        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        return this.ctx;
+      } catch (e) { return null; }
+    },
+    ton(freq, ab, dauer, form = 'sine', laut = 0.14) {
+      const ctx = this.hole();
+      if (!ctx) return;
+      const t = ctx.currentTime + ab;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = form;
+      osc.frequency.setValueAtTime(freq, t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(laut, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dauer);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dauer + 0.05);
+    },
+    richtig() { this.ton(660, 0, 0.14); this.ton(990, 0.1, 0.25); },
+    falsch()  { this.ton(200, 0, 0.2, 'sawtooth'); this.ton(120, 0.16, 0.35, 'sawtooth'); },
+    raus()    { [520, 420, 330, 240].forEach((f, i) => this.ton(f, i * 0.13, 0.3, 'triangle')); },
+    sieg()    { [523, 659, 784, 1047].forEach((f, i) => this.ton(f, i * 0.13, 0.4, 'triangle')); },
+    tick()    { this.ton(880, 0, 0.06, 'square', 0.06); }
+  };
+
+  /* ---------------------------------------------------------
+     Fragen-Pool
+     --------------------------------------------------------- */
+  function poolAufbauen() {
+    const kat = S.einstellungen.kategorien;
+    let fragen = window.FRAGEN.filter(f => kat.includes(f.k));
+    if (!fragen.length) fragen = window.FRAGEN.slice();
+    S.pool = mischen(fragen);
+  }
+
+  function zielStufe() {
+    const e = S.einstellungen;
+    if (e.schwierigkeit === 'mix') return 0;
+    if (e.schwierigkeit !== 'auto') return Number(e.schwierigkeit);
+    // Automatisch: es wird von Runde zu Runde schwerer
+    if (S.runde <= 2) return 1;
+    if (S.runde <= 4) return 2;
+    return 3;
+  }
+
+  function frageZiehen() {
+    if (!S.pool.length) poolAufbauen();
+    const stufe = zielStufe();
+    let idx = 0;
+    if (stufe) {
+      idx = S.pool.findIndex(f => f.s === stufe);
+      if (idx < 0) idx = S.pool.findIndex(f => Math.abs(f.s - stufe) === 1);
+      if (idx < 0) idx = 0;
+    }
+    const frage = S.pool.splice(idx, 1)[0];
+    return {
+      frage,
+      antworten: mischen([frage.r, ...frage.w])
+    };
+  }
+
+  /* ---------------------------------------------------------
+     Einstellungen speichern / laden
+     --------------------------------------------------------- */
+  function speichern() {
+    try {
+      localStorage.setItem(SPEICHER, JSON.stringify({
+        namen: S.namen, einstellungen: S.einstellungen
+      }));
+    } catch (e) { /* egal */ }
+  }
+
+  function laden() {
+    try {
+      const roh = localStorage.getItem(SPEICHER);
+      if (!roh) return;
+      const d = JSON.parse(roh);
+      if (Array.isArray(d.namen) && d.namen.length >= 2) S.namen = d.namen.slice(0, 10);
+      if (d.einstellungen) {
+        Object.assign(S.einstellungen, d.einstellungen);
+        S.einstellungen.kategorien = (S.einstellungen.kategorien || [])
+          .filter(k => alleKategorien.includes(k));
+        if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien.slice();
+      }
+    } catch (e) { /* egal */ }
+  }
+
+  /* ---------------------------------------------------------
+     Bildschirm: Einrichtung
+     --------------------------------------------------------- */
+  function zeigeSetup() {
+    S.screen = 'setup';
+    const e = S.einstellungen;
+    const zahlChips = [];
+    for (let n = 2; n <= 10; n++) {
+      zahlChips.push(`<button class="chip num" data-anzahl="${n}" aria-pressed="${S.namen.length === n}">${n}</button>`);
+    }
+
+    app.innerHTML = `
+      <div class="logo">
+        <div class="kicker">Das Quiz-Partyspiel</div>
+        <h1>Der Dümmste fliegt</h1>
+        <p>${window.FRAGEN.length} Fragen · 2–10 Spieler · ein Gerät reicht</p>
+      </div>
+
+      <div class="card">
+        <span class="label">Wie viele spielen mit?</span>
+        <div class="chips">${zahlChips.join('')}</div>
+      </div>
+
+      <div class="card">
+        <span class="label">Namen</span>
+        <div class="players">
+          ${S.namen.map((n, i) => `
+            <div class="player-row">
+              <span class="avatar" style="background:${AVATAR_COLORS[i % AVATAR_COLORS.length]}">${esc((n.trim()[0] || String(i + 1)).toUpperCase())}</span>
+              <input type="text" data-name="${i}" value="${esc(n)}" maxlength="14" placeholder="Spieler ${i + 1}">
+            </div>`).join('')}
+        </div>
+        <p class="hint">Tipp: Ihr spielt zusammen an einem Gerät und gebt es reihum weiter.</p>
+      </div>
+
+      <div class="card">
+        <details class="settings" ${S.setupOffen ? 'open' : ''}>
+          <summary>Spieleinstellungen</summary>
+
+          <div class="setting">
+            <span class="label">Spielmodus</span>
+            <div class="chips">
+              <button class="chip" data-set="modus" data-wert="runde" aria-pressed="${e.modus === 'runde'}">Rundenmodus – der Schlechteste fliegt</button>
+              <button class="chip" data-set="modus" data-wert="leben" aria-pressed="${e.modus === 'leben'}">Leben – wer alle verliert, fliegt</button>
+            </div>
+            <p class="hint" id="modusHinweis"></p>
+          </div>
+
+          <div class="setting" id="rundenSetting">
+            <span class="label">Fragen pro Spieler und Runde</span>
+            <div class="chips">
+              ${[1, 2, 3, 4, 5].map(n => `<button class="chip num" data-set="fragenProRunde" data-wert="${n}" aria-pressed="${e.fragenProRunde === n}">${n}</button>`).join('')}
+            </div>
+          </div>
+
+          <div class="setting" id="lebenSetting">
+            <span class="label">Leben pro Spieler</span>
+            <div class="chips">
+              ${[1, 2, 3, 4, 5].map(n => `<button class="chip num" data-set="leben" data-wert="${n}" aria-pressed="${e.leben === n}">${'❤'.repeat(n)}</button>`).join('')}
+            </div>
+          </div>
+
+          <div class="setting">
+            <span class="label">Bedenkzeit pro Frage</span>
+            <div class="chips">
+              ${[10, 15, 20, 30, 45, 0].map(n => `<button class="chip num" data-set="zeit" data-wert="${n}" aria-pressed="${e.zeit === n}">${n ? n + ' s' : 'ohne'}</button>`).join('')}
+            </div>
+          </div>
+
+          <div class="setting">
+            <span class="label">Schwierigkeit</span>
+            <div class="chips">
+              <button class="chip" data-set="schwierigkeit" data-wert="auto" aria-pressed="${e.schwierigkeit === 'auto'}">Ansteigend</button>
+              <button class="chip" data-set="schwierigkeit" data-wert="1" aria-pressed="${e.schwierigkeit === '1'}">Leicht</button>
+              <button class="chip" data-set="schwierigkeit" data-wert="2" aria-pressed="${e.schwierigkeit === '2'}">Mittel</button>
+              <button class="chip" data-set="schwierigkeit" data-wert="3" aria-pressed="${e.schwierigkeit === '3'}">Schwer</button>
+              <button class="chip" data-set="schwierigkeit" data-wert="mix" aria-pressed="${e.schwierigkeit === 'mix'}">Bunt gemischt</button>
+            </div>
+          </div>
+
+          <div class="setting">
+            <span class="label">Kategorien</span>
+            <div class="chips">
+              ${alleKategorien.map(k => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${e.kategorien.includes(k)}">${esc(k)}</button>`).join('')}
+            </div>
+            <p class="hint" id="katHinweis"></p>
+          </div>
+
+          <div class="setting">
+            <span class="label">Sonstiges</span>
+            <div class="chips">
+              <button class="chip" data-toggle="sound" aria-pressed="${e.sound}">🔊 Sound</button>
+              <button class="chip" data-toggle="uebergabe" aria-pressed="${e.uebergabe}">🔁 „Du bist dran“-Bildschirm</button>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <button class="btn block" id="start">Spiel starten</button>
+      <p class="footer-note">Antworten per Klick oder mit den Tasten <kbd>1</kbd>–<kbd>4</kbd> bzw. <kbd>A</kbd>–<kbd>D</kbd>, weiter mit <kbd>Leertaste</kbd>.</p>
+    `;
+
+    aktualisiereSetupHinweise();
+
+    app.querySelectorAll('[data-anzahl]').forEach(b => b.addEventListener('click', () => {
+      const n = Number(b.dataset.anzahl);
+      const alt = S.namen.slice();
+      S.namen = [];
+      for (let i = 0; i < n; i++) S.namen.push(alt[i] || 'Spieler ' + (i + 1));
+      S.setupOffen = app.querySelector('details.settings').open;
+      speichern();
+      zeigeSetup();
+    }));
+
+    app.querySelectorAll('[data-name]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        S.namen[Number(inp.dataset.name)] = inp.value;
+        const av = inp.previousElementSibling;
+        av.textContent = (inp.value.trim()[0] || String(Number(inp.dataset.name) + 1)).toUpperCase();
+        speichern();
+      });
+    });
+
+    app.querySelectorAll('[data-set]').forEach(b => b.addEventListener('click', () => {
+      const feld = b.dataset.set;
+      let wert = b.dataset.wert;
+      if (['leben', 'zeit', 'fragenProRunde'].includes(feld)) wert = Number(wert);
+      S.einstellungen[feld] = wert;
+      b.parentElement.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+      aktualisiereSetupHinweise();
+      speichern();
+    }));
+
+    app.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', () => {
+      const feld = b.dataset.toggle;
+      S.einstellungen[feld] = !S.einstellungen[feld];
+      b.setAttribute('aria-pressed', S.einstellungen[feld]);
+      if (feld === 'sound' && S.einstellungen[feld]) Sound.richtig();
+      speichern();
+    }));
+
+    app.querySelectorAll('[data-kat]').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.kat;
+      const liste = S.einstellungen.kategorien;
+      const i = liste.indexOf(k);
+      if (i >= 0) { if (liste.length > 1) liste.splice(i, 1); }
+      else liste.push(k);
+      b.setAttribute('aria-pressed', liste.includes(k));
+      aktualisiereSetupHinweise();
+      speichern();
+    }));
+
+    app.querySelector('#start').addEventListener('click', spielStarten);
+  }
+
+  function aktualisiereSetupHinweise() {
+    const e = S.einstellungen;
+    const rund = app.querySelector('#rundenSetting');
+    const leb = app.querySelector('#lebenSetting');
+    const hin = app.querySelector('#modusHinweis');
+    const kat = app.querySelector('#katHinweis');
+    if (rund) rund.classList.toggle('hidden', e.modus !== 'runde');
+    if (leb) leb.classList.toggle('hidden', e.modus !== 'leben');
+    if (hin) {
+      hin.textContent = e.modus === 'runde'
+        ? 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.'
+        : 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.';
+    }
+    if (kat) {
+      const anzahl = window.FRAGEN.filter(f => e.kategorien.includes(f.k)).length;
+      kat.textContent = anzahl + ' Fragen ausgewählt.';
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Spielstart
+     --------------------------------------------------------- */
+  function spielStarten() {
+    Sound.hole();
+    S.spieler = S.namen.map((n, i) => ({
+      id: i,
+      name: (n || '').trim() || 'Spieler ' + (i + 1),
+      farbe: AVATAR_COLORS[i % AVATAR_COLORS.length],
+      leben: S.einstellungen.leben,
+      dabei: true,
+      richtig: 0,
+      falsch: 0,
+      zeit: 0
+    }));
+    S.runde = 1;
+    S.rausFolge = [];
+    S.stechen = null;
+    poolAufbauen();
+    rundeAufbauen();
+    naechsterZug();
+  }
+
+  function rundeAufbauen() {
+    const aktive = lebende().map(p => p.id);
+    S.rundenPunkte = {};
+    aktive.forEach(id => S.rundenPunkte[id] = 0);
+    const reihe = [];
+    const durchgaenge = S.einstellungen.modus === 'runde' ? S.einstellungen.fragenProRunde : 1;
+    for (let d = 0; d < durchgaenge; d++) reihe.push(...aktive);
+    S.reihenfolge = reihe;
+    S.rIndex = 0;
+  }
+
+  /* ---------------------------------------------------------
+     Zugsteuerung
+     --------------------------------------------------------- */
+  function naechsterZug() {
+    if (S.stechen) return stechenZug();
+    if (S.rIndex >= S.reihenfolge.length) return rundeBeenden();
+
+    const pid = S.reihenfolge[S.rIndex];
+    const p = spielerVon(pid);
+    if (!p.dabei) { S.rIndex++; return naechsterZug(); }
+
+    S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now() });
+
+    if (S.einstellungen.uebergabe) zeigeUebergabe(p);
+    else zeigeFrage();
+  }
+
+  function stechenZug() {
+    const st = S.stechen;
+    if (st.idx >= st.reihe.length) return stechenAuswerten();
+    const pid = st.reihe[st.idx];
+    S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now(), stechen: true });
+    if (S.einstellungen.uebergabe) zeigeUebergabe(spielerVon(pid), 'Stechfrage!');
+    else zeigeFrage();
+  }
+
+  function zeigeUebergabe(p, titel) {
+    S.screen = 'uebergabe';
+    app.innerHTML = kopf() + `
+      <div class="card turn-card fade">
+        ${titel ? `<div class="tag diff">${esc(titel)}</div>` : ''}
+        ${avatar(p)}
+        <h2>${esc(p.name)} ist dran</h2>
+        <p class="hint">Gerät weitergeben – dann geht's los.</p>
+        <br>
+        <button class="btn" id="weiter">Bereit!</button>
+      </div>`;
+    app.querySelector('#weiter').addEventListener('click', zeigeFrage);
+  }
+
+  /* ---------------------------------------------------------
+     Frage anzeigen
+     --------------------------------------------------------- */
+  function zeigeFrage() {
+    S.screen = 'frage';
+    const a = S.aktuell;
+    const p = spielerVon(a.pid);
+    const stufe = ['', 'Leicht', 'Mittel', 'Schwer'][a.frage.s];
+    a.start = Date.now();
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        ${S.einstellungen.zeit ? '<div class="timer" id="timer"><div></div></div>' : ''}
+        <div class="meta">
+          <span class="tag">${esc(a.frage.k)}</span>
+          <span class="tag diff">${'★'.repeat(a.frage.s)}${'☆'.repeat(3 - a.frage.s)} ${stufe}</span>
+          ${a.stechen ? '<span class="tag" style="background:rgba(255,77,141,.25)">Stechen</span>' : ''}
+          <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
+        </div>
+        <div class="question">${esc(a.frage.f)}</div>
+        <div class="answers" id="antworten">
+          ${a.antworten.map((t, i) => `
+            <button class="answer" data-i="${i}">
+              <span class="key">${KEYS[i]}</span><span>${esc(t)}</span>
+            </button>`).join('')}
+        </div>
+      </div>`;
+
+    app.querySelectorAll('.answer').forEach(b =>
+      b.addEventListener('click', () => antworten(Number(b.dataset.i))));
+
+    starteTimer();
+  }
+
+  function starteTimer() {
+    stoppeTimer();
+    if (!S.einstellungen.zeit) return;
+    S.restMs = S.einstellungen.zeit * 1000;
+    S.letzterTick = Math.ceil(S.restMs / 1000);
+    const bar = app.querySelector('#timer');
+    const fill = bar.firstElementChild;
+    const gesamt = S.restMs;
+    S.timerId = setInterval(() => {
+      S.restMs -= 100;
+      const anteil = Math.max(0, S.restMs / gesamt);
+      fill.style.width = (anteil * 100) + '%';
+      bar.classList.toggle('low', anteil <= 0.3);
+      const sek = Math.ceil(S.restMs / 1000);
+      if (sek !== S.letzterTick && sek <= 5 && sek > 0) { Sound.tick(); S.letzterTick = sek; }
+      if (S.restMs <= 0) { stoppeTimer(); antworten(null); }
+    }, 100);
+  }
+
+  function stoppeTimer() {
+    if (S.timerId) { clearInterval(S.timerId); S.timerId = null; }
+  }
+
+  /* ---------------------------------------------------------
+     Antwort auswerten
+     --------------------------------------------------------- */
+  function antworten(i) {
+    if (S.screen !== 'frage') return;
+    stoppeTimer();
+    S.screen = 'aufloesung';
+
+    const a = S.aktuell;
+    const p = spielerVon(a.pid);
+    const richtigIdx = a.antworten.indexOf(a.frage.r);
+    const korrekt = i !== null && i === richtigIdx;
+    const dauer = (Date.now() - a.start) / 1000;
+
+    a.gewaehlt = i;
+    a.korrekt = korrekt;
+    a.abgelaufen = i === null;
+    p.zeit += Math.min(dauer, S.einstellungen.zeit || 60);
+
+    if (korrekt) {
+      p.richtig++;
+      if (!a.stechen) S.rundenPunkte[p.id] = (S.rundenPunkte[p.id] || 0) + 1;
+      Sound.richtig();
+    } else {
+      p.falsch++;
+      Sound.falsch();
+      if (S.einstellungen.modus === 'leben' && !a.stechen) p.leben--;
+    }
+    if (a.stechen) S.stechen.ergebnisse[p.id] = korrekt;
+
+    zeigeAufloesung(richtigIdx);
+  }
+
+  function zeigeAufloesung(richtigIdx) {
+    const a = S.aktuell;
+    const p = spielerVon(a.pid);
+    const modus = S.einstellungen.modus;
+
+    let unter;
+    if (a.korrekt) {
+      unter = modus === 'leben'
+        ? 'Kein Leben verloren.'
+        : 'Ein Punkt für diese Runde.';
+    } else if (a.abgelaufen) {
+      unter = 'Zeit abgelaufen! Richtig wäre: ' + esc(a.frage.r);
+    } else {
+      unter = 'Richtig wäre: ' + esc(a.frage.r);
+    }
+    if (!a.korrekt && modus === 'leben' && !a.stechen) {
+      unter += p.leben > 0
+        ? ` · ${esc(p.name)} hat noch ${p.leben} ${p.leben === 1 ? 'Leben' : 'Leben'}.`
+        : ` · ${esc(p.name)} hat kein Leben mehr!`;
+    }
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <div class="meta">
+          <span class="tag">${esc(a.frage.k)}</span>
+          <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
+        </div>
+        <div class="question">${esc(a.frage.f)}</div>
+        <div class="answers">
+          ${a.antworten.map((t, i) => {
+            let cls = 'answer dim';
+            if (i === richtigIdx) cls = 'answer correct';
+            else if (i === a.gewaehlt) cls = 'answer wrong';
+            return `<button class="${cls}" disabled><span class="key">${KEYS[i]}</span><span>${esc(t)}</span></button>`;
+          }).join('')}
+        </div>
+        <div class="verdict ${a.korrekt ? 'good' : 'bad'}">${a.korrekt ? 'Richtig! 🎉' : 'Falsch! 💀'}</div>
+        <div class="verdict-sub">${unter}</div>
+        <button class="btn block" id="weiter">Weiter</button>
+      </div>`;
+
+    app.querySelector('#weiter').addEventListener('click', nachAufloesung);
+  }
+
+  function nachAufloesung() {
+    const a = S.aktuell;
+    const p = spielerVon(a.pid);
+
+    if (a.stechen) {
+      S.stechen.idx++;
+      return stechenZug();
+    }
+
+    S.rIndex++;
+
+    if (S.einstellungen.modus === 'leben' && p.leben <= 0) {
+      return rauswurf(p, () => {
+        if (spielEndeGeprueft()) return;
+        if (S.rIndex >= S.reihenfolge.length) { S.runde++; rundeAufbauen(); }
+        naechsterZug();
+      });
+    }
+
+    if (S.rIndex >= S.reihenfolge.length && S.einstellungen.modus === 'leben') {
+      S.runde++;
+      rundeAufbauen();
+    }
+    naechsterZug();
+  }
+
+  /* ---------------------------------------------------------
+     Rundenende (Rundenmodus)
+     --------------------------------------------------------- */
+  function rundeBeenden() {
+    if (S.einstellungen.modus === 'leben') {
+      S.runde++;
+      rundeAufbauen();
+      return naechsterZug();
+    }
+
+    const aktive = lebende();
+    const min = Math.min(...aktive.map(p => S.rundenPunkte[p.id] || 0));
+    const schlechteste = aktive.filter(p => (S.rundenPunkte[p.id] || 0) === min);
+
+    if (schlechteste.length === 1) {
+      zeigeRundenstand(() => rauswurf(schlechteste[0], nachRauswurf));
+    } else {
+      zeigeRundenstand(() => stechenStarten(schlechteste.map(p => p.id)));
+    }
+  }
+
+  function nachRauswurf() {
+    if (spielEndeGeprueft()) return;
+    S.runde++;
+    rundeAufbauen();
+    naechsterZug();
+  }
+
+  function zeigeRundenstand(weiter) {
+    S.screen = 'rundenende';
+    const aktive = lebende().slice().sort((a, b) => (S.rundenPunkte[b.id] || 0) - (S.rundenPunkte[a.id] || 0));
+    const min = Math.min(...aktive.map(p => S.rundenPunkte[p.id] || 0));
+    const gleichstand = aktive.filter(p => (S.rundenPunkte[p.id] || 0) === min).length > 1;
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <h2>Runde ${S.runde} ist vorbei</h2>
+        <p class="hint">${gleichstand
+          ? 'Gleichstand am Tabellenende – es gibt ein Stechen!'
+          : 'Wer unten steht, fliegt gleich raus …'}</p>
+        <table class="standings">
+          <tr><th>Spieler</th><th class="num">Diese Runde</th><th class="num">Gesamt richtig</th></tr>
+          ${aktive.map(p => `
+            <tr>
+              <td>${avatar(p)} ${esc(p.name)}</td>
+              <td class="num">${S.rundenPunkte[p.id] || 0}</td>
+              <td class="num">${p.richtig}</td>
+            </tr>`).join('')}
+        </table>
+        <br>
+        <button class="btn block" id="weiter">${gleichstand ? 'Zum Stechen' : 'Wer fliegt raus?'}</button>
+      </div>`;
+    app.querySelector('#weiter').addEventListener('click', weiter);
+  }
+
+  /* ---------------------------------------------------------
+     Stechen bei Gleichstand
+     --------------------------------------------------------- */
+  function stechenStarten(kandidaten) {
+    S.stechen = { kandidaten, ergebnisse: {}, reihe: kandidaten.slice(), idx: 0 };
+    stechenZug();
+  }
+
+  function stechenAuswerten() {
+    const st = S.stechen;
+    const falsche = st.kandidaten.filter(id => st.ergebnisse[id] === false);
+
+    if (falsche.length === 1) {
+      const p = spielerVon(falsche[0]);
+      S.stechen = null;
+      return rauswurf(p, nachRauswurf);
+    }
+    if (falsche.length > 1 && falsche.length < st.kandidaten.length) {
+      st.kandidaten = falsche;
+    }
+    // alle richtig oder alle falsch: neue Stechrunde mit denselben Kandidaten
+    st.ergebnisse = {};
+    st.reihe = st.kandidaten.slice();
+    st.idx = 0;
+
+    S.screen = 'stechinfo';
+    app.innerHTML = kopf() + `
+      <div class="card turn-card fade">
+        <span class="emoji" style="font-size:3rem">⚔️</span>
+        <h2>Weiter im Stechen!</h2>
+        <p class="hint">Noch dabei: ${st.kandidaten.map(id => esc(spielerVon(id).name)).join(', ')}</p>
+        <br>
+        <button class="btn" id="weiter">Nächste Stechfrage</button>
+      </div>`;
+    app.querySelector('#weiter').addEventListener('click', stechenZug);
+  }
+
+  /* ---------------------------------------------------------
+     Rauswurf & Spielende
+     --------------------------------------------------------- */
+  function rauswurf(p, weiter) {
+    S.screen = 'rauswurf';
+    p.dabei = false;
+    S.rausFolge.push(p.id);
+    Sound.raus();
+
+    const uebrig = lebende().length;
+    app.innerHTML = kopf() + `
+      <div class="card boom">
+        <span class="emoji">🪂</span>
+        <h2>${esc(p.name)} fliegt raus!</h2>
+        <p class="hint">${p.richtig} richtig · ${p.falsch} falsch${uebrig > 1 ? ` · noch ${uebrig} Spieler im Rennen` : ''}</p>
+        <br>
+        <button class="btn" id="weiter">${uebrig === 1 ? 'Endstand ansehen' : (uebrig === 2 ? 'Auf ins Finale!' : 'Weiterspielen')}</button>
+      </div>`;
+    app.querySelector('#weiter').addEventListener('click', weiter);
+  }
+
+  function spielEndeGeprueft() {
+    if (lebende().length <= 1) { zeigeEnde(); return true; }
+    return false;
+  }
+
+  function zeigeEnde() {
+    S.screen = 'ende';
+    stoppeTimer();
+    Sound.sieg();
+
+    const sieger = lebende()[0];
+    const rangfolge = (sieger ? [sieger] : []).concat(
+      S.rausFolge.slice().reverse().map(id => spielerVon(id))
+    );
+    const duemmster = S.rausFolge.length ? spielerVon(S.rausFolge[0]) : null;
+
+    app.innerHTML = `
+      <div class="card winner fade">
+        <span class="crown">👑</span>
+        <h2>${sieger ? esc(sieger.name) + ' gewinnt!' : 'Kein Sieger'}</h2>
+        <p class="hint">${sieger ? `${sieger.richtig} richtige Antworten · ${sieger.falsch} Fehler` : ''}</p>
+        ${duemmster ? `<p class="loser">Titel „Der Dümmste“: <b>${esc(duemmster.name)}</b> – zuerst rausgeflogen. 🫠</p>` : ''}
+      </div>
+
+      <div class="card">
+        <h3>Endstand</h3>
+        <table class="standings">
+          <tr><th>Platz</th><th>Spieler</th><th class="num">Richtig</th><th class="num">Falsch</th><th class="num">Quote</th></tr>
+          ${rangfolge.map((p, i) => {
+            const ges = p.richtig + p.falsch;
+            const quote = ges ? Math.round(p.richtig / ges * 100) + ' %' : '–';
+            return `<tr class="${i === 0 ? '' : 'out'}">
+              <td>${['🥇', '🥈', '🥉'][i] || (i + 1) + '.'}</td>
+              <td>${avatar(p)} ${esc(p.name)}</td>
+              <td class="num">${p.richtig}</td>
+              <td class="num">${p.falsch}</td>
+              <td class="num">${quote}</td>
+            </tr>`;
+          }).join('')}
+        </table>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="revanche">Revanche – gleiche Spieler</button>
+        <button class="btn ghost" id="neu">Zurück zur Einrichtung</button>
+      </div>`;
+
+    app.querySelector('#revanche').addEventListener('click', spielStarten);
+    app.querySelector('#neu').addEventListener('click', zeigeSetup);
+  }
+
+  /* ---------------------------------------------------------
+     Kopfzeile mit Punktestand
+     --------------------------------------------------------- */
+  function kopf() {
+    const e = S.einstellungen;
+    const gesamt = S.reihenfolge.length;
+    const fortschritt = S.stechen
+      ? 'Stechen'
+      : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+
+    return `
+      <div class="hud">
+        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}</div>
+        <div>${lebende().length} von ${S.spieler.length} noch dabei
+          <button class="btn ghost small" id="abbrechen" style="margin-left:8px">Abbrechen</button>
+        </div>
+      </div>
+      <div class="scorebar">
+        ${S.spieler.map(p => {
+          const aktiv = S.aktuell && S.aktuell.pid === p.id && ['frage', 'aufloesung', 'uebergabe'].includes(S.screen);
+          const leben = e.modus === 'leben' && p.dabei ? `<span class="lives">${'❤'.repeat(Math.max(0, p.leben))}</span>` : '';
+          const punkte = e.modus === 'runde' && p.dabei ? `<span class="lives">${S.rundenPunkte[p.id] || 0}</span>` : '';
+          return `<span class="score-pill ${p.dabei ? '' : 'out'} ${aktiv ? 'active' : ''}">
+            ${avatar(p)}${esc(p.name)} ${leben}${punkte}
+          </span>`;
+        }).join('')}
+      </div>`;
+  }
+
+  /* ---------------------------------------------------------
+     Tastatur
+     --------------------------------------------------------- */
+  document.addEventListener('keydown', ev => {
+    if (ev.target && ['INPUT', 'TEXTAREA'].includes(ev.target.tagName)) return;
+
+    if (S.screen === 'frage') {
+      const map = { '1': 0, '2': 1, '3': 2, '4': 3, a: 0, b: 1, c: 2, d: 3 };
+      const i = map[ev.key.toLowerCase()];
+      if (i !== undefined && i < S.aktuell.antworten.length) {
+        ev.preventDefault();
+        antworten(i);
+      }
+      return;
+    }
+    if (ev.key === ' ' || ev.key === 'Enter') {
+      const btn = app.querySelector('#weiter') || app.querySelector('#start');
+      if (btn) { ev.preventDefault(); btn.click(); }
+    }
+  });
+
+  /* Abbrechen-Button (über Delegation, da er in jedem Kopf steckt) */
+  app.addEventListener('click', ev => {
+    const b = ev.target.closest('#abbrechen');
+    if (!b) return;
+    if (confirm('Spiel wirklich abbrechen?')) {
+      stoppeTimer();
+      S.aktuell = null;
+      zeigeSetup();
+    }
+  });
+
+  /* ---------------------------------------------------------
+     Los geht's
+     --------------------------------------------------------- */
+  laden();
+  zeigeSetup();
+})();
+
+</script>
