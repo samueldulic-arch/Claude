@@ -16,7 +16,7 @@ const css    = lies('./css/style.css');
 const fragen = lies('./js/fragen.js');
 const app    = lies('./js/app.js');
 
-const titel = 'Der Dümmste fliegt – Quiz-Partyspiel';
+const titel = 'Der Dümmste fliegt';
 
 const inhalt = `<title>${titel}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
