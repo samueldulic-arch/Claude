@@ -34,6 +34,7 @@ In beiden Modi läuft das Spiel, bis nur noch einer übrig ist.
 - **Bedenkzeit**: 10 / 15 / 20 / 30 / 45 Sekunden oder ohne Zeitlimit
 - **Schwierigkeit**: ansteigend (wird von Runde zu Runde schwerer), leicht, mittel, schwer oder bunt gemischt
 - **Kategorien**: einzeln an- und abwählbar
+- **Ja/Nein-Fragen**: mitspielen oder komplett weglassen
 - **Sound** (kleine Töne, ohne Audiodateien) und **„Du bist dran“-Bildschirm** zum Weiterreichen
 
 Einstellungen und Namen werden im Browser gespeichert und beim nächsten Start wieder geladen.
@@ -45,23 +46,34 @@ Einstellungen und Namen werden im Browser gespeichert und beim nächsten Start w
 
 ## Fragenkatalog
 
-Aktuell **279 deutsche Fragen** in 10 Kategorien, jeweils mit 4 Antwortmöglichkeiten und
-drei Schwierigkeitsstufen:
+Aktuell **339 deutsche Fragen** in 10 Kategorien:
 
-Allgemeinwissen · Geografie · Geschichte · Wissenschaft · Sport · Musik ·
+- **279 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
+- **60 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
+
+Verteilung nach Schwierigkeit: 80 leicht · 118 mittel · 141 schwer.
+
+Kategorien: Allgemeinwissen · Geografie · Geschichte · Wissenschaft · Sport · Musik ·
 Film & TV · Gaming & Internet · Essen & Trinken · Natur & Tiere
 
 ### Eigene Fragen ergänzen
 
-In `js/fragen.js` einfach eine Zeile anhängen:
+Alles steht in `js/fragen.js`. Für eine Multiple-Choice-Frage eine Zeile anhängen:
 
 ```js
 q("Kategorie", 2, "Wie lautet die Frage?", "Richtige Antwort", "Falsch 1", "Falsch 2", "Falsch 3"),
 ```
 
-Der zweite Wert ist die Schwierigkeit: `1` = leicht, `2` = mittel, `3` = schwer.
-Die Antworten werden im Spiel automatisch gemischt – die richtige steht immer an dritter Position
-im Aufruf. Eine neue Kategorie taucht automatisch in der Kategorieauswahl auf.
+Für eine Ja/Nein-Frage im Block darunter:
+
+```js
+jn("Kategorie", 2, "Ist die Behauptung wahr?", true),   // true = „Ja“ ist richtig
+```
+
+Der zweite Wert ist jeweils die Schwierigkeit: `1` = leicht, `2` = mittel, `3` = schwer.
+Bei Multiple Choice steht die richtige Antwort immer direkt hinter der Frage und wird im Spiel
+automatisch mit den falschen gemischt. Bei Ja/Nein steht „Ja“ immer links.
+Eine neue Kategorie taucht automatisch in der Kategorieauswahl auf.
 
 ## Dateien
 

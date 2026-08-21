@@ -411,3 +411,11 @@ kbd {
   display: inline-grid;
   vertical-align: -5px;
 }
+
+/* Ja/Nein-Fragen: nur zwei, dafür große Knöpfe */
+.answers.zwei .answer {
+  justify-content: center;
+  font-size: 1.2rem;
+  padding: 24px 16px;
+}
+.answers.zwei .answer .key { display: none; }

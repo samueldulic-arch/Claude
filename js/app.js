@@ -26,6 +26,7 @@
       fragenProRunde: 2,
       schwierigkeit: 'auto',   // 'auto' | 1 | 2 | 3 | 'mix'
       kategorien: alleKategorien.slice(),
+      jaNein: true,            // Ja/Nein-Fragen mitspielen?
       sound: true,
       uebergabe: true          // Zwischenbildschirm "XY ist dran"
     },
@@ -109,9 +110,15 @@
   /* ---------------------------------------------------------
      Fragen-Pool
      --------------------------------------------------------- */
+  function passendeFragen() {
+    const e = S.einstellungen;
+    let fragen = window.FRAGEN.filter(f => e.kategorien.includes(f.k));
+    if (!e.jaNein) fragen = fragen.filter(f => !f.jn);
+    return fragen;
+  }
+
   function poolAufbauen() {
-    const kat = S.einstellungen.kategorien;
-    let fragen = window.FRAGEN.filter(f => kat.includes(f.k));
+    let fragen = passendeFragen();
     if (!fragen.length) fragen = window.FRAGEN.slice();
     S.pool = mischen(fragen);
   }
@@ -138,7 +145,7 @@
     const frage = S.pool.splice(idx, 1)[0];
     return {
       frage,
-      antworten: mischen([frage.r, ...frage.w])
+      antworten: frage.jn ? ['Ja', 'Nein'] : mischen([frage.r, ...frage.w])
     };
   }
 
@@ -259,6 +266,7 @@
           <div class="setting">
             <span class="label">Sonstiges</span>
             <div class="chips">
+              <button class="chip" data-toggle="jaNein" aria-pressed="${e.jaNein}">❓ Ja/Nein-Fragen</button>
               <button class="chip" data-toggle="sound" aria-pressed="${e.sound}">🔊 Sound</button>
               <button class="chip" data-toggle="uebergabe" aria-pressed="${e.uebergabe}">🔁 „Du bist dran“-Bildschirm</button>
             </div>
@@ -306,6 +314,7 @@
       S.einstellungen[feld] = !S.einstellungen[feld];
       b.setAttribute('aria-pressed', S.einstellungen[feld]);
       if (feld === 'sound' && S.einstellungen[feld]) Sound.richtig();
+      aktualisiereSetupHinweise();
       speichern();
     }));
 
@@ -337,8 +346,10 @@
         : 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.';
     }
     if (kat) {
-      const anzahl = window.FRAGEN.filter(f => e.kategorien.includes(f.k)).length;
-      kat.textContent = anzahl + ' Fragen ausgewählt.';
+      const fragen = passendeFragen();
+      const jaNein = fragen.filter(f => f.jn).length;
+      kat.textContent = fragen.length + ' Fragen ausgewählt'
+        + (jaNein ? ` (davon ${jaNein} Ja/Nein-Fragen)` : '') + '.';
     }
   }
 
@@ -432,11 +443,12 @@
         <div class="meta">
           <span class="tag">${esc(a.frage.k)}</span>
           <span class="tag diff">${'★'.repeat(a.frage.s)}${'☆'.repeat(3 - a.frage.s)} ${stufe}</span>
+          ${a.frage.jn ? '<span class="tag">Ja oder Nein?</span>' : ''}
           ${a.stechen ? '<span class="tag" style="background:rgba(255,77,141,.25)">Stechen</span>' : ''}
           <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
         </div>
         <div class="question">${esc(a.frage.f)}</div>
-        <div class="answers" id="antworten">
+        <div class="answers${a.frage.jn ? ' zwei' : ''}" id="antworten">
           ${a.antworten.map((t, i) => `
             <button class="answer" data-i="${i}">
               <span class="key">${KEYS[i]}</span><span>${esc(t)}</span>
@@ -534,7 +546,7 @@
           <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
         </div>
         <div class="question">${esc(a.frage.f)}</div>
-        <div class="answers">
+        <div class="answers${a.frage.jn ? ' zwei' : ''}">
           ${a.antworten.map((t, i) => {
             let cls = 'answer dim';
             if (i === richtigIdx) cls = 'answer correct';

@@ -308,3 +308,99 @@ window.FRAGEN = [
   q("Natur & Tiere", 3, "Wie nennt man ein Tier, das sich nur von Pflanzen ernährt?", "Pflanzenfresser (Herbivore)", "Allesfresser (Omnivore)", "Fleischfresser (Karnivore)", "Aasfresser"),
   q("Natur & Tiere", 3, "Wie heißt die Wissenschaft von den Pflanzen?", "Botanik", "Zoologie", "Ökologie", "Geologie")
 ];
+
+/* =========================================================
+   Ja/Nein-Fragen
+   ---------------------------------------------------------
+   jn(kategorie, schwierigkeit, frage, istWahr)
+   Es gibt nur zwei Antwortknöpfe – „Ja“ steht immer links.
+   ========================================================= */
+const jn = (k, s, f, wahr) => ({
+  k, s, f,
+  r: wahr ? 'Ja' : 'Nein',
+  w: [wahr ? 'Nein' : 'Ja'],
+  jn: true
+});
+
+window.FRAGEN.push(
+
+  /* ---------------- Allgemeinwissen ---------------- */
+  jn("Allgemeinwissen", 1, "Hat ein Schaltjahr 366 Tage?", true),
+  jn("Allgemeinwissen", 1, "Ist die Zahl 1 eine Primzahl?", false),
+  jn("Allgemeinwissen", 2, "Ist Grün eine der drei Grundfarben bei Bildschirmen (RGB)?", true),
+  jn("Allgemeinwissen", 2, "Steht die Abkürzung „PS“ bei Autos für „Pferdestärke“?", true),
+  jn("Allgemeinwissen", 2, "Sind ein Kilobyte in der klassischen Informatik 1024 Byte?", true),
+  jn("Allgemeinwissen", 3, "Muss man in Deutschland seinen Personalausweis immer bei sich tragen?", false),
+
+  /* ---------------- Geografie ---------------- */
+  jn("Geografie", 1, "Liegt Ägypten auf zwei Kontinenten?", true),
+  jn("Geografie", 2, "Hat die Schweiz einen eigenen Zugang zum Meer?", false),
+  jn("Geografie", 2, "Liegt Istanbul sowohl in Europa als auch in Asien?", true),
+  jn("Geografie", 2, "Ist Grönland flächenmäßig größer als Australien?", false),
+  jn("Geografie", 3, "Ist Reykjavík die nördlichste Hauptstadt der Welt?", true),
+  jn("Geografie", 3, "Liegt Rom weiter nördlich als New York?", true),
+
+  /* ---------------- Geschichte ---------------- */
+  jn("Geschichte", 1, "Wurde die Berliner Mauer von der DDR errichtet?", true),
+  jn("Geschichte", 2, "War Julius Caesar römischer Kaiser?", false),
+  jn("Geschichte", 2, "Dauerte der Hundertjährige Krieg genau 100 Jahre?", false),
+  jn("Geschichte", 2, "Gab es die Wikinger schon vor Christi Geburt?", false),
+  jn("Geschichte", 3, "Stammte Kleopatra aus einer griechischen Herrscherfamilie?", true),
+  jn("Geschichte", 3, "Sank die Titanic auf ihrer allerersten Fahrt?", true),
+
+  /* ---------------- Wissenschaft ---------------- */
+  jn("Wissenschaft", 1, "Ist die Sonne ein Stern?", true),
+  jn("Wissenschaft", 2, "Ist Glas ein Metall?", false),
+  jn("Wissenschaft", 2, "Könnte man auf dem Mond eine Explosion hören?", false),
+  jn("Wissenschaft", 2, "Ist Blut im Körper blau, solange es kein Sauerstoff berührt?", false),
+  jn("Wissenschaft", 3, "Wiegt ein Kilogramm Federn genauso viel wie ein Kilogramm Blei?", true),
+  jn("Wissenschaft", 3, "Gilt Pluto heute offiziell noch als Planet?", false),
+
+  /* ---------------- Sport ---------------- */
+  jn("Sport", 1, "Darf ein Torwart den Ball außerhalb des Strafraums mit der Hand aufnehmen?", false),
+  jn("Sport", 2, "Bestehen olympische Goldmedaillen aus reinem Gold?", false),
+  jn("Sport", 2, "Ist Schach eine olympische Disziplin?", false),
+  jn("Sport", 2, "Endet ein Tennissatz immer nach genau sechs gewonnenen Spielen?", false),
+  jn("Sport", 3, "Hat Deutschland die Fußball-Weltmeisterschaft schon viermal gewonnen?", true),
+  jn("Sport", 3, "Dauert ein NBA-Basketballspiel regulär 48 Minuten?", true),
+
+  /* ---------------- Musik ---------------- */
+  jn("Musik", 1, "Hat eine Geige vier Saiten?", true),
+  jn("Musik", 2, "War Mozart schon als Kind als Musiker berühmt?", true),
+  jn("Musik", 2, "Ist ein Cello größer als eine Bratsche?", true),
+  jn("Musik", 3, "War Beethoven gegen Ende seines Lebens taub?", true),
+  jn("Musik", 3, "Sind die Beatles früher regelmäßig in Hamburg aufgetreten?", true),
+  jn("Musik", 3, "Hat ABBA den Eurovision Song Contest gewonnen?", true),
+
+  /* ---------------- Film & TV ---------------- */
+  jn("Film & TV", 1, "Ist „Shrek“ ein Disney-Film?", false),
+  jn("Film & TV", 2, "Gewann „Der Herr der Ringe: Die Rückkehr des Königs“ den Oscar als bester Film?", true),
+  jn("Film & TV", 2, "Spricht Chewbacca in „Star Wars“ Englisch?", false),
+  jn("Film & TV", 3, "Sind „Die Simpsons“ die am längsten laufende US-Zeichentrickserie zur Hauptsendezeit?", true),
+  jn("Film & TV", 3, "Stammt der Film „Das Boot“ aus Deutschland?", true),
+  jn("Film & TV", 3, "Spielte Arnold Schwarzenegger im ersten „Terminator“ den Bösewicht?", true),
+
+  /* ---------------- Gaming & Internet ---------------- */
+  jn("Gaming & Internet", 1, "Kann man in Minecraft im Kreativmodus fliegen?", true),
+  jn("Gaming & Internet", 2, "Gehört Instagram zu Google?", false),
+  jn("Gaming & Internet", 2, "War Mario in seinem allerersten Spiel Zimmermann statt Klempner?", true),
+  jn("Gaming & Internet", 2, "Kostet Fortnite beim Herunterladen Geld?", false),
+  jn("Gaming & Internet", 3, "Steht „WWW“ für „World Wide Web“?", true),
+  jn("Gaming & Internet", 3, "War die Xbox Microsofts erste eigene Spielkonsole?", true),
+
+  /* ---------------- Essen & Trinken ---------------- */
+  jn("Essen & Trinken", 1, "Sind Erdnüsse botanisch gesehen Nüsse?", false),
+  jn("Essen & Trinken", 2, "Enthält weiße Schokolade Kakaomasse?", false),
+  jn("Essen & Trinken", 2, "Wächst Wasabi ursprünglich in Japan?", true),
+  jn("Essen & Trinken", 2, "Sind Tomaten botanisch gesehen Früchte?", true),
+  jn("Essen & Trinken", 3, "Stammt Ketchup ursprünglich aus den USA?", false),
+  jn("Essen & Trinken", 3, "Ist in alkoholfreiem Bier wirklich null Alkohol enthalten?", false),
+
+  /* ---------------- Natur & Tiere ---------------- */
+  jn("Natur & Tiere", 1, "Sind Fledermäuse Vögel?", false),
+  jn("Natur & Tiere", 1, "Können Pinguine fliegen?", false),
+  jn("Natur & Tiere", 2, "Sind Delfine Fische?", false),
+  jn("Natur & Tiere", 2, "Haben Schnecken Zähne?", true),
+  jn("Natur & Tiere", 3, "Können Kamele wochenlang ohne Wasser auskommen?", true),
+  jn("Natur & Tiere", 3, "Ist der Koala ein Bär?", false)
+);
