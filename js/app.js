@@ -10,6 +10,7 @@
   ];
   const KEYS = ['A', 'B', 'C', 'D'];
   const SPEICHER = 'ddf-setup-v1';
+  const GEDAECHTNIS = 'ddf-gestellt-v1';
 
   const app = document.getElementById('app');
   const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
@@ -20,10 +21,11 @@
   const S = {
     screen: 'setup',
     einstellungen: {
-      modus: 'runde',          // 'runde' = Dümmster fliegt raus | 'leben' = Leben verlieren
+      modus: 'runde',          // 'runde' | 'leben' | 'voting'
       leben: 3,
       zeit: 20,                // Sekunden, 0 = ohne Zeitlimit
       fragenProRunde: 2,
+      abstimmungNach: 2,       // Runden bis zur Abstimmung (Abstimmungsmodus)
       schwierigkeit: 'auto',   // 'auto' | 1 | 2 | 3 | 'mix'
       kategorien: alleKategorien.slice(),
       jaNein: true,            // Ja/Nein-Fragen mitspielen?
@@ -37,6 +39,10 @@
     rIndex: 0,
     rundenPunkte: {},
     stechen: null,             // { kandidaten:[id], ergebnisse:{id:bool}, reihe:[id], idx:0 }
+    blockRunde: 1,             // Runden seit der letzten Abstimmung
+    protokoll: [],             // gegebene Antworten seit der letzten Abstimmung
+    abstimmung: null,          // { kandidaten, waehler, idx, stimmen }
+    gestellt: new Set(),       // schon gestellte Fragen (auch über Spielabende hinweg)
     rausFolge: [],
     pool: [],
     aktuell: null,
@@ -117,10 +123,37 @@
     return fragen;
   }
 
+  /* Kurzer, stabiler Schlüssel je Frage – Grundlage des Fragengedächtnisses */
+  function fid(f) {
+    let h = 5381;
+    for (let i = 0; i < f.f.length; i++) h = ((h << 5) + h + f.f.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(36);
+  }
+
+  function ladeGestellt() {
+    try {
+      const roh = localStorage.getItem(GEDAECHTNIS);
+      S.gestellt = new Set(roh ? JSON.parse(roh) : []);
+    } catch (e) { S.gestellt = new Set(); }
+  }
+
+  function speichereGestellt() {
+    try { localStorage.setItem(GEDAECHTNIS, JSON.stringify([...S.gestellt])); } catch (e) { /* egal */ }
+  }
+
   function poolAufbauen() {
     let fragen = passendeFragen();
     if (!fragen.length) fragen = window.FRAGEN.slice();
-    S.pool = mischen(fragen);
+
+    // Fragen, die auf diesem Gerät noch nie dran waren, haben Vorrang
+    let frisch = fragen.filter(f => !S.gestellt.has(fid(f)));
+    if (frisch.length < Math.min(25, fragen.length)) {
+      // Der Vorrat ist fast durch – Gedächtnis leeren und von vorn
+      S.gestellt = new Set();
+      speichereGestellt();
+      frisch = fragen;
+    }
+    S.pool = mischen(frisch);
   }
 
   function zielStufe() {
@@ -143,6 +176,8 @@
       if (idx < 0) idx = 0;
     }
     const frage = S.pool.splice(idx, 1)[0];
+    S.gestellt.add(fid(frage));
+    speichereGestellt();
     return {
       frage,
       antworten: frage.jn ? ['Ja', 'Nein'] : mischen([frage.r, ...frage.w])
@@ -155,7 +190,9 @@
   function speichern() {
     try {
       localStorage.setItem(SPEICHER, JSON.stringify({
-        namen: S.namen, einstellungen: S.einstellungen
+        namen: S.namen,
+        einstellungen: S.einstellungen,
+        bekannteKategorien: alleKategorien
       }));
     } catch (e) { /* egal */ }
   }
@@ -170,6 +207,15 @@
         Object.assign(S.einstellungen, d.einstellungen);
         S.einstellungen.kategorien = (S.einstellungen.kategorien || [])
           .filter(k => alleKategorien.includes(k));
+
+        // Kategorien, die es beim letzten Spielabend noch nicht gab, sind automatisch dabei
+        const bekannt = Array.isArray(d.bekannteKategorien) ? d.bekannteKategorien : [];
+        alleKategorien.forEach(k => {
+          if (!bekannt.includes(k) && !S.einstellungen.kategorien.includes(k)) {
+            S.einstellungen.kategorien.push(k);
+          }
+        });
+
         if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien.slice();
       }
     } catch (e) { /* egal */ }
@@ -219,6 +265,7 @@
             <div class="chips">
               <button class="chip" data-set="modus" data-wert="runde" aria-pressed="${e.modus === 'runde'}">Rundenmodus – der Schlechteste fliegt</button>
               <button class="chip" data-set="modus" data-wert="leben" aria-pressed="${e.modus === 'leben'}">Leben – wer alle verliert, fliegt</button>
+              <button class="chip" data-set="modus" data-wert="voting" aria-pressed="${e.modus === 'voting'}">Abstimmung – die Runde entscheidet</button>
             </div>
             <p class="hint" id="modusHinweis"></p>
           </div>
@@ -227,6 +274,13 @@
             <span class="label">Fragen pro Spieler und Runde</span>
             <div class="chips">
               ${[1, 2, 3, 4, 5].map(n => `<button class="chip num" data-set="fragenProRunde" data-wert="${n}" aria-pressed="${e.fragenProRunde === n}">${n}</button>`).join('')}
+            </div>
+          </div>
+
+          <div class="setting" id="abstimmungSetting">
+            <span class="label">Runden bis zur Abstimmung</span>
+            <div class="chips">
+              ${[1, 2, 3, 4].map(n => `<button class="chip num" data-set="abstimmungNach" data-wert="${n}" aria-pressed="${e.abstimmungNach === n}">${n}</button>`).join('')}
             </div>
           </div>
 
@@ -261,6 +315,12 @@
               ${alleKategorien.map(k => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${e.kategorien.includes(k)}">${esc(k)}</button>`).join('')}
             </div>
             <p class="hint" id="katHinweis"></p>
+          </div>
+
+          <div class="setting">
+            <span class="label">Fragengedächtnis</span>
+            <p class="hint" id="gedaechtnisHinweis" style="margin-bottom:8px"></p>
+            <button class="chip" id="gedaechtnisReset">Gedächtnis zurücksetzen</button>
           </div>
 
           <div class="setting">
@@ -302,7 +362,7 @@
     app.querySelectorAll('[data-set]').forEach(b => b.addEventListener('click', () => {
       const feld = b.dataset.set;
       let wert = b.dataset.wert;
-      if (['leben', 'zeit', 'fragenProRunde'].includes(feld)) wert = Number(wert);
+      if (['leben', 'zeit', 'fragenProRunde', 'abstimmungNach'].includes(feld)) wert = Number(wert);
       S.einstellungen[feld] = wert;
       b.parentElement.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
       aktualisiereSetupHinweise();
@@ -329,6 +389,12 @@
       speichern();
     }));
 
+    app.querySelector('#gedaechtnisReset').addEventListener('click', () => {
+      S.gestellt = new Set();
+      speichereGestellt();
+      aktualisiereSetupHinweise();
+    });
+
     app.querySelector('#start').addEventListener('click', spielStarten);
   }
 
@@ -336,14 +402,25 @@
     const e = S.einstellungen;
     const rund = app.querySelector('#rundenSetting');
     const leb = app.querySelector('#lebenSetting');
+    const abst = app.querySelector('#abstimmungSetting');
     const hin = app.querySelector('#modusHinweis');
     const kat = app.querySelector('#katHinweis');
-    if (rund) rund.classList.toggle('hidden', e.modus !== 'runde');
+    const ged = app.querySelector('#gedaechtnisHinweis');
+    if (rund) rund.classList.toggle('hidden', e.modus === 'leben');
     if (leb) leb.classList.toggle('hidden', e.modus !== 'leben');
+    if (abst) abst.classList.toggle('hidden', e.modus !== 'voting');
     if (hin) {
-      hin.textContent = e.modus === 'runde'
-        ? 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.'
-        : 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.';
+      hin.textContent = {
+        runde: 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.',
+        leben: 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.',
+        voting: 'Erst wird gespielt, dann gerichtet: Nach den eingestellten Runden stimmen alle ab, welche Antwort die dümmste war. Wer die meisten Stimmen bekommt, fliegt raus – bei Gleichstand entscheidet ein Stechen.'
+      }[e.modus];
+    }
+    if (ged) {
+      const gesamt = window.FRAGEN.length;
+      ged.textContent = S.gestellt.size
+        ? `${S.gestellt.size} von ${gesamt} Fragen waren auf diesem Gerät schon dran – sie kommen erst wieder, wenn der Rest durch ist.`
+        : `Noch keine Frage gestellt. Gespielte Fragen werden gemerkt, damit sich beim nächsten Mal nichts wiederholt.`;
     }
     if (kat) {
       const fragen = passendeFragen();
@@ -371,9 +448,16 @@
     S.runde = 1;
     S.rausFolge = [];
     S.stechen = null;
+    blockZuruecksetzen();
     poolAufbauen();
     rundeAufbauen();
     naechsterZug();
+  }
+
+  function blockZuruecksetzen() {
+    S.blockRunde = 1;
+    S.protokoll = [];
+    S.abstimmung = null;
   }
 
   function rundeAufbauen() {
@@ -381,7 +465,7 @@
     S.rundenPunkte = {};
     aktive.forEach(id => S.rundenPunkte[id] = 0);
     const reihe = [];
-    const durchgaenge = S.einstellungen.modus === 'runde' ? S.einstellungen.fragenProRunde : 1;
+    const durchgaenge = S.einstellungen.modus === 'leben' ? 1 : S.einstellungen.fragenProRunde;
     for (let d = 0; d < durchgaenge; d++) reihe.push(...aktive);
     S.reihenfolge = reihe;
     S.rIndex = 0;
@@ -413,7 +497,7 @@
     else zeigeFrage();
   }
 
-  function zeigeUebergabe(p, titel) {
+  function zeigeUebergabe(p, titel, weiter) {
     S.screen = 'uebergabe';
     app.innerHTML = kopf() + `
       <div class="card turn-card fade">
@@ -424,7 +508,7 @@
         <br>
         <button class="btn" id="weiter">Bereit!</button>
       </div>`;
-    app.querySelector('#weiter').addEventListener('click', zeigeFrage);
+    app.querySelector('#weiter').addEventListener('click', weiter || zeigeFrage);
   }
 
   /* ---------------------------------------------------------
@@ -515,6 +599,16 @@
     }
     if (a.stechen) S.stechen.ergebnisse[p.id] = korrekt;
 
+    if (S.einstellungen.modus === 'voting' && !a.stechen) {
+      S.protokoll.push({
+        pid: p.id,
+        frage: a.frage.f,
+        antwort: i === null ? '(keine Antwort)' : a.antworten[i],
+        richtigeAntwort: a.frage.r,
+        korrekt
+      });
+    }
+
     zeigeAufloesung(richtigIdx);
   }
 
@@ -592,10 +686,28 @@
      Rundenende (Rundenmodus)
      --------------------------------------------------------- */
   function rundeBeenden() {
-    if (S.einstellungen.modus === 'leben') {
+    const e = S.einstellungen;
+
+    if (e.modus === 'leben') {
       S.runde++;
       rundeAufbauen();
       return naechsterZug();
+    }
+
+    if (e.modus === 'voting') {
+      // Erst wenn genug Runden gespielt sind, wird abgestimmt
+      if (S.blockRunde < e.abstimmungNach) {
+        return zeigeRundenstand(
+          () => { S.blockRunde++; S.runde++; rundeAufbauen(); naechsterZug(); },
+          `Noch ${e.abstimmungNach - S.blockRunde} Runde${e.abstimmungNach - S.blockRunde === 1 ? '' : 'n'}, dann wird abgestimmt.`,
+          'Nächste Runde'
+        );
+      }
+      return zeigeRundenstand(
+        abstimmungStarten,
+        'Alle haben geantwortet – jetzt entscheidet die Runde.',
+        'Zur Abstimmung'
+      );
     }
 
     const aktive = lebende();
@@ -611,23 +723,25 @@
 
   function nachRauswurf() {
     if (spielEndeGeprueft()) return;
+    blockZuruecksetzen();
     S.runde++;
     rundeAufbauen();
     naechsterZug();
   }
 
-  function zeigeRundenstand(weiter) {
+  function zeigeRundenstand(weiter, hinweis, knopf) {
     S.screen = 'rundenende';
     const aktive = lebende().slice().sort((a, b) => (S.rundenPunkte[b.id] || 0) - (S.rundenPunkte[a.id] || 0));
     const min = Math.min(...aktive.map(p => S.rundenPunkte[p.id] || 0));
     const gleichstand = aktive.filter(p => (S.rundenPunkte[p.id] || 0) === min).length > 1;
+    const text = hinweis || (gleichstand
+      ? 'Gleichstand am Tabellenende – es gibt ein Stechen!'
+      : 'Wer unten steht, fliegt gleich raus …');
 
     app.innerHTML = kopf() + `
       <div class="card fade">
         <h2>Runde ${S.runde} ist vorbei</h2>
-        <p class="hint">${gleichstand
-          ? 'Gleichstand am Tabellenende – es gibt ein Stechen!'
-          : 'Wer unten steht, fliegt gleich raus …'}</p>
+        <p class="hint">${esc(text)}</p>
         <table class="standings">
           <tr><th>Spieler</th><th class="num">Diese Runde</th><th class="num">Gesamt richtig</th></tr>
           ${aktive.map(p => `
@@ -638,9 +752,125 @@
             </tr>`).join('')}
         </table>
         <br>
-        <button class="btn block" id="weiter">${gleichstand ? 'Zum Stechen' : 'Wer fliegt raus?'}</button>
+        <button class="btn block" id="weiter">${esc(knopf || (gleichstand ? 'Zum Stechen' : 'Wer fliegt raus?'))}</button>
       </div>`;
     app.querySelector('#weiter').addEventListener('click', weiter);
+  }
+
+  /* ---------------------------------------------------------
+     Abstimmung: Welche Antwort war die dümmste?
+     --------------------------------------------------------- */
+  function abstimmungStarten() {
+    const eintraege = S.protokoll.filter(e => spielerVon(e.pid).dabei);
+    const falsche = eintraege.filter(e => !e.korrekt);
+    const basis = falsche.length ? falsche : eintraege;
+
+    S.abstimmung = {
+      kandidaten: basis.map((e, i) => Object.assign({ key: i }, e)),
+      nurFalsche: falsche.length > 0,
+      waehler: lebende().map(p => p.id),
+      idx: 0,
+      stimmen: {}
+    };
+    abstimmungZug();
+  }
+
+  function abstimmungZug() {
+    const ab = S.abstimmung;
+    if (ab.idx >= ab.waehler.length) return abstimmungErgebnis();
+
+    const waehler = spielerVon(ab.waehler[ab.idx]);
+    // Wer nur über eigene Antworten abstimmen könnte, wird übersprungen
+    if (!ab.kandidaten.some(k => k.pid !== waehler.id)) { ab.idx++; return abstimmungZug(); }
+
+    if (S.einstellungen.uebergabe) zeigeUebergabe(waehler, 'Abstimmung', zeigeAbstimmung);
+    else zeigeAbstimmung();
+  }
+
+  function zeigeAbstimmung() {
+    S.screen = 'abstimmung';
+    const ab = S.abstimmung;
+    const waehler = spielerVon(ab.waehler[ab.idx]);
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <div class="meta">
+          <span class="tag">Abstimmung</span>
+          <span class="tag">${avatar(waehler, 'inline')} ${esc(waehler.name)} stimmt ab</span>
+          <span class="tag">${ab.idx + 1} / ${ab.waehler.length}</span>
+        </div>
+        <div class="question">Welche Antwort war die dümmste?</div>
+        <div class="votes">
+          ${ab.kandidaten.map(k => {
+            const p = spielerVon(k.pid);
+            const eigen = k.pid === waehler.id;
+            return `
+              <button class="vote" data-key="${k.key}" ${eigen ? 'disabled' : ''}>
+                <span class="vote-antwort">„${esc(k.antwort)}“</span>
+                <span class="vote-meta">${avatar(p, 'inline')} ${esc(p.name)} · ${esc(k.frage)}</span>
+                <span class="vote-flag ${k.korrekt ? 'good' : 'bad'}">${k.korrekt
+                  ? 'war richtig'
+                  : 'richtig wäre: ' + esc(k.richtigeAntwort)}</span>
+                ${eigen ? '<span class="vote-flag">deine eigene Antwort – nicht wählbar</span>' : ''}
+              </button>`;
+          }).join('')}
+        </div>
+        <p class="hint">${ab.nurFalsche
+          ? 'Zur Auswahl stehen alle falschen Antworten seit der letzten Abstimmung.'
+          : 'Diesmal lag niemand daneben – stimmt einfach über alle Antworten ab.'}</p>
+      </div>`;
+
+    app.querySelectorAll('.vote').forEach(b =>
+      b.addEventListener('click', () => stimmeAb(Number(b.dataset.key))));
+  }
+
+  function stimmeAb(key) {
+    if (S.screen !== 'abstimmung') return;
+    const ab = S.abstimmung;
+    ab.stimmen[key] = (ab.stimmen[key] || 0) + 1;
+    ab.idx++;
+    Sound.tick();
+    abstimmungZug();
+  }
+
+  function abstimmungErgebnis() {
+    S.screen = 'abstimmungsergebnis';
+    const ab = S.abstimmung;
+
+    const proSpieler = {};
+    ab.kandidaten.forEach(k => {
+      proSpieler[k.pid] = (proSpieler[k.pid] || 0) + (ab.stimmen[k.key] || 0);
+    });
+    const gewertet = Object.keys(proSpieler).map(Number)
+      .map(pid => ({ p: spielerVon(pid), stimmen: proSpieler[pid] }))
+      .sort((a, b) => b.stimmen - a.stimmen);
+    const max = gewertet.length ? gewertet[0].stimmen : 0;
+    const spitze = gewertet.filter(g => g.stimmen === max);
+    const abgegeben = Object.values(ab.stimmen).reduce((a, b) => a + b, 0);
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <h2>Das Ergebnis der Abstimmung</h2>
+        <p class="hint">${abgegeben} ${abgegeben === 1 ? 'Stimme' : 'Stimmen'} abgegeben.</p>
+        <div class="tally">
+          ${gewertet.map(g => `
+            <div class="tally-row">
+              <span class="tally-name">${avatar(g.p)} ${esc(g.p.name)}</span>
+              <span class="tally-bar"><i style="width:${max ? (g.stimmen / max) * 100 : 0}%"></i></span>
+              <span class="tally-zahl">${g.stimmen}</span>
+            </div>`).join('')}
+        </div>
+        <div class="verdict ${spitze.length === 1 ? 'bad' : ''}">${spitze.length === 1
+          ? esc(spitze[0].p.name) + ' hat die dümmste Antwort gegeben.'
+          : 'Gleichstand – ' + esc(spitze.map(g => g.p.name).join(' und ')) + ' müssen ins Stechen!'}</div>
+        <button class="btn block" id="weiter">${spitze.length === 1 ? 'Und tschüss!' : 'Zum Stechen'}</button>
+      </div>`;
+
+    app.querySelector('#weiter').addEventListener('click', () => {
+      S.abstimmung = null;
+      if (spitze.length === 1) rauswurf(spitze[0].p, nachRauswurf);
+      else stechenStarten(spitze.map(g => g.p.id));
+    });
   }
 
   /* ---------------------------------------------------------
@@ -760,11 +990,16 @@
     const gesamt = S.reihenfolge.length;
     const fortschritt = S.stechen
       ? 'Stechen'
-      : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+      : S.abstimmung
+        ? 'Abstimmung'
+        : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+    const block = e.modus === 'voting' && !S.stechen && !S.abstimmung
+      ? ` · Runde ${S.blockRunde} von ${e.abstimmungNach} bis zur Abstimmung`
+      : '';
 
     return `
       <div class="hud">
-        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}</div>
+        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}${block}</div>
         <div>${lebende().length} von ${S.spieler.length} noch dabei
           <button class="btn ghost small" id="abbrechen" style="margin-left:8px">Abbrechen</button>
         </div>
@@ -817,5 +1052,6 @@
      Los geht's
      --------------------------------------------------------- */
   laden();
+  ladeGestellt();
   zeigeSetup();
 })();

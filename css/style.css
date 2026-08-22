@@ -419,3 +419,72 @@ kbd {
   padding: 24px 16px;
 }
 .answers.zwei .answer .key { display: none; }
+
+/* ---------- Abstimmung ---------- */
+
+.votes { display: grid; gap: 10px; }
+
+.vote {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 14px;
+  color: var(--text);
+  padding: 14px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .1s ease, background .15s ease;
+}
+.vote:hover:not(:disabled) { background: rgba(255, 255, 255, .12); transform: translateY(-2px); }
+.vote:disabled { cursor: default; opacity: .45; border-left-color: var(--border); }
+
+.vote-antwort { font-size: 1.1rem; font-weight: 700; }
+.vote-meta    { font-size: .85rem; color: var(--muted); }
+.vote-flag    { font-size: .78rem; color: var(--muted); }
+.vote-flag.good { color: var(--good); }
+.vote-flag.bad  { color: var(--bad); }
+
+.tally { display: grid; gap: 10px; margin: 18px 0 6px; }
+.tally-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 3fr auto;
+  align-items: center;
+  gap: 10px;
+}
+.tally-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tally-bar {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  overflow: hidden;
+}
+.tally-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  transition: width .4s ease;
+}
+.tally-zahl { font-weight: 800; font-variant-numeric: tabular-nums; min-width: 1.5em; text-align: right; }
+
+/* Avatare in Fließtext-Zeilen der Abstimmung */
+.vote-meta .avatar {
+  display: inline-grid;
+  width: 20px; height: 20px; flex-basis: 20px;
+  font-size: .7rem;
+  vertical-align: -5px;
+  margin-right: 4px;
+}
+
+/* Avatar neben dem Namen in der Stimmenauswertung */
+.tally-name .avatar {
+  display: inline-grid;
+  width: 24px; height: 24px; flex-basis: 24px;
+  font-size: .78rem;
+  vertical-align: -6px;
+  margin-right: 5px;
+}

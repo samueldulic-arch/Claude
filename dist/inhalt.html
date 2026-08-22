@@ -425,6 +425,75 @@ kbd {
 }
 .answers.zwei .answer .key { display: none; }
 
+/* ---------- Abstimmung ---------- */
+
+.votes { display: grid; gap: 10px; }
+
+.vote {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 14px;
+  color: var(--text);
+  padding: 14px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .1s ease, background .15s ease;
+}
+.vote:hover:not(:disabled) { background: rgba(255, 255, 255, .12); transform: translateY(-2px); }
+.vote:disabled { cursor: default; opacity: .45; border-left-color: var(--border); }
+
+.vote-antwort { font-size: 1.1rem; font-weight: 700; }
+.vote-meta    { font-size: .85rem; color: var(--muted); }
+.vote-flag    { font-size: .78rem; color: var(--muted); }
+.vote-flag.good { color: var(--good); }
+.vote-flag.bad  { color: var(--bad); }
+
+.tally { display: grid; gap: 10px; margin: 18px 0 6px; }
+.tally-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 3fr auto;
+  align-items: center;
+  gap: 10px;
+}
+.tally-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tally-bar {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  overflow: hidden;
+}
+.tally-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  transition: width .4s ease;
+}
+.tally-zahl { font-weight: 800; font-variant-numeric: tabular-nums; min-width: 1.5em; text-align: right; }
+
+/* Avatare in Fließtext-Zeilen der Abstimmung */
+.vote-meta .avatar {
+  display: inline-grid;
+  width: 20px; height: 20px; flex-basis: 20px;
+  font-size: .7rem;
+  vertical-align: -5px;
+  margin-right: 4px;
+}
+
+/* Avatar neben dem Namen in der Stimmenauswertung */
+.tally-name .avatar {
+  display: inline-grid;
+  width: 24px; height: 24px; flex-basis: 24px;
+  font-size: .78rem;
+  vertical-align: -6px;
+  margin-right: 5px;
+}
+
 </style>
 
 <main class="wrap" id="app"></main>
@@ -837,6 +906,408 @@ window.FRAGEN.push(
   jn("Natur & Tiere", 3, "Ist der Koala ein Bär?", false)
 );
 
+/* =========================================================
+   Nachschub – weitere Fragen
+   ========================================================= */
+window.FRAGEN.push(
+
+  /* ---------------- Allgemeinwissen ---------------- */
+  q("Allgemeinwissen", 1, "Welche Farbe leuchtet bei einer Ampel ganz oben?", "Rot", "Gelb", "Grün", "Orange"),
+  q("Allgemeinwissen", 1, "Wie viele Tage hat der Februar in einem Schaltjahr?", "29", "28", "30", "31"),
+  q("Allgemeinwissen", 1, "Wie viele Karten hat ein französisches Blatt ohne Joker?", "52", "32", "48", "56"),
+  q("Allgemeinwissen", 1, "Mit wie vielen Figuren startet ein Spieler beim Schach?", "16", "12", "18", "20"),
+  q("Allgemeinwissen", 1, "Welche Zahl schreibt man römisch als „X“?", "10", "5", "50", "100"),
+  q("Allgemeinwissen", 1, "Wie viele Grad ergibt die Innenwinkelsumme eines Dreiecks?", "180", "90", "270", "360"),
+  q("Allgemeinwissen", 1, "Welche Schulnote ist in Deutschland die beste?", "Die 1", "Die 6", "Die 10", "Die 0"),
+  q("Allgemeinwissen", 1, "Wie viele Kanten hat ein Würfel?", "12", "8", "6", "16"),
+  q("Allgemeinwissen", 2, "Wie viele Bundesländer Deutschlands sind Stadtstaaten?", "3", "2", "4", "1"),
+  q("Allgemeinwissen", 2, "Wofür steht die Abkürzung „DIY“?", "Do it yourself", "Done in a year", "Design it yourself", "Do it young"),
+  q("Allgemeinwissen", 2, "Wie viele Nullen hat eine Milliarde?", "9", "6", "12", "10"),
+  q("Allgemeinwissen", 2, "Wie viele Minuten hat ein ganzer Tag?", "1.440", "960", "2.400", "720"),
+  q("Allgemeinwissen", 2, "Wofür steht die Abkürzung „e. V.“?", "Eingetragener Verein", "Ehrenamtliche Vereinigung", "Einfacher Verband", "Europäischer Verein"),
+  q("Allgemeinwissen", 2, "Wie viele Sterne hat die Flagge Chinas?", "5", "1", "7", "3"),
+  q("Allgemeinwissen", 2, "Wie nennt man den 29. Februar?", "Schalttag", "Springtag", "Zusatztag", "Kalendertag"),
+  q("Allgemeinwissen", 2, "Welche Farbe hat das Feld mit der Null beim Roulette?", "Grün", "Rot", "Schwarz", "Blau"),
+  q("Allgemeinwissen", 2, "Wie viele Einwohner hat Deutschland ungefähr?", "83 Millionen", "65 Millionen", "95 Millionen", "110 Millionen"),
+  q("Allgemeinwissen", 2, "Welche Farbe haben die Pannenfahrzeuge des ADAC?", "Gelb", "Orange", "Rot", "Weiß"),
+  q("Allgemeinwissen", 3, "Wofür steht die Abkürzung „IBAN“?", "International Bank Account Number", "Internationale Bankanweisungsnummer", "Interne Bankauskunftsnummer", "International Banking Access Node"),
+  q("Allgemeinwissen", 3, "Aus wie vielen Zeilen besteht ein Sonett?", "14", "12", "16", "10"),
+  q("Allgemeinwissen", 3, "Was ist ein Oxymoron?", "Die Verbindung zweier sich widersprechender Begriffe", "Ein Wort mit doppelter Bedeutung", "Eine bewusste Übertreibung", "Ein erfundenes Wort"),
+  q("Allgemeinwissen", 3, "Wie viele ständige Mitglieder hat der UN-Sicherheitsrat?", "5", "7", "10", "15"),
+  q("Allgemeinwissen", 3, "Wofür steht die Dateiendung „PDF“?", "Portable Document Format", "Printed Data File", "Personal Document Folder", "Public Document Format"),
+  q("Allgemeinwissen", 3, "Welche ist die kleinste dreistellige Primzahl?", "101", "100", "103", "111"),
+  q("Allgemeinwissen", 3, "Wie viele Durchgänge hat das Brandenburger Tor?", "5", "3", "7", "1"),
+
+  /* ---------------- Geografie ---------------- */
+  q("Geografie", 1, "Wie heißt die Hauptstadt von Spanien?", "Madrid", "Barcelona", "Valencia", "Sevilla"),
+  q("Geografie", 1, "In welchem Land steht der Schiefe Turm von Pisa?", "Italien", "Spanien", "Griechenland", "Portugal"),
+  q("Geografie", 1, "Welcher Kontinent ist der kälteste?", "Die Antarktis", "Europa", "Nordamerika", "Asien"),
+  q("Geografie", 1, "Wie heißt der größte Fluss Südamerikas?", "Der Amazonas", "Der Orinoco", "Der Paraná", "Der Rio Grande"),
+  q("Geografie", 1, "Welche Farbe hat der Kreis in der Mitte der japanischen Flagge?", "Rot", "Blau", "Gold", "Schwarz"),
+  q("Geografie", 1, "Wie heißt die größte Insel der Welt?", "Grönland", "Australien", "Madagaskar", "Borneo"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt von Norwegen?", "Oslo", "Bergen", "Stockholm", "Kopenhagen"),
+  q("Geografie", 2, "Welches Gebirge gilt als Grenze zwischen Europa und Asien?", "Der Ural", "Der Kaukasus", "Die Karpaten", "Der Altai"),
+  q("Geografie", 2, "In welchem Bundesland liegt der Schwarzwald?", "Baden-Württemberg", "Bayern", "Hessen", "Rheinland-Pfalz"),
+  q("Geografie", 2, "Welches Land ist flächenmäßig das größte der Welt?", "Russland", "Kanada", "China", "USA"),
+  q("Geografie", 2, "In welcher deutschen Stadt liegt der größte Seehafen des Landes?", "Hamburg", "Bremen", "Rostock", "Kiel"),
+  q("Geografie", 2, "In welchem Land liegt Machu Picchu?", "Peru", "Mexiko", "Bolivien", "Chile"),
+  q("Geografie", 2, "Wie heißt die Hauptstadt von Portugal?", "Lissabon", "Porto", "Madrid", "Faro"),
+  q("Geografie", 2, "Welcher Berg ist der höchste Afrikas?", "Der Kilimandscharo", "Der Kenia", "Der Atlas", "Der Tafelberg"),
+  q("Geografie", 2, "An welches Meer grenzt Polen im Norden?", "An die Ostsee", "An die Nordsee", "An das Schwarze Meer", "An das Kaspische Meer"),
+  q("Geografie", 3, "Wie heißt die Hauptstadt von Marokko?", "Rabat", "Casablanca", "Marrakesch", "Fès"),
+  q("Geografie", 3, "Welcher Fluss fließt durch Kairo?", "Der Nil", "Der Euphrat", "Der Jordan", "Der Kongo"),
+  q("Geografie", 3, "Wie heißt die tiefste bekannte Stelle der Ozeane?", "Der Marianengraben", "Der Japangraben", "Der Puerto-Rico-Graben", "Der Sundagraben"),
+  q("Geografie", 3, "Welcher Staat ist vollständig von Italien umgeben – außer dem Vatikan?", "San Marino", "Monaco", "Andorra", "Malta"),
+  q("Geografie", 3, "In welchem Bundesland liegt die Insel Rügen?", "Mecklenburg-Vorpommern", "Schleswig-Holstein", "Niedersachsen", "Brandenburg"),
+  q("Geografie", 3, "Wie heißt die Hauptstadt von Vietnam?", "Hanoi", "Ho-Chi-Minh-Stadt", "Bangkok", "Phnom Penh"),
+  q("Geografie", 3, "Welcher Kanal verbindet das Mittelmeer mit dem Roten Meer?", "Der Suezkanal", "Der Panamakanal", "Der Kieler Kanal", "Der Bosporus"),
+  q("Geografie", 3, "Nairobi ist die Hauptstadt welches Landes?", "Kenia", "Tansania", "Uganda", "Äthiopien"),
+  q("Geografie", 3, "Welcher Fluss bildet einen großen Teil der Grenze zwischen den USA und Mexiko?", "Der Rio Grande", "Der Colorado", "Der Mississippi", "Der Missouri"),
+  q("Geografie", 3, "Wie heißt der größte See Afrikas?", "Der Viktoriasee", "Der Tanganjikasee", "Der Malawisee", "Der Tschadsee")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Geschichte ---------------- */
+  q("Geschichte", 1, "In welchem Jahr endete der Zweite Weltkrieg in Europa?", "1945", "1944", "1946", "1943"),
+  q("Geschichte", 1, "Welches Volk erbaute die Pyramiden von Gizeh?", "Die Ägypter", "Die Römer", "Die Griechen", "Die Perser"),
+  q("Geschichte", 1, "Wodurch wurde Anne Frank weltbekannt?", "Durch ihr Tagebuch aus dem Versteck", "Durch ein Gemälde", "Durch eine Radiosendung", "Durch eine Erfindung"),
+  q("Geschichte", 2, "Wie hieß das Schiff, mit dem die Pilgerväter 1620 nach Amerika segelten?", "Mayflower", "Santa Maria", "Endeavour", "Beagle"),
+  q("Geschichte", 2, "Welcher Erfinder gründete General Electric und machte die Glühlampe marktreif?", "Thomas Edison", "Nikola Tesla", "Werner von Siemens", "Alexander Graham Bell"),
+  q("Geschichte", 2, "Wer war der berühmteste Herrscher der Mongolen?", "Dschingis Khan", "Attila", "Timur", "Kublai Khan"),
+  q("Geschichte", 2, "In welchem Land begann die Industrielle Revolution?", "In Großbritannien", "In Deutschland", "In Frankreich", "In den USA"),
+  q("Geschichte", 2, "Wer hielt die Rede „I have a dream“?", "Martin Luther King", "Malcolm X", "Nelson Mandela", "Barack Obama"),
+  q("Geschichte", 2, "In welchem Jahr wurde John F. Kennedy erschossen?", "1963", "1961", "1965", "1968"),
+  q("Geschichte", 2, "Wer war der erste Mensch im Weltall?", "Juri Gagarin", "Neil Armstrong", "Alan Shepard", "German Titow"),
+  q("Geschichte", 2, "Welche Seuche tötete im 14. Jahrhundert Millionen Europäer?", "Die Pest", "Die Cholera", "Die Pocken", "Die Grippe"),
+  q("Geschichte", 2, "Welche Stadt war die Hauptstadt des Byzantinischen Reiches?", "Konstantinopel", "Athen", "Rom", "Damaskus"),
+  q("Geschichte", 3, "Welcher Vertrag beendete 1919 offiziell den Ersten Weltkrieg?", "Der Versailler Vertrag", "Der Vertrag von Trianon", "Der Westfälische Friede", "Der Wiener Kongress"),
+  q("Geschichte", 3, "Wer war die erste Frau, die einen Nobelpreis erhielt?", "Marie Curie", "Lise Meitner", "Rosalind Franklin", "Ada Lovelace"),
+  q("Geschichte", 3, "Welches Reich beherrschte vor den Spaniern die Anden Südamerikas?", "Das Inkareich", "Das Aztekenreich", "Das Mayareich", "Das Olmekenreich"),
+  q("Geschichte", 3, "Wann trat der Vertrag von Maastricht in Kraft, mit dem die EU entstand?", "1993", "1989", "1997", "2002"),
+  q("Geschichte", 3, "Wer erhielt 1876 das Patent auf das Telefon?", "Alexander Graham Bell", "Thomas Edison", "Guglielmo Marconi", "Samuel Morse"),
+  q("Geschichte", 3, "Wie hieß die erste Frau im Weltall?", "Walentina Tereschkowa", "Sally Ride", "Swetlana Sawizkaja", "Mae Jemison"),
+  q("Geschichte", 3, "Welcher Herrscher wurde im Jahr 800 in Rom zum Kaiser gekrönt?", "Karl der Große", "Otto I.", "Friedrich Barbarossa", "Heinrich IV."),
+  q("Geschichte", 3, "Wie nennt man die deutsche Staatsform zwischen 1918 und 1933?", "Weimarer Republik", "Deutsches Kaiserreich", "Norddeutscher Bund", "Deutscher Bund"),
+  q("Geschichte", 3, "In welchem Jahr ging das Weströmische Reich unter?", "476 n. Chr.", "395 n. Chr.", "410 n. Chr.", "527 n. Chr."),
+  q("Geschichte", 3, "Wessen Expedition umsegelte als erste die Welt?", "Die von Ferdinand Magellan", "Die von Vasco da Gama", "Die von James Cook", "Die von Francis Drake"),
+  q("Geschichte", 3, "Wer war Sitting Bull?", "Ein Häuptling der Lakota-Sioux", "Ein US-General", "Ein Goldgräber", "Ein Präsident"),
+  q("Geschichte", 3, "Welches Land kaufte 1867 Alaska von Russland?", "Die USA", "Kanada", "Großbritannien", "Dänemark"),
+  q("Geschichte", 3, "Wie hieß der letzte Zar Russlands?", "Nikolaus II.", "Alexander III.", "Peter III.", "Iwan IV."),
+
+  /* ---------------- Wissenschaft ---------------- */
+  q("Wissenschaft", 1, "Welches Organ pumpt das Blut durch den Körper?", "Das Herz", "Die Lunge", "Die Leber", "Die Niere"),
+  q("Wissenschaft", 1, "Wie heißt der natürliche Trabant der Erde?", "Der Mond", "Die Venus", "Phobos", "Titan"),
+  q("Wissenschaft", 1, "Bei wie viel Grad Celsius gefriert Wasser?", "0", "-10", "4", "10"),
+  q("Wissenschaft", 1, "Welches Gas brauchen Menschen zum Atmen?", "Sauerstoff", "Stickstoff", "Kohlendioxid", "Helium"),
+  q("Wissenschaft", 1, "Wie viel Grad Celsius hat der menschliche Körper normalerweise?", "Rund 37", "Rund 34", "Rund 40", "Rund 30"),
+  q("Wissenschaft", 2, "Welches chemische Symbol steht für Eisen?", "Fe", "Ei", "Ir", "Fr"),
+  q("Wissenschaft", 2, "Wie heißt die Kraft, die uns auf dem Boden hält?", "Die Schwerkraft", "Die Fliehkraft", "Die Reibung", "Der Magnetismus"),
+  q("Wissenschaft", 2, "Wie viele Aggregatzustände von Wasser kennt man im Alltag?", "3", "2", "4", "5"),
+  q("Wissenschaft", 2, "Welches Organ produziert Insulin?", "Die Bauchspeicheldrüse", "Die Leber", "Die Milz", "Die Schilddrüse"),
+  q("Wissenschaft", 2, "Wie nennt man Tiere mit einer Wirbelsäule?", "Wirbeltiere", "Weichtiere", "Gliederfüßer", "Nesseltiere"),
+  q("Wissenschaft", 2, "Welche Einheit misst die elektrische Stromstärke?", "Ampere", "Volt", "Watt", "Ohm"),
+  q("Wissenschaft", 2, "Wie nennt man den Übergang von flüssig zu gasförmig?", "Verdampfen", "Schmelzen", "Kondensieren", "Erstarren"),
+  q("Wissenschaft", 2, "Wofür steht „RAM“ beim Computer?", "Random Access Memory", "Read And Modify", "Rapid Access Module", "Runtime Allocation Memory"),
+  q("Wissenschaft", 3, "Welches Element hat das Symbol „K“?", "Kalium", "Kohlenstoff", "Krypton", "Kupfer"),
+  q("Wissenschaft", 3, "Wie lange braucht das Sonnenlicht bis zur Erde?", "Etwa 8 Minuten", "Etwa 8 Sekunden", "Etwa 1 Stunde", "Etwa 1 Sekunde"),
+  q("Wissenschaft", 3, "Wer formulierte die drei Bewegungsgesetze der Mechanik?", "Isaac Newton", "Galileo Galilei", "Johannes Kepler", "Blaise Pascal"),
+  q("Wissenschaft", 3, "Was ist ein Isotop?", "Ein Atom mit gleicher Protonen-, aber anderer Neutronenzahl", "Ein geladenes Atom", "Ein Molekül aus zwei Atomen", "Ein instabiles Molekül"),
+  q("Wissenschaft", 3, "Welches natürliche Material ist am härtesten?", "Diamant", "Quarz", "Stahl", "Granit"),
+  q("Wissenschaft", 3, "Wie heißt die kleinste lebende Einheit eines Organismus?", "Die Zelle", "Das Atom", "Das Gen", "Das Organ"),
+  q("Wissenschaft", 3, "Womit beschäftigt sich die Ornithologie?", "Mit Vögeln", "Mit Insekten", "Mit Fischen", "Mit Pflanzen"),
+  q("Wissenschaft", 3, "Wer entdeckte die nach ihm benannten Röntgenstrahlen?", "Wilhelm Conrad Röntgen", "Marie Curie", "Max Planck", "Otto Hahn"),
+  q("Wissenschaft", 3, "Wie viele chemische Elemente kennt das Periodensystem heute?", "118", "92", "104", "150"),
+  q("Wissenschaft", 3, "Welchen pH-Wert hat reines Wasser?", "7", "0", "10", "14"),
+  q("Wissenschaft", 3, "Wie nennt man den direkten Übergang von fest zu gasförmig?", "Sublimation", "Kondensation", "Diffusion", "Fusion"),
+  q("Wissenschaft", 3, "Was misst ein Seismograf?", "Erdbebenwellen", "Die Luftfeuchtigkeit", "Die Sonnenstrahlung", "Den Salzgehalt")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Sport ---------------- */
+  q("Sport", 1, "Womit dürfen Feldspieler im Fußball den Ball nicht spielen?", "Mit den Händen", "Mit dem Kopf", "Mit der Brust", "Mit dem Oberschenkel"),
+  q("Sport", 1, "Wie viele Punkte zählt ein normaler Korbwurf im Basketball?", "2", "1", "3", "4"),
+  q("Sport", 1, "In welcher Sportart gibt es „Strike“ und „Spare“?", "Bowling", "Baseball", "Darts", "Golf"),
+  q("Sport", 1, "Welche Sportart spielt man mit Schläger und Federball?", "Badminton", "Squash", "Tennis", "Tischtennis"),
+  q("Sport", 2, "Wie viele Spieler einer Eishockeymannschaft stehen auf dem Eis?", "6", "5", "7", "8"),
+  q("Sport", 2, "In welchem Stadion spielt der FC Barcelona?", "Im Camp Nou", "Im Bernabéu", "Im Wanda Metropolitano", "Im San Siro"),
+  q("Sport", 2, "Alle wie viele Jahre findet die Fußball-Europameisterschaft statt?", "Alle 4 Jahre", "Alle 2 Jahre", "Alle 3 Jahre", "Alle 5 Jahre"),
+  q("Sport", 2, "In welcher Sportart spricht man von einem „Ass“?", "Tennis", "Fußball", "Handball", "Turnen"),
+  q("Sport", 2, "Was droht Biathletinnen und Biathleten meist nach einem Fehlschuss?", "Eine Strafrunde", "Eine Zeitgutschrift", "Ein Punktabzug", "Der Ausschluss"),
+  q("Sport", 2, "Wie lang ist ein olympisches Schwimmbecken?", "50 Meter", "25 Meter", "100 Meter", "75 Meter"),
+  q("Sport", 2, "Welche Nation dominiert traditionell das Tischtennis?", "China", "Japan", "Schweden", "Südkorea"),
+  q("Sport", 2, "Wie heißt das Endspiel der National Football League?", "Super Bowl", "World Series", "Stanley Cup", "Final Four"),
+  q("Sport", 2, "In welcher Sportart wurde Dirk Nowitzki weltberühmt?", "Basketball", "Handball", "Volleyball", "Tennis"),
+  q("Sport", 3, "Wie viele Punkte bringt ein Field Goal im American Football?", "3", "2", "6", "1"),
+  q("Sport", 3, "Zu welcher Disziplin gehört der „Fosbury Flop“?", "Hochsprung", "Weitsprung", "Stabhochsprung", "Turmspringen"),
+  q("Sport", 3, "Wie viele Formel-1-Weltmeistertitel hat Lewis Hamilton geholt?", "7", "5", "6", "8"),
+  q("Sport", 3, "Wie schwer ist die Kugel beim Kugelstoßen der Männer?", "7,26 kg", "5 kg", "10 kg", "4 kg"),
+  q("Sport", 3, "Wie viele Sätze werden beim Volleyball maximal gespielt?", "5", "3", "4", "7"),
+  q("Sport", 3, "In welcher Stadt fanden 1896 die ersten modernen Olympischen Spiele statt?", "Athen", "Paris", "Rom", "London"),
+  q("Sport", 3, "Wie heißt der Weltfußballverband?", "FIFA", "UEFA", "IOC", "DFB"),
+  q("Sport", 3, "Wofür steht „K. o.“ im Boxen?", "Knockout", "Kampf ohne Wertung", "Konterschlag", "Klare Überlegenheit"),
+  q("Sport", 3, "Wie lang ist eine Runde auf einer Standard-Laufbahn im Stadion?", "400 Meter", "300 Meter", "500 Meter", "250 Meter"),
+  q("Sport", 3, "Wie viele Spieler hat eine Rugby-Union-Mannschaft auf dem Feld?", "15", "11", "13", "7"),
+  q("Sport", 3, "Wie viele Löcher hat eine kurze „Neun-Loch-Runde“ beim Golf?", "9", "12", "6", "18"),
+  q("Sport", 3, "Welche Sportart wird auf einem „Tatami“ ausgeübt?", "Judo", "Fechten", "Boxen", "Ringen"),
+
+  /* ---------------- Musik ---------------- */
+  q("Musik", 1, "Wie viele Saiten hat ein E-Bass üblicherweise?", "4", "6", "5", "8"),
+  q("Musik", 1, "Welches Instrument spielt man mit einem Bogen?", "Die Geige", "Die Trompete", "Die Flöte", "Das Klavier"),
+  q("Musik", 1, "Wie heißt die höchste Frauenstimmlage?", "Sopran", "Alt", "Tenor", "Bass"),
+  q("Musik", 2, "Welche Band veröffentlichte „Highway to Hell“?", "AC/DC", "Metallica", "Guns N’ Roses", "Iron Maiden"),
+  q("Musik", 2, "Wer sang „Shape of You“?", "Ed Sheeran", "Justin Bieber", "Sam Smith", "Harry Styles"),
+  q("Musik", 2, "Welche schwedische Band sang „Dancing Queen“?", "ABBA", "Roxette", "Ace of Base", "A-ha"),
+  q("Musik", 2, "Welches Instrument spielte Jimi Hendrix?", "Die Gitarre", "Das Schlagzeug", "Das Saxofon", "Die Orgel"),
+  q("Musik", 2, "Wie heißt die tiefste Männerstimmlage?", "Bass", "Tenor", "Bariton", "Alt"),
+  q("Musik", 2, "Wer singt „Atemlos durch die Nacht“?", "Helene Fischer", "Andrea Berg", "Vanessa Mai", "Michelle"),
+  q("Musik", 2, "Welche Musikrichtung entstand in Jamaika?", "Reggae", "Samba", "Blues", "Flamenco"),
+  q("Musik", 2, "Welches Instrument hat Pedale und rund 47 Saiten?", "Die Harfe", "Das Cembalo", "Die Zither", "Der Kontrabass"),
+  q("Musik", 3, "Wie viele Sinfonien vollendete Beethoven?", "9", "7", "12", "5"),
+  q("Musik", 3, "Welche Band veröffentlichte „The Dark Side of the Moon“?", "Pink Floyd", "The Doors", "Genesis", "Yes"),
+  q("Musik", 3, "Was bedeutet die Vortragsbezeichnung „piano“?", "Leise", "Laut", "Schneller werdend", "Getragen"),
+  q("Musik", 3, "In welcher Stadt wurde Mozart geboren?", "Salzburg", "Wien", "Prag", "München"),
+  q("Musik", 3, "Wer komponierte den Opernzyklus „Der Ring des Nibelungen“?", "Richard Wagner", "Richard Strauss", "Giuseppe Verdi", "Gustav Mahler"),
+  q("Musik", 3, "Wie viele Linien hat ein Notensystem?", "5", "4", "6", "7"),
+  q("Musik", 3, "Welcher Sänger wurde als „The King“ bekannt?", "Elvis Presley", "Frank Sinatra", "Johnny Cash", "Chuck Berry"),
+  q("Musik", 3, "Aus welchem Land stammt die Band U2?", "Irland", "England", "Schottland", "Australien"),
+  q("Musik", 3, "Welches Instrument spielt man mit Schlägeln auf Holzstäben?", "Das Xylofon", "Das Akkordeon", "Die Pauke", "Das Vibrafon"),
+  q("Musik", 3, "Wer komponierte die „Brandenburgischen Konzerte“?", "Johann Sebastian Bach", "Georg Friedrich Händel", "Joseph Haydn", "Georg Philipp Telemann"),
+  q("Musik", 3, "Was ist ein „Riff“ in der Rockmusik?", "Eine kurze, ständig wiederholte Tonfolge", "Ein Trommelwirbel", "Ein Gesangssolo", "Ein Verstärkereffekt"),
+  q("Musik", 3, "Wer sang „I Will Always Love You“ im Film „Bodyguard“?", "Whitney Houston", "Mariah Carey", "Tina Turner", "Céline Dion"),
+  q("Musik", 3, "Wer komponierte den berühmten Hochzeitsmarsch aus „Ein Sommernachtstraum“?", "Felix Mendelssohn Bartholdy", "Richard Wagner", "Frédéric Chopin", "Franz Liszt"),
+  q("Musik", 3, "Welches Instrument gehört klassischerweise nicht in ein Streichquartett?", "Die Flöte", "Die Geige", "Die Bratsche", "Das Cello")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Film & TV ---------------- */
+  q("Film & TV", 1, "Welches Märchen handelt von einer Prinzessin, die sich an einem Spinnrad sticht?", "Dornröschen", "Aschenputtel", "Schneewittchen", "Rapunzel"),
+  q("Film & TV", 1, "Welche Farbe hat Hulk?", "Grün", "Blau", "Rot", "Grau"),
+  q("Film & TV", 1, "Wie heißt die berühmteste Maus von Disney?", "Micky Maus", "Minnie Maus", "Jerry", "Speedy Gonzales"),
+  q("Film & TV", 2, "In welchem Film sucht ein Mädchen namens Dorothy einen Zauberer?", "Der Zauberer von Oz", "Alice im Wunderland", "Die Brücke nach Terabithia", "Peter Pan"),
+  q("Film & TV", 2, "Wie heißt Batmans Butler?", "Alfred", "Jarvis", "Lucius", "Gordon"),
+  q("Film & TV", 2, "Welcher Schauspieler spielte Forrest Gump?", "Tom Hanks", "Kevin Costner", "Bill Murray", "Robin Williams"),
+  q("Film & TV", 2, "In welcher Serie arbeiten die Hauptfiguren im Seattle Grace Hospital?", "Grey’s Anatomy", "Emergency Room", "House", "Chicago Med"),
+  q("Film & TV", 2, "Wie heißt der Schulleiter von Hogwarts in den ersten Harry-Potter-Filmen?", "Albus Dumbledore", "Severus Snape", "Rubeus Hagrid", "Remus Lupin"),
+  q("Film & TV", 2, "Welcher Schauspieler verkörpert Indiana Jones?", "Harrison Ford", "Mel Gibson", "Kurt Russell", "Michael Douglas"),
+  q("Film & TV", 2, "Welche Serie spielt in der Werbebranche im New York der 1960er?", "Mad Men", "Suits", "The Office", "Boardwalk Empire"),
+  q("Film & TV", 3, "Wer spielte Hannibal Lecter in „Das Schweigen der Lämmer“?", "Anthony Hopkins", "Al Pacino", "Jack Nicholson", "Gary Oldman"),
+  q("Film & TV", 3, "In welchem Jahr kam der erste „Star Wars“-Film ins Kino?", "1977", "1980", "1972", "1983"),
+  q("Film & TV", 3, "Welche Familie steht im Mittelpunkt von „Der Pate“?", "Die Corleones", "Die Sopranos", "Die Barzinis", "Die Gambinos"),
+  q("Film & TV", 3, "Wie heißt die deutsche Krimireihe, die seit 1970 sonntagabends läuft?", "Tatort", "Polizeiruf 110", "Der Alte", "SOKO"),
+  q("Film & TV", 3, "Welcher Regisseur drehte „Pulp Fiction“?", "Quentin Tarantino", "Martin Scorsese", "Robert Rodriguez", "Coen-Brüder"),
+  q("Film & TV", 3, "In welchem Animationsfilm verliebt sich ein Müllroboter?", "WALL·E", "Robots", "Big Hero 6", "Der Gigant aus dem All"),
+  q("Film & TV", 3, "Wer spielte als Erster James Bond im Kino?", "Sean Connery", "Roger Moore", "George Lazenby", "Timothy Dalton"),
+  q("Film & TV", 3, "Welche Serie erzählt vom kolumbianischen Drogenkartell um Pablo Escobar?", "Narcos", "Ozark", "El Chapo", "Queen of the South"),
+  q("Film & TV", 3, "Welche Zeichentrickserie spielt in einer Kleinstadt in Colorado?", "South Park", "Family Guy", "Rick and Morty", "Futurama"),
+  q("Film & TV", 3, "Auf welchem Wüstenplaneten spielt „Dune“?", "Arrakis", "Tatooine", "Vulcan", "Caladan"),
+  q("Film & TV", 3, "Wie viele Staffeln hat „Breaking Bad“?", "5", "4", "6", "7"),
+  q("Film & TV", 3, "In welchem Königreich spielt „Die Eiskönigin“?", "Arendelle", "Corona", "Atlantica", "Zaubertal"),
+  q("Film & TV", 3, "Welcher Zeichentrickfilm war der erste abendfüllende Disney-Film?", "Schneewittchen und die sieben Zwerge", "Bambi", "Pinocchio", "Fantasia"),
+  q("Film & TV", 3, "Welcher Schauspieler spielt Jack Sparrow?", "Johnny Depp", "Orlando Bloom", "Geoffrey Rush", "Javier Bardem"),
+  q("Film & TV", 3, "Wie heißt der Superschurke mit dem lila Handschuh im Marvel-Universum?", "Thanos", "Loki", "Ultron", "Killmonger"),
+
+  /* ---------------- Gaming & Internet ---------------- */
+  q("Gaming & Internet", 1, "Welche gelbe Figur frisst im Labyrinth Punkte?", "Pac-Man", "Sonic", "Kirby", "Q*bert"),
+  q("Gaming & Internet", 1, "Wie heißt Marios Bruder?", "Luigi", "Wario", "Yoshi", "Toad"),
+  q("Gaming & Internet", 1, "Auf welcher Plattform teilt man kurze Videos mit Musik?", "TikTok", "LinkedIn", "Pinterest", "Reddit"),
+  q("Gaming & Internet", 2, "Welches Studio entwickelt „Grand Theft Auto“?", "Rockstar Games", "Ubisoft", "EA", "Bethesda"),
+  q("Gaming & Internet", 2, "Wie heißt der Held der „Zelda“-Spiele?", "Link", "Zelda", "Ganon", "Navi"),
+  q("Gaming & Internet", 2, "Welche Konsole folgte auf die PlayStation 4?", "Die PlayStation 5", "Die PlayStation Pro", "Die Xbox Series X", "Die PS Vita"),
+  q("Gaming & Internet", 2, "Wofür steht das Genrekürzel „FPS“?", "First Person Shooter", "Fast Paced Sports", "Free Play Story", "Full Party System"),
+  q("Gaming & Internet", 2, "Welches Unternehmen entwickelt Windows?", "Microsoft", "Apple", "IBM", "Oracle"),
+  q("Gaming & Internet", 2, "Wer gilt als Erfinder des World Wide Web?", "Tim Berners-Lee", "Bill Gates", "Steve Wozniak", "Vint Cerf"),
+  q("Gaming & Internet", 2, "Welche Plattform besteht aus nutzererstellten Spielen mit Klötzchen-Figuren?", "Roblox", "Minecraft", "Fortnite", "Rec Room"),
+  q("Gaming & Internet", 2, "Welche Suchmaschine wird weltweit am häufigsten genutzt?", "Google", "Bing", "DuckDuckGo", "Yahoo"),
+  q("Gaming & Internet", 2, "Welches soziale Netzwerk hieß früher Twitter?", "X", "Threads", "Bluesky", "Mastodon"),
+  q("Gaming & Internet", 3, "Wofür steht das Genrekürzel „RPG“?", "Rollenspiel", "Rennspiel", "Rätselspiel", "Rundenstrategie"),
+  q("Gaming & Internet", 3, "Welche Firma entwickelte „Counter-Strike“?", "Valve", "Riot Games", "Blizzard", "Capcom"),
+  q("Gaming & Internet", 3, "Was ist ein „Buff“ in Videospielen?", "Eine Verstärkung einer Fähigkeit", "Ein Spielfehler", "Ein Endgegner", "Ein Ladebildschirm"),
+  q("Gaming & Internet", 3, "Wie heißt Valves Online-Shop für PC-Spiele?", "Steam", "Origin", "Epic Store", "GOG"),
+  q("Gaming & Internet", 3, "Welches Studio entwickelte Minecraft ursprünglich?", "Mojang", "Notch Interactive", "Rockstar", "Telltale"),
+  q("Gaming & Internet", 3, "Was macht ein Emulator?", "Er ahmt fremde Hardware auf einem Gerät nach", "Er beschleunigt das Internet", "Er speichert Spielstände online", "Er blockiert Werbung"),
+  q("Gaming & Internet", 3, "Wie hieß das erste kommerziell erfolgreiche Videospiel von 1972?", "Pong", "Space Invaders", "Asteroids", "Computer Space"),
+  q("Gaming & Internet", 3, "Welche Spielkonsole verkaufte sich weltweit am häufigsten?", "Die PlayStation 2", "Die Nintendo Wii", "Die Xbox 360", "Der Game Boy"),
+  q("Gaming & Internet", 3, "Wofür steht „HTML“?", "Hypertext Markup Language", "High Tech Media Language", "Home Tool Markup Language", "Hyperlink Text Machine Language"),
+  q("Gaming & Internet", 3, "Welches Unternehmen kaufte 2014 den Minecraft-Entwickler?", "Microsoft", "Sony", "Google", "Tencent"),
+  q("Gaming & Internet", 3, "Was ist ein „Bot“ im Internet?", "Ein automatisch handelndes Programm", "Ein gehackter Zugang", "Ein Serverfehler", "Ein Werbebanner"),
+  q("Gaming & Internet", 3, "Wofür steht „DLC“ bei Videospielen?", "Downloadable Content", "Direct Level Creator", "Digital License Code", "Dynamic Load Cache"),
+  q("Gaming & Internet", 3, "Welche Spielereihe schickt Spieler in die Welt von Azeroth?", "World of Warcraft", "Diablo", "EverQuest", "Guild Wars")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Essen & Trinken ---------------- */
+  q("Essen & Trinken", 1, "Aus welcher Frucht wird Wein vergoren?", "Aus Weintrauben", "Aus Äpfeln", "Aus Beeren", "Aus Pflaumen"),
+  q("Essen & Trinken", 1, "Woraus werden Pommes frites gemacht?", "Aus Kartoffeln", "Aus Maniok", "Aus Mais", "Aus Reis"),
+  q("Essen & Trinken", 1, "Welches Getreide wird am häufigsten zu Brotmehl gemahlen?", "Weizen", "Hafer", "Hirse", "Buchweizen"),
+  q("Essen & Trinken", 1, "Welche Frucht sorgt auf einer Pizza für die größten Diskussionen?", "Ananas", "Birne", "Feige", "Melone"),
+  q("Essen & Trinken", 2, "Wie heißt der italienische Klassiker aus cremig gekochtem Reis?", "Risotto", "Polenta", "Gnocchi", "Panna cotta"),
+  q("Essen & Trinken", 2, "Was ist Ricotta?", "Ein italienischer Frischkäse", "Eine Nudelsorte", "Ein Kräuteröl", "Eine Wurstsorte"),
+  q("Essen & Trinken", 2, "Welche Nuss steckt in großen Mengen in Nuss-Nougat-Creme?", "Die Haselnuss", "Die Walnuss", "Die Mandel", "Die Erdnuss"),
+  q("Essen & Trinken", 2, "Welches Gewürz färbt Currypulver gelb?", "Kurkuma", "Paprika", "Ingwer", "Senfsaat"),
+  q("Essen & Trinken", 2, "Welches Kaffeegetränk besteht aus Espresso und viel Milchschaum?", "Cappuccino", "Americano", "Ristretto", "Macchiato"),
+  q("Essen & Trinken", 2, "Was ist Couscous?", "Hartweizengrieß", "Eine Hülsenfrucht", "Eine Reissorte", "Ein Wurzelgemüse"),
+  q("Essen & Trinken", 2, "Aus welchem Obst werden Rosinen getrocknet?", "Aus Weintrauben", "Aus Pflaumen", "Aus Kirschen", "Aus Aprikosen"),
+  q("Essen & Trinken", 2, "Womit wird Sushi-Reis gesäuert?", "Mit Reisessig", "Mit Zitronensaft", "Mit Sojasauce", "Mit Mirin"),
+  q("Essen & Trinken", 3, "Wie heißt die japanische Nudelsuppe mit Brühe, Ei und Fleisch?", "Ramen", "Udon", "Miso", "Soba"),
+  q("Essen & Trinken", 3, "Welches Kraut ist die Hauptzutat von Pesto alla Genovese?", "Basilikum", "Petersilie", "Rucola", "Bärlauch"),
+  q("Essen & Trinken", 3, "Woraus wird Sake gebraut?", "Aus Reis", "Aus Gerste", "Aus Hirse", "Aus Mais"),
+  q("Essen & Trinken", 3, "Welches Land trinkt pro Kopf am meisten Kaffee?", "Finnland", "Italien", "Brasilien", "Österreich"),
+  q("Essen & Trinken", 3, "Was bedeutet „al dente“?", "Bissfest gegart", "Sehr weich gekocht", "Roh serviert", "Scharf gewürzt"),
+  q("Essen & Trinken", 3, "Welche Zutat lässt Brotteig aufgehen?", "Hefe", "Salz", "Zucker", "Butter"),
+  q("Essen & Trinken", 3, "Wie heißt das französische Schmorgericht aus Sommergemüse?", "Ratatouille", "Cassoulet", "Bouillabaisse", "Quiche"),
+  q("Essen & Trinken", 3, "Aus welchem Fleisch besteht ein original Wiener Schnitzel?", "Aus Kalbfleisch", "Aus Schweinefleisch", "Aus Putenfleisch", "Aus Rindfleisch"),
+  q("Essen & Trinken", 3, "Was ist Miso?", "Eine Paste aus fermentierten Sojabohnen", "Ein Reisschnaps", "Eine Algensorte", "Ein Fischgewürz"),
+  q("Essen & Trinken", 3, "Welcher Käse gehört auf eine echte Pizza Margherita?", "Mozzarella", "Gouda", "Parmesan", "Ricotta"),
+  q("Essen & Trinken", 3, "Welcher Cocktail besteht aus Rum, Limette, Minze und Zucker?", "Mojito", "Caipirinha", "Daiquiri", "Cuba Libre"),
+  q("Essen & Trinken", 3, "Von welchem Kontinent stammt die Kartoffel ursprünglich?", "Aus Südamerika", "Aus Asien", "Aus Afrika", "Aus Europa"),
+  q("Essen & Trinken", 3, "Welche Zutat unterscheidet Vollmilchschokolade von Zartbitterschokolade?", "Milchpulver", "Mehr Kakao", "Honig", "Vanille"),
+
+  /* ---------------- Natur & Tiere ---------------- */
+  q("Natur & Tiere", 1, "Wie heißt das Junge eines Hundes?", "Welpe", "Fohlen", "Kitz", "Ferkel"),
+  q("Natur & Tiere", 1, "Welches Tier baut Dämme aus Ästen?", "Der Biber", "Der Otter", "Der Dachs", "Die Bisamratte"),
+  q("Natur & Tiere", 1, "Wie viele Flügel hat ein Schmetterling?", "4", "2", "6", "8"),
+  q("Natur & Tiere", 1, "Was sammeln Eichhörnchen als Wintervorrat?", "Nüsse", "Pilze", "Blätter", "Beeren"),
+  q("Natur & Tiere", 1, "Womit atmen Fische?", "Mit Kiemen", "Mit Lungen", "Über die Haut", "Mit Tracheen"),
+  q("Natur & Tiere", 2, "Wie heißt der Nachwuchs eines Frosches?", "Kaulquappe", "Larve", "Nymphe", "Rogen"),
+  q("Natur & Tiere", 2, "Welcher Vogel ist das Wappentier der USA?", "Der Weißkopfseeadler", "Der Steinadler", "Der Truthahn", "Der Kondor"),
+  q("Natur & Tiere", 2, "Welche Tiere leben in einem Rudel?", "Wölfe", "Bienen", "Fische", "Schildkröten"),
+  q("Natur & Tiere", 2, "Wie viele Zähne hat ein erwachsener Hund?", "42", "32", "28", "56"),
+  q("Natur & Tiere", 2, "Welcher Baum ist an seiner weißen Rinde zu erkennen?", "Die Birke", "Die Erle", "Die Ulme", "Die Esche"),
+  q("Natur & Tiere", 2, "Wie viele Punkte hat der in Europa häufigste Marienkäfer?", "7", "5", "9", "2"),
+  q("Natur & Tiere", 2, "Welche Blume gilt als Symbol der Niederlande?", "Die Tulpe", "Die Narzisse", "Die Nelke", "Die Lilie"),
+  q("Natur & Tiere", 2, "Wie heißt die männliche Biene im Bienenstock?", "Drohne", "Arbeiter", "König", "Weisel"),
+  q("Natur & Tiere", 2, "Welches Tier hat einen Schnabel, legt Eier und ist trotzdem ein Säugetier?", "Das Schnabeltier", "Der Pinguin", "Der Ameisenbär", "Das Gürteltier"),
+  q("Natur & Tiere", 3, "Welches Tier kann seine Hautfarbe der Umgebung anpassen?", "Das Chamäleon", "Der Gecko", "Der Leguan", "Die Eidechse"),
+  q("Natur & Tiere", 3, "Welche ist die schwerste Schlange der Welt?", "Die Anakonda", "Die Königskobra", "Die Python", "Die Boa constrictor"),
+  q("Natur & Tiere", 3, "Wie viele Beine hat ein Hummer?", "10", "8", "6", "12"),
+  q("Natur & Tiere", 3, "Wie nennt man den Winterschlaf von Bären fachlich korrekt?", "Winterruhe", "Winterschlaf", "Winterstarre", "Kältestarre"),
+  q("Natur & Tiere", 3, "Welches Tier hat die größten Augen im Tierreich?", "Der Riesenkalmar", "Der Blauwal", "Der Strauß", "Das Pferd"),
+  q("Natur & Tiere", 3, "Welche Pflanze wächst am schnellsten?", "Bambus", "Efeu", "Weide", "Schilf"),
+  q("Natur & Tiere", 3, "Wie nennt man die jährliche Reise der Zugvögel?", "Vogelzug", "Schwarmflug", "Wanderflug", "Zugwechsel"),
+  q("Natur & Tiere", 3, "Welches Tier gilt in vielen Kulturen als Symbol der Weisheit?", "Die Eule", "Der Rabe", "Der Fuchs", "Die Schlange"),
+  q("Natur & Tiere", 3, "Welcher Fisch schwimmt zum Laichen flussaufwärts?", "Der Lachs", "Der Hecht", "Der Karpfen", "Der Zander"),
+  q("Natur & Tiere", 3, "Wie viele Pinguinarten leben wild am Nordpol?", "Keine", "Zwei", "Fünf", "Eine"),
+  q("Natur & Tiere", 3, "Wie nennt man Tiere, die vor allem nachts aktiv sind?", "Nachtaktiv", "Tagaktiv", "Dämmerungsscheu", "Standorttreu")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Sprache & Wörter ---------------- */
+  q("Sprache & Wörter", 1, "Wie viele Umlaute hat das deutsche Alphabet?", "3", "2", "4", "5"),
+  q("Sprache & Wörter", 1, "Was heißt „Hallo“ auf Spanisch?", "Hola", "Ciao", "Bonjour", "Olá"),
+  q("Sprache & Wörter", 1, "Was heißt „Danke“ auf Französisch?", "Merci", "Gracias", "Grazie", "Obrigado"),
+  q("Sprache & Wörter", 1, "Wie viele Fälle kennt die deutsche Grammatik?", "4", "3", "5", "6"),
+  q("Sprache & Wörter", 1, "Wie nennt man ein Wort, das eine Tätigkeit beschreibt?", "Verb", "Substantiv", "Adjektiv", "Pronomen"),
+  q("Sprache & Wörter", 2, "Was bedeutet „ins Fettnäpfchen treten“?", "Etwas Peinliches sagen oder tun", "Sich sehr freuen", "Reich werden", "Zu spät kommen"),
+  q("Sprache & Wörter", 2, "Was ist ein Synonym?", "Ein Wort mit gleicher oder ähnlicher Bedeutung", "Ein Gegenwort", "Ein Fremdwort", "Ein Reimwort"),
+  q("Sprache & Wörter", 2, "Welche Sprache hat weltweit die meisten Muttersprachler?", "Chinesisch", "Englisch", "Spanisch", "Hindi"),
+  q("Sprache & Wörter", 2, "Was bedeutet „Tomaten auf den Augen haben“?", "Etwas Offensichtliches nicht sehen", "Geweint haben", "Müde sein", "Sich schämen"),
+  q("Sprache & Wörter", 2, "Aus welcher Sprache stammen die meisten Fachbegriffe der Wissenschaft?", "Aus dem Lateinischen", "Aus dem Arabischen", "Aus dem Französischen", "Aus dem Deutschen"),
+  q("Sprache & Wörter", 2, "Was heißt „Tschüss“ auf Italienisch?", "Ciao", "Adiós", "Salut", "Tot ziens"),
+  q("Sprache & Wörter", 2, "Wie lautet die Mehrzahl von „Atlas“?", "Atlanten", "Atlasse", "Atlase", "Atlaten"),
+  q("Sprache & Wörter", 3, "Was bedeutet „lakonisch“?", "Kurz und knapp", "Umständlich", "Wütend", "Fröhlich"),
+  q("Sprache & Wörter", 3, "Wie heißt das Satzzeichen „;“?", "Semikolon", "Kolon", "Apostroph", "Ellipse"),
+  q("Sprache & Wörter", 3, "Was bedeutet „jemandem einen Bären aufbinden“?", "Jemanden anlügen", "Jemandem helfen", "Jemanden erschrecken", "Jemanden loben"),
+  q("Sprache & Wörter", 3, "Wie nennt man ein Wort aus Anfangsbuchstaben wie „NATO“?", "Akronym", "Homonym", "Pseudonym", "Toponym"),
+  q("Sprache & Wörter", 3, "Was bedeutet „obsolet“?", "Veraltet und überholt", "Zwingend nötig", "Geheim", "Übertrieben"),
+  q("Sprache & Wörter", 3, "Was ist eine Metapher?", "Ein bildhafter Ausdruck ohne „wie“", "Eine Übertreibung", "Eine Wiederholung", "Eine rhetorische Frage"),
+  q("Sprache & Wörter", 3, "Welche Sprache wird in Brasilien gesprochen?", "Portugiesisch", "Spanisch", "Brasilianisch", "Französisch"),
+  q("Sprache & Wörter", 3, "Was bedeutet „Pi mal Daumen“?", "Grob geschätzt", "Exakt berechnet", "Sehr langsam", "Im Kreis herum"),
+  q("Sprache & Wörter", 3, "Wie lautet die Mehrzahl von „Praktikum“?", "Praktika", "Praktikums", "Praktiken", "Praktikas"),
+  q("Sprache & Wörter", 3, "Was bedeutet „eloquent“?", "Redegewandt", "Schweigsam", "Vergesslich", "Vornehm"),
+  q("Sprache & Wörter", 3, "Was ist ein Anglizismus?", "Ein aus dem Englischen übernommenes Wort", "Ein englischer Grammatikfehler", "Ein englischer Dialekt", "Eine britische Redewendung"),
+  q("Sprache & Wörter", 3, "Wie nennt man Wörter, die gleich klingen, aber verschieden geschrieben werden?", "Homophone", "Synonyme", "Antonyme", "Akronyme"),
+  q("Sprache & Wörter", 3, "Was bedeutet die Redewendung „auf dem Holzweg sein“?", "Sich irren", "Verloren gehen", "Fleißig arbeiten", "Pleite sein"),
+
+  /* ---------------- Marken & Logos ---------------- */
+  q("Marken & Logos", 1, "Welche Automarke hat vier Ringe im Logo?", "Audi", "BMW", "Opel", "Toyota"),
+  q("Marken & Logos", 1, "Welches Unternehmen hat einen angebissenen Apfel als Logo?", "Apple", "Android", "Samsung", "Alphabet"),
+  q("Marken & Logos", 1, "Welche Fast-Food-Kette erkennt man am goldenen „M“?", "McDonald’s", "Burger King", "Subway", "KFC"),
+  q("Marken & Logos", 1, "Welche Automarke hat einen Stern mit drei Zacken?", "Mercedes-Benz", "Chrysler", "Volvo", "Mitsubishi"),
+  q("Marken & Logos", 1, "Welcher Sportartikelhersteller wirbt mit drei Streifen?", "Adidas", "Nike", "Puma", "Reebok"),
+  q("Marken & Logos", 2, "Welche Marke steht hinter dem Slogan „Just Do It“?", "Nike", "Adidas", "Under Armour", "Asics"),
+  q("Marken & Logos", 2, "Aus welchem Land kommt IKEA?", "Schweden", "Norwegen", "Dänemark", "Niederlande"),
+  q("Marken & Logos", 2, "Welche Kette hat eine Meerjungfrau im Logo?", "Starbucks", "Costa Coffee", "Tchibo", "Dunkin’"),
+  q("Marken & Logos", 2, "Welche Automarke zeigt eine springende Raubkatze?", "Jaguar", "Peugeot", "Lamborghini", "Abarth"),
+  q("Marken & Logos", 2, "Wofür stehen die Buchstaben „BMW“?", "Bayerische Motoren Werke", "Bayerische Maschinen Werke", "Berliner Motoren Werke", "Bayrisch Münchner Werke"),
+  q("Marken & Logos", 2, "Aus welchem Land stammt die Automarke Toyota?", "Japan", "Südkorea", "China", "Taiwan"),
+  q("Marken & Logos", 2, "Welche Modemarke trägt ein Krokodil auf der Brust?", "Lacoste", "Ralph Lauren", "Tommy Hilfiger", "Fred Perry"),
+  q("Marken & Logos", 2, "Aus welchem Land kommt die Automarke Volvo?", "Schweden", "Deutschland", "Frankreich", "Belgien"),
+  q("Marken & Logos", 2, "Welche Getränkemarke nutzt seit über 100 Jahren einen roten Schwungschriftzug?", "Coca-Cola", "Pepsi", "Fanta", "Dr Pepper"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt der Bausteinhersteller Lego?", "Dänemark", "Schweden", "Deutschland", "Niederlande"),
+  q("Marken & Logos", 3, "Wie heißt der Mutterkonzern von Facebook, Instagram und WhatsApp?", "Meta", "Alphabet", "Bytedance", "Tencent"),
+  q("Marken & Logos", 3, "Welche italienische Automarke zeigt ein schwarzes Pferd im Logo?", "Ferrari", "Maserati", "Alfa Romeo", "Fiat"),
+  q("Marken & Logos", 3, "Aus welchem Land kommt die Marke Nokia?", "Finnland", "Schweden", "Japan", "Estland"),
+  q("Marken & Logos", 3, "Welcher Konzern besitzt Škoda, SEAT und Porsche?", "Volkswagen", "BMW", "Stellantis", "Daimler"),
+  q("Marken & Logos", 3, "Welche zwei Sportmarken gründeten zwei zerstrittene Brüder in Herzogenaurach?", "Adidas und Puma", "Nike und Reebok", "Fila und Kappa", "Jack Wolfskin und Vaude"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Samsung?", "Südkorea", "Japan", "China", "Singapur"),
+  q("Marken & Logos", 3, "Wie heißt die größte Fluggesellschaft Deutschlands?", "Lufthansa", "Condor", "Eurowings", "TUI fly"),
+  q("Marken & Logos", 3, "Welches Unternehmen stellt die PlayStation her?", "Sony", "Panasonic", "Sharp", "Toshiba"),
+  q("Marken & Logos", 3, "Welcher Konzern steckt hinter Nutella?", "Ferrero", "Nestlé", "Mondelez", "Dr. Oetker"),
+  q("Marken & Logos", 3, "Welche Farbe hat der Hintergrund des Logos der Deutschen Bahn?", "Rot", "Blau", "Grün", "Grau")
+);
+
+window.FRAGEN.push(
+
+  /* ---------------- Weitere Ja/Nein-Fragen ---------------- */
+  jn("Allgemeinwissen", 1, "Hat ein Jahr genau 52 Wochen?", false),
+  jn("Allgemeinwissen", 2, "War Deutschland Gründungsmitglied der Vereinten Nationen?", false),
+  jn("Allgemeinwissen", 2, "Gilt auf allen deutschen Autobahnen ein Tempolimit?", false),
+  jn("Allgemeinwissen", 3, "Ist der Bundespräsident der Regierungschef Deutschlands?", false),
+
+  jn("Geografie", 1, "Ist Australien gleichzeitig ein Land und ein Kontinent?", true),
+  jn("Geografie", 2, "Liegt Prag westlicher als Wien?", true),
+  jn("Geografie", 2, "Ist die Türkei Mitglied der Europäischen Union?", false),
+  jn("Geografie", 3, "Liegt Afrika vollständig auf der Südhalbkugel?", false),
+  jn("Geografie", 3, "Ist Grönland ein eigenständiger Staat?", false),
+
+  jn("Geschichte", 2, "Wurde die Titanic in Deutschland gebaut?", false),
+  jn("Geschichte", 2, "War die DDR Mitglied der NATO?", false),
+  jn("Geschichte", 3, "Regierte Königin Victoria länger als 60 Jahre?", true),
+  jn("Geschichte", 3, "War Albert Einstein jemals Präsident Israels?", false),
+
+  jn("Wissenschaft", 1, "Dreht sich die Erde um die Sonne?", true),
+  jn("Wissenschaft", 2, "Ist Schall schneller als Licht?", false),
+  jn("Wissenschaft", 3, "Kann Wasser auch unter 100 Grad Celsius kochen?", true),
+  jn("Wissenschaft", 3, "Sind alle Metalle magnetisch?", false),
+
+  jn("Sport", 2, "Darf man beim Volleyball den Ball mit dem Fuß spielen?", true),
+  jn("Sport", 2, "Ist die Formel 1 eine olympische Disziplin?", false),
+  jn("Sport", 3, "Haben alle Fußballfelder exakt dieselben Maße?", false),
+
+  jn("Musik", 2, "Hat Elvis Presley eine Zeit lang in Deutschland gelebt?", true),
+  jn("Musik", 2, "Zählt das Klavier fachlich auch zu den Schlaginstrumenten?", true),
+  jn("Musik", 3, "Wurde die Melodie von „Happy Birthday“ ursprünglich als Geburtstagslied geschrieben?", false),
+
+  jn("Film & TV", 2, "Wurde „Der Herr der Ringe“ in Neuseeland gedreht?", true),
+  jn("Film & TV", 2, "Gehört das Filmstudio Pixar zu Disney?", true),
+  jn("Film & TV", 3, "Liegt das Springfield der Simpsons in einem real benannten US-Bundesstaat?", false),
+
+  jn("Gaming & Internet", 2, "Kann man Minecraft auch ohne Internetverbindung spielen?", true),
+  jn("Gaming & Internet", 2, "Ist Nintendo ein japanisches Unternehmen?", true),
+  jn("Gaming & Internet", 3, "Wurde Nintendo ursprünglich als Spielkartenhersteller gegründet?", true),
+
+  jn("Essen & Trinken", 2, "Ist Honig für Säuglinge unbedenklich?", false),
+  jn("Essen & Trinken", 2, "Ist die Cashew botanisch gesehen eine Nuss?", false),
+  jn("Essen & Trinken", 3, "Verdirbt Honig nach wenigen Jahren zwangsläufig?", false),
+
+  jn("Natur & Tiere", 2, "Können Kühe Treppen hinaufsteigen?", true),
+  jn("Natur & Tiere", 2, "Ist wissenschaftlich belegt, dass Elefanten Angst vor Mäusen haben?", false),
+  jn("Natur & Tiere", 3, "Sind Wale Säugetiere?", true),
+
+  jn("Sprache & Wörter", 1, "Schreibt man Substantive im Deutschen groß?", true),
+  jn("Sprache & Wörter", 2, "Gibt es im Deutschen mehr als drei bestimmte Artikel?", false),
+  jn("Sprache & Wörter", 3, "Stammt das englische Wort „kindergarten“ aus dem Deutschen?", true),
+
+  jn("Marken & Logos", 2, "Gehört YouTube zu Google?", true),
+  jn("Marken & Logos", 2, "Ist Red Bull eine österreichische Marke?", true),
+  jn("Marken & Logos", 3, "Wurde Adidas nach seinem Gründer Adolf Dassler benannt?", true)
+);
+
 </script>
 <script>
 /* =========================================================
@@ -851,6 +1322,7 @@ window.FRAGEN.push(
   ];
   const KEYS = ['A', 'B', 'C', 'D'];
   const SPEICHER = 'ddf-setup-v1';
+  const GEDAECHTNIS = 'ddf-gestellt-v1';
 
   const app = document.getElementById('app');
   const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
@@ -861,10 +1333,11 @@ window.FRAGEN.push(
   const S = {
     screen: 'setup',
     einstellungen: {
-      modus: 'runde',          // 'runde' = Dümmster fliegt raus | 'leben' = Leben verlieren
+      modus: 'runde',          // 'runde' | 'leben' | 'voting'
       leben: 3,
       zeit: 20,                // Sekunden, 0 = ohne Zeitlimit
       fragenProRunde: 2,
+      abstimmungNach: 2,       // Runden bis zur Abstimmung (Abstimmungsmodus)
       schwierigkeit: 'auto',   // 'auto' | 1 | 2 | 3 | 'mix'
       kategorien: alleKategorien.slice(),
       jaNein: true,            // Ja/Nein-Fragen mitspielen?
@@ -878,6 +1351,10 @@ window.FRAGEN.push(
     rIndex: 0,
     rundenPunkte: {},
     stechen: null,             // { kandidaten:[id], ergebnisse:{id:bool}, reihe:[id], idx:0 }
+    blockRunde: 1,             // Runden seit der letzten Abstimmung
+    protokoll: [],             // gegebene Antworten seit der letzten Abstimmung
+    abstimmung: null,          // { kandidaten, waehler, idx, stimmen }
+    gestellt: new Set(),       // schon gestellte Fragen (auch über Spielabende hinweg)
     rausFolge: [],
     pool: [],
     aktuell: null,
@@ -958,10 +1435,37 @@ window.FRAGEN.push(
     return fragen;
   }
 
+  /* Kurzer, stabiler Schlüssel je Frage – Grundlage des Fragengedächtnisses */
+  function fid(f) {
+    let h = 5381;
+    for (let i = 0; i < f.f.length; i++) h = ((h << 5) + h + f.f.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(36);
+  }
+
+  function ladeGestellt() {
+    try {
+      const roh = localStorage.getItem(GEDAECHTNIS);
+      S.gestellt = new Set(roh ? JSON.parse(roh) : []);
+    } catch (e) { S.gestellt = new Set(); }
+  }
+
+  function speichereGestellt() {
+    try { localStorage.setItem(GEDAECHTNIS, JSON.stringify([...S.gestellt])); } catch (e) { /* egal */ }
+  }
+
   function poolAufbauen() {
     let fragen = passendeFragen();
     if (!fragen.length) fragen = window.FRAGEN.slice();
-    S.pool = mischen(fragen);
+
+    // Fragen, die auf diesem Gerät noch nie dran waren, haben Vorrang
+    let frisch = fragen.filter(f => !S.gestellt.has(fid(f)));
+    if (frisch.length < Math.min(25, fragen.length)) {
+      // Der Vorrat ist fast durch – Gedächtnis leeren und von vorn
+      S.gestellt = new Set();
+      speichereGestellt();
+      frisch = fragen;
+    }
+    S.pool = mischen(frisch);
   }
 
   function zielStufe() {
@@ -984,6 +1488,8 @@ window.FRAGEN.push(
       if (idx < 0) idx = 0;
     }
     const frage = S.pool.splice(idx, 1)[0];
+    S.gestellt.add(fid(frage));
+    speichereGestellt();
     return {
       frage,
       antworten: frage.jn ? ['Ja', 'Nein'] : mischen([frage.r, ...frage.w])
@@ -996,7 +1502,9 @@ window.FRAGEN.push(
   function speichern() {
     try {
       localStorage.setItem(SPEICHER, JSON.stringify({
-        namen: S.namen, einstellungen: S.einstellungen
+        namen: S.namen,
+        einstellungen: S.einstellungen,
+        bekannteKategorien: alleKategorien
       }));
     } catch (e) { /* egal */ }
   }
@@ -1011,6 +1519,15 @@ window.FRAGEN.push(
         Object.assign(S.einstellungen, d.einstellungen);
         S.einstellungen.kategorien = (S.einstellungen.kategorien || [])
           .filter(k => alleKategorien.includes(k));
+
+        // Kategorien, die es beim letzten Spielabend noch nicht gab, sind automatisch dabei
+        const bekannt = Array.isArray(d.bekannteKategorien) ? d.bekannteKategorien : [];
+        alleKategorien.forEach(k => {
+          if (!bekannt.includes(k) && !S.einstellungen.kategorien.includes(k)) {
+            S.einstellungen.kategorien.push(k);
+          }
+        });
+
         if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien.slice();
       }
     } catch (e) { /* egal */ }
@@ -1060,6 +1577,7 @@ window.FRAGEN.push(
             <div class="chips">
               <button class="chip" data-set="modus" data-wert="runde" aria-pressed="${e.modus === 'runde'}">Rundenmodus – der Schlechteste fliegt</button>
               <button class="chip" data-set="modus" data-wert="leben" aria-pressed="${e.modus === 'leben'}">Leben – wer alle verliert, fliegt</button>
+              <button class="chip" data-set="modus" data-wert="voting" aria-pressed="${e.modus === 'voting'}">Abstimmung – die Runde entscheidet</button>
             </div>
             <p class="hint" id="modusHinweis"></p>
           </div>
@@ -1068,6 +1586,13 @@ window.FRAGEN.push(
             <span class="label">Fragen pro Spieler und Runde</span>
             <div class="chips">
               ${[1, 2, 3, 4, 5].map(n => `<button class="chip num" data-set="fragenProRunde" data-wert="${n}" aria-pressed="${e.fragenProRunde === n}">${n}</button>`).join('')}
+            </div>
+          </div>
+
+          <div class="setting" id="abstimmungSetting">
+            <span class="label">Runden bis zur Abstimmung</span>
+            <div class="chips">
+              ${[1, 2, 3, 4].map(n => `<button class="chip num" data-set="abstimmungNach" data-wert="${n}" aria-pressed="${e.abstimmungNach === n}">${n}</button>`).join('')}
             </div>
           </div>
 
@@ -1102,6 +1627,12 @@ window.FRAGEN.push(
               ${alleKategorien.map(k => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${e.kategorien.includes(k)}">${esc(k)}</button>`).join('')}
             </div>
             <p class="hint" id="katHinweis"></p>
+          </div>
+
+          <div class="setting">
+            <span class="label">Fragengedächtnis</span>
+            <p class="hint" id="gedaechtnisHinweis" style="margin-bottom:8px"></p>
+            <button class="chip" id="gedaechtnisReset">Gedächtnis zurücksetzen</button>
           </div>
 
           <div class="setting">
@@ -1143,7 +1674,7 @@ window.FRAGEN.push(
     app.querySelectorAll('[data-set]').forEach(b => b.addEventListener('click', () => {
       const feld = b.dataset.set;
       let wert = b.dataset.wert;
-      if (['leben', 'zeit', 'fragenProRunde'].includes(feld)) wert = Number(wert);
+      if (['leben', 'zeit', 'fragenProRunde', 'abstimmungNach'].includes(feld)) wert = Number(wert);
       S.einstellungen[feld] = wert;
       b.parentElement.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
       aktualisiereSetupHinweise();
@@ -1170,6 +1701,12 @@ window.FRAGEN.push(
       speichern();
     }));
 
+    app.querySelector('#gedaechtnisReset').addEventListener('click', () => {
+      S.gestellt = new Set();
+      speichereGestellt();
+      aktualisiereSetupHinweise();
+    });
+
     app.querySelector('#start').addEventListener('click', spielStarten);
   }
 
@@ -1177,14 +1714,25 @@ window.FRAGEN.push(
     const e = S.einstellungen;
     const rund = app.querySelector('#rundenSetting');
     const leb = app.querySelector('#lebenSetting');
+    const abst = app.querySelector('#abstimmungSetting');
     const hin = app.querySelector('#modusHinweis');
     const kat = app.querySelector('#katHinweis');
-    if (rund) rund.classList.toggle('hidden', e.modus !== 'runde');
+    const ged = app.querySelector('#gedaechtnisHinweis');
+    if (rund) rund.classList.toggle('hidden', e.modus === 'leben');
     if (leb) leb.classList.toggle('hidden', e.modus !== 'leben');
+    if (abst) abst.classList.toggle('hidden', e.modus !== 'voting');
     if (hin) {
-      hin.textContent = e.modus === 'runde'
-        ? 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.'
-        : 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.';
+      hin.textContent = {
+        runde: 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.',
+        leben: 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.',
+        voting: 'Erst wird gespielt, dann gerichtet: Nach den eingestellten Runden stimmen alle ab, welche Antwort die dümmste war. Wer die meisten Stimmen bekommt, fliegt raus – bei Gleichstand entscheidet ein Stechen.'
+      }[e.modus];
+    }
+    if (ged) {
+      const gesamt = window.FRAGEN.length;
+      ged.textContent = S.gestellt.size
+        ? `${S.gestellt.size} von ${gesamt} Fragen waren auf diesem Gerät schon dran – sie kommen erst wieder, wenn der Rest durch ist.`
+        : `Noch keine Frage gestellt. Gespielte Fragen werden gemerkt, damit sich beim nächsten Mal nichts wiederholt.`;
     }
     if (kat) {
       const fragen = passendeFragen();
@@ -1212,9 +1760,16 @@ window.FRAGEN.push(
     S.runde = 1;
     S.rausFolge = [];
     S.stechen = null;
+    blockZuruecksetzen();
     poolAufbauen();
     rundeAufbauen();
     naechsterZug();
+  }
+
+  function blockZuruecksetzen() {
+    S.blockRunde = 1;
+    S.protokoll = [];
+    S.abstimmung = null;
   }
 
   function rundeAufbauen() {
@@ -1222,7 +1777,7 @@ window.FRAGEN.push(
     S.rundenPunkte = {};
     aktive.forEach(id => S.rundenPunkte[id] = 0);
     const reihe = [];
-    const durchgaenge = S.einstellungen.modus === 'runde' ? S.einstellungen.fragenProRunde : 1;
+    const durchgaenge = S.einstellungen.modus === 'leben' ? 1 : S.einstellungen.fragenProRunde;
     for (let d = 0; d < durchgaenge; d++) reihe.push(...aktive);
     S.reihenfolge = reihe;
     S.rIndex = 0;
@@ -1254,7 +1809,7 @@ window.FRAGEN.push(
     else zeigeFrage();
   }
 
-  function zeigeUebergabe(p, titel) {
+  function zeigeUebergabe(p, titel, weiter) {
     S.screen = 'uebergabe';
     app.innerHTML = kopf() + `
       <div class="card turn-card fade">
@@ -1265,7 +1820,7 @@ window.FRAGEN.push(
         <br>
         <button class="btn" id="weiter">Bereit!</button>
       </div>`;
-    app.querySelector('#weiter').addEventListener('click', zeigeFrage);
+    app.querySelector('#weiter').addEventListener('click', weiter || zeigeFrage);
   }
 
   /* ---------------------------------------------------------
@@ -1356,6 +1911,16 @@ window.FRAGEN.push(
     }
     if (a.stechen) S.stechen.ergebnisse[p.id] = korrekt;
 
+    if (S.einstellungen.modus === 'voting' && !a.stechen) {
+      S.protokoll.push({
+        pid: p.id,
+        frage: a.frage.f,
+        antwort: i === null ? '(keine Antwort)' : a.antworten[i],
+        richtigeAntwort: a.frage.r,
+        korrekt
+      });
+    }
+
     zeigeAufloesung(richtigIdx);
   }
 
@@ -1433,10 +1998,28 @@ window.FRAGEN.push(
      Rundenende (Rundenmodus)
      --------------------------------------------------------- */
   function rundeBeenden() {
-    if (S.einstellungen.modus === 'leben') {
+    const e = S.einstellungen;
+
+    if (e.modus === 'leben') {
       S.runde++;
       rundeAufbauen();
       return naechsterZug();
+    }
+
+    if (e.modus === 'voting') {
+      // Erst wenn genug Runden gespielt sind, wird abgestimmt
+      if (S.blockRunde < e.abstimmungNach) {
+        return zeigeRundenstand(
+          () => { S.blockRunde++; S.runde++; rundeAufbauen(); naechsterZug(); },
+          `Noch ${e.abstimmungNach - S.blockRunde} Runde${e.abstimmungNach - S.blockRunde === 1 ? '' : 'n'}, dann wird abgestimmt.`,
+          'Nächste Runde'
+        );
+      }
+      return zeigeRundenstand(
+        abstimmungStarten,
+        'Alle haben geantwortet – jetzt entscheidet die Runde.',
+        'Zur Abstimmung'
+      );
     }
 
     const aktive = lebende();
@@ -1452,23 +2035,25 @@ window.FRAGEN.push(
 
   function nachRauswurf() {
     if (spielEndeGeprueft()) return;
+    blockZuruecksetzen();
     S.runde++;
     rundeAufbauen();
     naechsterZug();
   }
 
-  function zeigeRundenstand(weiter) {
+  function zeigeRundenstand(weiter, hinweis, knopf) {
     S.screen = 'rundenende';
     const aktive = lebende().slice().sort((a, b) => (S.rundenPunkte[b.id] || 0) - (S.rundenPunkte[a.id] || 0));
     const min = Math.min(...aktive.map(p => S.rundenPunkte[p.id] || 0));
     const gleichstand = aktive.filter(p => (S.rundenPunkte[p.id] || 0) === min).length > 1;
+    const text = hinweis || (gleichstand
+      ? 'Gleichstand am Tabellenende – es gibt ein Stechen!'
+      : 'Wer unten steht, fliegt gleich raus …');
 
     app.innerHTML = kopf() + `
       <div class="card fade">
         <h2>Runde ${S.runde} ist vorbei</h2>
-        <p class="hint">${gleichstand
-          ? 'Gleichstand am Tabellenende – es gibt ein Stechen!'
-          : 'Wer unten steht, fliegt gleich raus …'}</p>
+        <p class="hint">${esc(text)}</p>
         <table class="standings">
           <tr><th>Spieler</th><th class="num">Diese Runde</th><th class="num">Gesamt richtig</th></tr>
           ${aktive.map(p => `
@@ -1479,9 +2064,125 @@ window.FRAGEN.push(
             </tr>`).join('')}
         </table>
         <br>
-        <button class="btn block" id="weiter">${gleichstand ? 'Zum Stechen' : 'Wer fliegt raus?'}</button>
+        <button class="btn block" id="weiter">${esc(knopf || (gleichstand ? 'Zum Stechen' : 'Wer fliegt raus?'))}</button>
       </div>`;
     app.querySelector('#weiter').addEventListener('click', weiter);
+  }
+
+  /* ---------------------------------------------------------
+     Abstimmung: Welche Antwort war die dümmste?
+     --------------------------------------------------------- */
+  function abstimmungStarten() {
+    const eintraege = S.protokoll.filter(e => spielerVon(e.pid).dabei);
+    const falsche = eintraege.filter(e => !e.korrekt);
+    const basis = falsche.length ? falsche : eintraege;
+
+    S.abstimmung = {
+      kandidaten: basis.map((e, i) => Object.assign({ key: i }, e)),
+      nurFalsche: falsche.length > 0,
+      waehler: lebende().map(p => p.id),
+      idx: 0,
+      stimmen: {}
+    };
+    abstimmungZug();
+  }
+
+  function abstimmungZug() {
+    const ab = S.abstimmung;
+    if (ab.idx >= ab.waehler.length) return abstimmungErgebnis();
+
+    const waehler = spielerVon(ab.waehler[ab.idx]);
+    // Wer nur über eigene Antworten abstimmen könnte, wird übersprungen
+    if (!ab.kandidaten.some(k => k.pid !== waehler.id)) { ab.idx++; return abstimmungZug(); }
+
+    if (S.einstellungen.uebergabe) zeigeUebergabe(waehler, 'Abstimmung', zeigeAbstimmung);
+    else zeigeAbstimmung();
+  }
+
+  function zeigeAbstimmung() {
+    S.screen = 'abstimmung';
+    const ab = S.abstimmung;
+    const waehler = spielerVon(ab.waehler[ab.idx]);
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <div class="meta">
+          <span class="tag">Abstimmung</span>
+          <span class="tag">${avatar(waehler, 'inline')} ${esc(waehler.name)} stimmt ab</span>
+          <span class="tag">${ab.idx + 1} / ${ab.waehler.length}</span>
+        </div>
+        <div class="question">Welche Antwort war die dümmste?</div>
+        <div class="votes">
+          ${ab.kandidaten.map(k => {
+            const p = spielerVon(k.pid);
+            const eigen = k.pid === waehler.id;
+            return `
+              <button class="vote" data-key="${k.key}" ${eigen ? 'disabled' : ''}>
+                <span class="vote-antwort">„${esc(k.antwort)}“</span>
+                <span class="vote-meta">${avatar(p, 'inline')} ${esc(p.name)} · ${esc(k.frage)}</span>
+                <span class="vote-flag ${k.korrekt ? 'good' : 'bad'}">${k.korrekt
+                  ? 'war richtig'
+                  : 'richtig wäre: ' + esc(k.richtigeAntwort)}</span>
+                ${eigen ? '<span class="vote-flag">deine eigene Antwort – nicht wählbar</span>' : ''}
+              </button>`;
+          }).join('')}
+        </div>
+        <p class="hint">${ab.nurFalsche
+          ? 'Zur Auswahl stehen alle falschen Antworten seit der letzten Abstimmung.'
+          : 'Diesmal lag niemand daneben – stimmt einfach über alle Antworten ab.'}</p>
+      </div>`;
+
+    app.querySelectorAll('.vote').forEach(b =>
+      b.addEventListener('click', () => stimmeAb(Number(b.dataset.key))));
+  }
+
+  function stimmeAb(key) {
+    if (S.screen !== 'abstimmung') return;
+    const ab = S.abstimmung;
+    ab.stimmen[key] = (ab.stimmen[key] || 0) + 1;
+    ab.idx++;
+    Sound.tick();
+    abstimmungZug();
+  }
+
+  function abstimmungErgebnis() {
+    S.screen = 'abstimmungsergebnis';
+    const ab = S.abstimmung;
+
+    const proSpieler = {};
+    ab.kandidaten.forEach(k => {
+      proSpieler[k.pid] = (proSpieler[k.pid] || 0) + (ab.stimmen[k.key] || 0);
+    });
+    const gewertet = Object.keys(proSpieler).map(Number)
+      .map(pid => ({ p: spielerVon(pid), stimmen: proSpieler[pid] }))
+      .sort((a, b) => b.stimmen - a.stimmen);
+    const max = gewertet.length ? gewertet[0].stimmen : 0;
+    const spitze = gewertet.filter(g => g.stimmen === max);
+    const abgegeben = Object.values(ab.stimmen).reduce((a, b) => a + b, 0);
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        <h2>Das Ergebnis der Abstimmung</h2>
+        <p class="hint">${abgegeben} ${abgegeben === 1 ? 'Stimme' : 'Stimmen'} abgegeben.</p>
+        <div class="tally">
+          ${gewertet.map(g => `
+            <div class="tally-row">
+              <span class="tally-name">${avatar(g.p)} ${esc(g.p.name)}</span>
+              <span class="tally-bar"><i style="width:${max ? (g.stimmen / max) * 100 : 0}%"></i></span>
+              <span class="tally-zahl">${g.stimmen}</span>
+            </div>`).join('')}
+        </div>
+        <div class="verdict ${spitze.length === 1 ? 'bad' : ''}">${spitze.length === 1
+          ? esc(spitze[0].p.name) + ' hat die dümmste Antwort gegeben.'
+          : 'Gleichstand – ' + esc(spitze.map(g => g.p.name).join(' und ')) + ' müssen ins Stechen!'}</div>
+        <button class="btn block" id="weiter">${spitze.length === 1 ? 'Und tschüss!' : 'Zum Stechen'}</button>
+      </div>`;
+
+    app.querySelector('#weiter').addEventListener('click', () => {
+      S.abstimmung = null;
+      if (spitze.length === 1) rauswurf(spitze[0].p, nachRauswurf);
+      else stechenStarten(spitze.map(g => g.p.id));
+    });
   }
 
   /* ---------------------------------------------------------
@@ -1601,11 +2302,16 @@ window.FRAGEN.push(
     const gesamt = S.reihenfolge.length;
     const fortschritt = S.stechen
       ? 'Stechen'
-      : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+      : S.abstimmung
+        ? 'Abstimmung'
+        : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+    const block = e.modus === 'voting' && !S.stechen && !S.abstimmung
+      ? ` · Runde ${S.blockRunde} von ${e.abstimmungNach} bis zur Abstimmung`
+      : '';
 
     return `
       <div class="hud">
-        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}</div>
+        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}${block}</div>
         <div>${lebende().length} von ${S.spieler.length} noch dabei
           <button class="btn ghost small" id="abbrechen" style="margin-left:8px">Abbrechen</button>
         </div>
@@ -1658,6 +2364,7 @@ window.FRAGEN.push(
      Los geht's
      --------------------------------------------------------- */
   laden();
+  ladeGestellt();
   zeigeSetup();
 })();
 
