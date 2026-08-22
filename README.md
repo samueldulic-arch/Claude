@@ -23,7 +23,7 @@ Auf dem Handy funktioniert es genauso.
 | Modus | Regel |
 | --- | --- |
 | **Rundenmodus** (Standard) | Jede Runde beantworten alle gleich viele Fragen. Wer am Rundenende die wenigsten richtig hat, **fliegt raus**. Bei Gleichstand gibt es ein **Stechen**: die Betroffenen bekommen Extrafragen, bis einer allein daneben liegt. |
-| **Abstimmungsmodus** | Erst wird gespielt, dann gerichtet. Nach einer einstellbaren Zahl Runden (Standard: 2) stimmen alle reihum ab, **welche Antwort die dümmste war**. Wer die meisten Stimmen kassiert, fliegt raus – bei Gleichstand entscheidet ein Stechen. |
+| **Abstimmungsmodus** | Erst wird gespielt, dann gerichtet. Nach einer einstellbaren Zahl Runden (Standard: 2) stimmen alle reihum ab, **welche Antwort die dümmste war**. Wer die meisten Stimmen kassiert, **verliert ein Leben** – wer keins mehr hat, fliegt raus. Bei Gleichstand entscheidet ein Stechen. |
 | **Lebenmodus** | Reihum eine Frage. Jede falsche Antwort kostet ein Leben (1–5 einstellbar). Wer keine Leben mehr hat, fliegt raus. |
 
 In allen Modi läuft das Spiel, bis nur noch einer übrig ist.
@@ -34,13 +34,17 @@ In allen Modi läuft das Spiel, bis nur noch einer übrig ist.
 2. Danach stimmt jeder einmal ab. Zur Auswahl stehen alle **falschen** Antworten aus diesen Runden –
    mit Name, Frage und der richtigen Lösung daneben. Für die eigene Antwort kann niemand stimmen.
    Lag ausnahmsweise niemand daneben, wird über alle gegebenen Antworten abgestimmt.
-3. Das Ergebnis erscheint als Balkendiagramm. Wer die meisten Stimmen hat, fliegt.
+3. Das Ergebnis erscheint als Balkendiagramm. Wer die meisten Stimmen hat, verliert ein Leben.
+4. Danach geht es in die nächsten zwei Runden – bis jemand keine Leben mehr hat und rausfliegt.
+
+Die Zahl der Leben stellt ihr selbst ein (1–5, Standard 3). Mit **1 Leben** fliegt der Dümmste
+sofort nach der ersten Abstimmung raus, mit 3 Leben braucht es drei verlorene Abstimmungen.
 
 ## Einstellungen
 
 - **Fragen pro Spieler und Runde**: 1–5 (Runden- und Abstimmungsmodus)
 - **Runden bis zur Abstimmung**: 1–4 (Abstimmungsmodus)
-- **Leben pro Spieler**: 1–5 (Lebenmodus)
+- **Leben pro Spieler**: 1–5 (Leben- und Abstimmungsmodus)
 - **Bedenkzeit**: 10 / 15 / 20 / 30 / 45 Sekunden oder ohne Zeitlimit
 - **Schwierigkeit**: ansteigend (wird von Runde zu Runde schwerer), leicht, mittel, schwer oder bunt gemischt
 - **Kategorien**: einzeln an- und abwählbar

@@ -494,6 +494,14 @@ kbd {
   margin-right: 5px;
 }
 
+/* Leben verloren – wie der Rauswurf, aber weniger endgültig */
+.boom.warn h2 { color: var(--accent); }
+.lives-big {
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  margin: 6px 0 2px;
+}
+
 </style>
 
 <main class="wrap" id="app"></main>
@@ -1597,7 +1605,7 @@ window.FRAGEN.push(
           </div>
 
           <div class="setting" id="lebenSetting">
-            <span class="label">Leben pro Spieler</span>
+            <span class="label" id="lebenLabel">Leben pro Spieler</span>
             <div class="chips">
               ${[1, 2, 3, 4, 5].map(n => `<button class="chip num" data-set="leben" data-wert="${n}" aria-pressed="${e.leben === n}">${'❤'.repeat(n)}</button>`).join('')}
             </div>
@@ -1719,14 +1727,20 @@ window.FRAGEN.push(
     const kat = app.querySelector('#katHinweis');
     const ged = app.querySelector('#gedaechtnisHinweis');
     if (rund) rund.classList.toggle('hidden', e.modus === 'leben');
-    if (leb) leb.classList.toggle('hidden', e.modus !== 'leben');
+    if (leb) leb.classList.toggle('hidden', e.modus === 'runde');
     if (abst) abst.classList.toggle('hidden', e.modus !== 'voting');
     if (hin) {
       hin.textContent = {
         runde: 'Jede Runde beantworten alle die gleiche Anzahl Fragen. Wer am Ende der Runde die wenigsten richtig hat, fliegt raus – bei Gleichstand gibt es ein Stechen.',
         leben: 'Reihum eine Frage. Jede falsche Antwort kostet ein Leben. Wer keine Leben mehr hat, fliegt raus.',
-        voting: 'Erst wird gespielt, dann gerichtet: Nach den eingestellten Runden stimmen alle ab, welche Antwort die dümmste war. Wer die meisten Stimmen bekommt, fliegt raus – bei Gleichstand entscheidet ein Stechen.'
+        voting: 'Erst wird gespielt, dann gerichtet: Nach den eingestellten Runden stimmen alle ab, welche Antwort die dümmste war. Wer die meisten Stimmen bekommt, verliert ein Leben – wer keins mehr hat, fliegt raus. Bei Gleichstand entscheidet ein Stechen.'
       }[e.modus];
+    }
+    const lebLabel = app.querySelector('#lebenLabel');
+    if (lebLabel) {
+      lebLabel.textContent = e.modus === 'voting'
+        ? 'Leben pro Spieler (1 = sofort raus)'
+        : 'Leben pro Spieler';
     }
     if (ged) {
       const gesamt = window.FRAGEN.length;
@@ -2175,12 +2189,14 @@ window.FRAGEN.push(
         <div class="verdict ${spitze.length === 1 ? 'bad' : ''}">${spitze.length === 1
           ? esc(spitze[0].p.name) + ' hat die dümmste Antwort gegeben.'
           : 'Gleichstand – ' + esc(spitze.map(g => g.p.name).join(' und ')) + ' müssen ins Stechen!'}</div>
-        <button class="btn block" id="weiter">${spitze.length === 1 ? 'Und tschüss!' : 'Zum Stechen'}</button>
+        <button class="btn block" id="weiter">${spitze.length === 1
+          ? (S.einstellungen.leben > 1 ? 'Das kostet …' : 'Und tschüss!')
+          : 'Zum Stechen'}</button>
       </div>`;
 
     app.querySelector('#weiter').addEventListener('click', () => {
       S.abstimmung = null;
-      if (spitze.length === 1) rauswurf(spitze[0].p, nachRauswurf);
+      if (spitze.length === 1) bestrafen(spitze[0].p, nachRauswurf);
       else stechenStarten(spitze.map(g => g.p.id));
     });
   }
@@ -2200,7 +2216,7 @@ window.FRAGEN.push(
     if (falsche.length === 1) {
       const p = spielerVon(falsche[0]);
       S.stechen = null;
-      return rauswurf(p, nachRauswurf);
+      return bestrafen(p, nachRauswurf);
     }
     if (falsche.length > 1 && falsche.length < st.kandidaten.length) {
       st.kandidaten = falsche;
@@ -2225,6 +2241,32 @@ window.FRAGEN.push(
   /* ---------------------------------------------------------
      Rauswurf & Spielende
      --------------------------------------------------------- */
+  /* Im Abstimmungsmodus kostet die dümmste Antwort ein Leben – sonst fliegt man sofort */
+  function bestrafen(p, weiter) {
+    if (S.einstellungen.modus === 'voting') {
+      p.leben--;
+      if (p.leben > 0) return zeigeLebenVerloren(p, weiter);
+    }
+    rauswurf(p, weiter);
+  }
+
+  function zeigeLebenVerloren(p, weiter) {
+    S.screen = 'lebenverloren';
+    Sound.falsch();
+    const weg = Math.max(0, S.einstellungen.leben - p.leben);
+
+    app.innerHTML = kopf() + `
+      <div class="card boom warn">
+        <span class="emoji">💔</span>
+        <h2>${esc(p.name)} verliert ein Leben</h2>
+        <p class="lives-big">${'❤'.repeat(p.leben)}${'🖤'.repeat(weg)}</p>
+        <p class="hint">Noch ${p.leben} ${p.leben === 1 ? 'Leben' : 'Leben'} übrig · ${p.richtig} richtig, ${p.falsch} falsch</p>
+        <br>
+        <button class="btn" id="weiter">Weiter geht’s</button>
+      </div>`;
+    app.querySelector('#weiter').addEventListener('click', weiter);
+  }
+
   function rauswurf(p, weiter) {
     S.screen = 'rauswurf';
     p.dabei = false;
@@ -2300,18 +2342,24 @@ window.FRAGEN.push(
   function kopf() {
     const e = S.einstellungen;
     const gesamt = S.reihenfolge.length;
+    // Auf Zwischenbildschirmen wäre der Fragenzähler nur verwirrend
+    const zwischenschirm = ['rauswurf', 'lebenverloren', 'rundenende', 'abstimmungsergebnis', 'stechinfo', 'ende']
+      .includes(S.screen);
     const fortschritt = S.stechen
       ? 'Stechen'
       : S.abstimmung
         ? 'Abstimmung'
-        : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
-    const block = e.modus === 'voting' && !S.stechen && !S.abstimmung
-      ? ` · Runde ${S.blockRunde} von ${e.abstimmungNach} bis zur Abstimmung`
+        : zwischenschirm
+          ? ''
+          : `Frage ${Math.min(S.rIndex + 1, gesamt)} / ${gesamt}`;
+    const block = e.modus === 'voting' && !S.stechen && !S.abstimmung && !zwischenschirm
+      ? `Runde ${S.blockRunde} von ${e.abstimmungNach} bis zur Abstimmung`
       : '';
+    const zeile = [`<strong>Runde ${S.runde}</strong>`, fortschritt, block].filter(Boolean).join(' · ');
 
     return `
       <div class="hud">
-        <div><strong>Runde ${S.runde}</strong> · ${fortschritt}${block}</div>
+        <div>${zeile}</div>
         <div>${lebende().length} von ${S.spieler.length} noch dabei
           <button class="btn ghost small" id="abbrechen" style="margin-left:8px">Abbrechen</button>
         </div>
@@ -2319,8 +2367,9 @@ window.FRAGEN.push(
       <div class="scorebar">
         ${S.spieler.map(p => {
           const aktiv = S.aktuell && S.aktuell.pid === p.id && ['frage', 'aufloesung', 'uebergabe'].includes(S.screen);
-          const leben = e.modus === 'leben' && p.dabei ? `<span class="lives">${'❤'.repeat(Math.max(0, p.leben))}</span>` : '';
-          const punkte = e.modus === 'runde' && p.dabei ? `<span class="lives">${S.rundenPunkte[p.id] || 0}</span>` : '';
+          const zeigtLeben = e.modus === 'leben' || (e.modus === 'voting' && e.leben > 1);
+          const leben = zeigtLeben && p.dabei ? `<span class="lives">${'❤'.repeat(Math.max(0, p.leben))}</span>` : '';
+          const punkte = e.modus !== 'leben' && p.dabei ? `<span class="lives">${S.rundenPunkte[p.id] || 0}</span>` : '';
           return `<span class="score-pill ${p.dabei ? '' : 'out'} ${aktiv ? 'active' : ''}">
             ${avatar(p)}${esc(p.name)} ${leben}${punkte}
           </span>`;

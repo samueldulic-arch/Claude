@@ -488,3 +488,11 @@ kbd {
   vertical-align: -6px;
   margin-right: 5px;
 }
+
+/* Leben verloren – wie der Rauswurf, aber weniger endgültig */
+.boom.warn h2 { color: var(--accent); }
+.lives-big {
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  margin: 6px 0 2px;
+}
