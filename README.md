@@ -54,8 +54,8 @@ Auf dem Bildschirm des Moderators steht:
 
 Die vier Antwortmöglichkeiten bleiben verborgen – bis der Moderator sie braucht: Ein Klick auf
 **Antwortmöglichkeiten einblenden** zeigt sie zum Vorlesen, und ein Klick auf die genannte Antwort
-wertet direkt. Unter *Antwortmöglichkeiten vorlesen* legt ihr fest, ob das nie, automatisch bei
-schweren Fragen (★★★, Standard) oder immer passiert.
+wertet direkt. Unter *Antwortmöglichkeiten vorlesen* legt ihr fest, wann das automatisch passiert:
+nie, **nur bei ★★★★ Ultra** (Standard), ab „schwer“ oder immer.
 
 Ist eine Bedenkzeit eingestellt, startet sie in dieser Ansicht **nicht** automatisch, sondern per
 Knopfdruck – so frisst das Vorlesen keine Zeit. Der „Du bist dran“-Bildschirm entfällt, das Gerät
@@ -73,7 +73,7 @@ Textfeld steht), <kbd>1</kbd>–<kbd>4</kbd> für eine eingeblendete Antwort.
 - **Runden bis zur Abstimmung**: 1–4 (Abstimmungsmodus)
 - **Leben pro Spieler**: 1–5 (Leben- und Abstimmungsmodus)
 - **Bedenkzeit**: 10 / 15 / 20 / 30 / 45 Sekunden oder ohne Zeitlimit
-- **Schwierigkeit**: ansteigend (wird von Runde zu Runde schwerer), leicht, mittel, schwer oder bunt gemischt
+- **Schwierigkeit**: ansteigend (Runde 1–2 leicht, 3–4 mittel, 5–6 schwer, ab 7 ultra), oder fest auf leicht, mittel, schwer, ★★★★ Ultra bzw. bunt gemischt
 - **Kategorien**: einzeln an- und abwählbar
 - **Moderatoransicht** und **Antwortmöglichkeiten vorlesen**: nie / bei schweren Fragen / immer
 - **Ja/Nein-Fragen**: mitspielen oder komplett weglassen
@@ -97,12 +97,16 @@ Im Einrichtungsbildschirm steht, wie viele Fragen schon verbraucht sind; ein Kli
 
 ## Fragenkatalog
 
-Aktuell **680 deutsche Fragen** in 12 Kategorien:
+Aktuell **1.505 deutsche Fragen** in 12 Kategorien:
 
-- **579 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
-- **101 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
+- **1.383 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
+- **122 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
 
-Verteilung nach Schwierigkeit: 138 leicht · 242 mittel · 300 schwer.
+Vier Schwierigkeitsstufen: **288 leicht · 639 mittel · 323 schwer · 255 ★★★★ Ultra**.
+
+Ultra ist die Stufe für Leute, die sonst alles wissen – Jahreszahlen, Einheiten, Hauptstädte
+abseits der üblichen Verdächtigen. In der Moderatoransicht ist das die einzige Stufe, bei der
+standardmäßig vier Antwortmöglichkeiten eingeblendet werden.
 
 Kategorien: Allgemeinwissen · Geografie · Geschichte · Wissenschaft · Sport · Musik ·
 Film & TV · Gaming & Internet · Essen & Trinken · Natur & Tiere · Sprache & Wörter · Marken & Logos
@@ -121,7 +125,7 @@ Für eine Ja/Nein-Frage im Block darunter:
 jn("Kategorie", 2, "Ist die Behauptung wahr?", true),   // true = „Ja“ ist richtig
 ```
 
-Der zweite Wert ist jeweils die Schwierigkeit: `1` = leicht, `2` = mittel, `3` = schwer.
+Der zweite Wert ist jeweils die Schwierigkeit: `1` = leicht, `2` = mittel, `3` = schwer, `4` = ultra.
 Bei Multiple Choice steht die richtige Antwort immer direkt hinter der Frage und wird im Spiel
 automatisch mit den falschen gemischt. Bei Ja/Nein steht „Ja“ immer links.
 Eine neue Kategorie taucht automatisch in der Kategorieauswahl auf.

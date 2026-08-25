@@ -9,6 +9,8 @@
     '#ff9a3d', '#7ef2c9', '#ff6b6b', '#8ea2ff', '#ffd9a0'
   ];
   const KEYS = ['A', 'B', 'C', 'D'];
+  const STUFEN = ['', 'Leicht', 'Mittel', 'Schwer', 'Ultra'];
+  const sterne = s => '★'.repeat(s) + '☆'.repeat(4 - s);
   const SPEICHER = 'ddf-setup-v1';
   const GEDAECHTNIS = 'ddf-gestellt-v1';
 
@@ -32,7 +34,7 @@
       sound: true,
       uebergabe: true,         // Zwischenbildschirm "XY ist dran"
       moderator: false,        // Ein Gerät beim Moderator, Fragen werden vorgelesen
-      optionenZeigen: 'schwer' // Wann Antwortmöglichkeiten eingeblendet werden: 'nie' | 'schwer' | 'immer'
+      optionenZeigen: 'ultra'  // Antwortmöglichkeiten: 'nie' | 'ultra' | 'schwer' | 'immer'
     },
     namen: ['Spieler 1', 'Spieler 2', 'Spieler 3'],
     spieler: [],
@@ -165,7 +167,8 @@
     // Automatisch: es wird von Runde zu Runde schwerer
     if (S.runde <= 2) return 1;
     if (S.runde <= 4) return 2;
-    return 3;
+    if (S.runde <= 6) return 3;
+    return 4;
   }
 
   function frageZiehen() {
@@ -307,6 +310,7 @@
               <button class="chip" data-set="schwierigkeit" data-wert="1" aria-pressed="${e.schwierigkeit === '1'}">Leicht</button>
               <button class="chip" data-set="schwierigkeit" data-wert="2" aria-pressed="${e.schwierigkeit === '2'}">Mittel</button>
               <button class="chip" data-set="schwierigkeit" data-wert="3" aria-pressed="${e.schwierigkeit === '3'}">Schwer</button>
+              <button class="chip" data-set="schwierigkeit" data-wert="4" aria-pressed="${e.schwierigkeit === '4'}">★★★★ Ultra</button>
               <button class="chip" data-set="schwierigkeit" data-wert="mix" aria-pressed="${e.schwierigkeit === 'mix'}">Bunt gemischt</button>
             </div>
           </div>
@@ -331,7 +335,8 @@
             <span class="label">Antwortmöglichkeiten vorlesen</span>
             <div class="chips">
               <button class="chip" data-set="optionenZeigen" data-wert="nie" aria-pressed="${e.optionenZeigen === 'nie'}">Nie</button>
-              <button class="chip" data-set="optionenZeigen" data-wert="schwer" aria-pressed="${e.optionenZeigen === 'schwer'}">Bei schweren Fragen</button>
+              <button class="chip" data-set="optionenZeigen" data-wert="ultra" aria-pressed="${e.optionenZeigen === 'ultra'}">Nur bei ★★★★ Ultra</button>
+              <button class="chip" data-set="optionenZeigen" data-wert="schwer" aria-pressed="${e.optionenZeigen === 'schwer'}">Ab „schwer“</button>
               <button class="chip" data-set="optionenZeigen" data-wert="immer" aria-pressed="${e.optionenZeigen === 'immer'}">Immer</button>
             </div>
             <p class="hint">Sonst blendest du sie bei jeder Frage einzeln ein.</p>
@@ -561,7 +566,7 @@
     S.screen = 'frage';
     const a = S.aktuell;
     const p = spielerVon(a.pid);
-    const stufe = ['', 'Leicht', 'Mittel', 'Schwer'][a.frage.s];
+    const stufe = STUFEN[a.frage.s];
     a.start = Date.now();
 
     app.innerHTML = kopf() + `
@@ -569,7 +574,7 @@
         ${S.einstellungen.zeit ? '<div class="timer" id="timer"><div></div></div>' : ''}
         <div class="meta">
           <span class="tag">${esc(a.frage.k)}</span>
-          <span class="tag diff">${'★'.repeat(a.frage.s)}${'☆'.repeat(3 - a.frage.s)} ${stufe}</span>
+          <span class="tag diff${a.frage.s === 4 ? ' ultra' : ''}">${sterne(a.frage.s)} ${stufe}</span>
           ${a.frage.jn ? '<span class="tag">Ja oder Nein?</span>' : ''}
           ${a.stechen ? '<span class="tag" style="background:rgba(255,77,141,.25)">Stechen</span>' : ''}
           <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
@@ -597,12 +602,14 @@
     const a = S.aktuell;
     const e = S.einstellungen;
     const p = spielerVon(a.pid);
-    const stufe = ['', 'Leicht', 'Mittel', 'Schwer'][a.frage.s];
+    const stufe = STUFEN[a.frage.s];
     a.start = Date.now();
 
     if (a.optionenSichtbar === undefined) {
       a.optionenSichtbar = !a.frage.jn && (
-        e.optionenZeigen === 'immer' || (e.optionenZeigen === 'schwer' && a.frage.s === 3)
+        e.optionenZeigen === 'immer' ||
+        (e.optionenZeigen === 'schwer' && a.frage.s >= 3) ||
+        (e.optionenZeigen === 'ultra' && a.frage.s === 4)
       );
     }
 
@@ -611,7 +618,7 @@
         ${e.zeit ? `<div class="timer${a.zeitGestartet ? '' : ' idle'}" id="timer"><div></div></div>` : ''}
         <div class="meta">
           <span class="tag">${esc(a.frage.k)}</span>
-          <span class="tag diff">${'★'.repeat(a.frage.s)}${'☆'.repeat(3 - a.frage.s)} ${stufe}</span>
+          <span class="tag diff${a.frage.s === 4 ? ' ultra' : ''}">${sterne(a.frage.s)} ${stufe}</span>
           ${a.frage.jn ? '<span class="tag">Ja oder Nein?</span>' : ''}
           ${a.stechen ? '<span class="tag" style="background:rgba(255,77,141,.25)">Stechen</span>' : ''}
           <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>

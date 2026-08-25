@@ -552,3 +552,10 @@ kbd {
 
 /* Bedenkzeit läuft in der Moderatoransicht erst auf Knopfdruck */
 .timer.idle { opacity: .3; }
+
+/* Vierte Schwierigkeitsstufe */
+.tag.diff.ultra {
+  color: var(--accent-2);
+  background: rgba(255, 77, 141, .16);
+  border-color: rgba(255, 77, 141, .45);
+}
