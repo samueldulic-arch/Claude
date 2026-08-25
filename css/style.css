@@ -496,3 +496,59 @@ kbd {
   letter-spacing: 4px;
   margin: 6px 0 2px;
 }
+
+/* ---------- Moderatoransicht ---------- */
+
+.loesung {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: rgba(47, 214, 122, .12);
+  border: 1px solid rgba(47, 214, 122, .4);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.loesung-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--good);
+  font-weight: 700;
+}
+.loesung-text { font-size: 1.25rem; font-weight: 700; }
+
+.antwort-feld {
+  width: 100%;
+  margin: 14px 0 12px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 13px 15px;
+}
+.antwort-feld::placeholder { color: var(--muted); }
+.antwort-feld:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, .08);
+}
+
+.judge { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.judge .btn { padding: 18px 10px; font-size: 1.1rem; }
+.btn.good {
+  background: linear-gradient(100deg, var(--good), #17b862);
+  color: #04220f;
+  box-shadow: 0 10px 24px rgba(47, 214, 122, .22);
+}
+.btn.bad {
+  background: linear-gradient(100deg, var(--bad), #d92b3c);
+  color: #2b0206;
+  box-shadow: 0 10px 24px rgba(255, 77, 94, .22);
+}
+
+/* Bedenkzeit läuft in der Moderatoransicht erst auf Knopfdruck */
+.timer.idle { opacity: .3; }

@@ -40,6 +40,33 @@ In allen Modi läuft das Spiel, bis nur noch einer übrig ist.
 Die Zahl der Leben stellt ihr selbst ein (1–5, Standard 3). Mit **1 Leben** fliegt der Dümmste
 sofort nach der ersten Abstimmung raus, mit 3 Leben braucht es drei verlorene Abstimmungen.
 
+## Zwei Ansichten
+
+**Handy-Ansicht** (Standard): Das Gerät wandert reihum, jede Frage hat vier Antworten zum Antippen.
+
+**Moderatoransicht**: Einer liest vor und wertet, alle anderen antworten frei aus dem Kopf.
+Auf dem Bildschirm des Moderators steht:
+
+- die Frage groß zum Vorlesen,
+- die **Lösung** klein darunter (nur für den Moderator),
+- ein optionales Feld, in das er tippen kann, **was die Person geantwortet hat**,
+- die Knöpfe **✓ Richtig** und **✗ Falsch**.
+
+Die vier Antwortmöglichkeiten bleiben verborgen – bis der Moderator sie braucht: Ein Klick auf
+**Antwortmöglichkeiten einblenden** zeigt sie zum Vorlesen, und ein Klick auf die genannte Antwort
+wertet direkt. Unter *Antwortmöglichkeiten vorlesen* legt ihr fest, ob das nie, automatisch bei
+schweren Fragen (★★★, Standard) oder immer passiert.
+
+Ist eine Bedenkzeit eingestellt, startet sie in dieser Ansicht **nicht** automatisch, sondern per
+Knopfdruck – so frisst das Vorlesen keine Zeit. Der „Du bist dran“-Bildschirm entfällt, das Gerät
+bleibt ja beim Moderator.
+
+Was der Moderator ins Antwortfeld tippt, taucht im Abstimmungsmodus wieder auf: Dort steht dann
+wörtlich, was jemand geraten hat – und genau darüber wird abgestimmt.
+
+Tastatur für den Moderator: <kbd>R</kbd> richtig, <kbd>F</kbd> falsch (solange der Cursor nicht im
+Textfeld steht), <kbd>1</kbd>–<kbd>4</kbd> für eine eingeblendete Antwort.
+
 ## Einstellungen
 
 - **Fragen pro Spieler und Runde**: 1–5 (Runden- und Abstimmungsmodus)
@@ -48,6 +75,7 @@ sofort nach der ersten Abstimmung raus, mit 3 Leben braucht es drei verlorene Ab
 - **Bedenkzeit**: 10 / 15 / 20 / 30 / 45 Sekunden oder ohne Zeitlimit
 - **Schwierigkeit**: ansteigend (wird von Runde zu Runde schwerer), leicht, mittel, schwer oder bunt gemischt
 - **Kategorien**: einzeln an- und abwählbar
+- **Moderatoransicht** und **Antwortmöglichkeiten vorlesen**: nie / bei schweren Fragen / immer
 - **Ja/Nein-Fragen**: mitspielen oder komplett weglassen
 - **Sound** (kleine Töne, ohne Audiodateien) und **„Du bist dran“-Bildschirm** zum Weiterreichen
 

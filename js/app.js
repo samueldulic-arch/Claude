@@ -30,7 +30,9 @@
       kategorien: alleKategorien.slice(),
       jaNein: true,            // Ja/Nein-Fragen mitspielen?
       sound: true,
-      uebergabe: true          // Zwischenbildschirm "XY ist dran"
+      uebergabe: true,         // Zwischenbildschirm "XY ist dran"
+      moderator: false,        // Ein Gerät beim Moderator, Fragen werden vorgelesen
+      optionenZeigen: 'schwer' // Wann Antwortmöglichkeiten eingeblendet werden: 'nie' | 'schwer' | 'immer'
     },
     namen: ['Spieler 1', 'Spieler 2', 'Spieler 3'],
     spieler: [],
@@ -318,6 +320,24 @@
           </div>
 
           <div class="setting">
+            <span class="label">Wie spielt ihr?</span>
+            <div class="chips">
+              <button class="chip" data-toggle="moderator" aria-pressed="${e.moderator}">🎤 Moderatoransicht</button>
+            </div>
+            <p class="hint" id="moderatorHinweis"></p>
+          </div>
+
+          <div class="setting" id="optionenSetting">
+            <span class="label">Antwortmöglichkeiten vorlesen</span>
+            <div class="chips">
+              <button class="chip" data-set="optionenZeigen" data-wert="nie" aria-pressed="${e.optionenZeigen === 'nie'}">Nie</button>
+              <button class="chip" data-set="optionenZeigen" data-wert="schwer" aria-pressed="${e.optionenZeigen === 'schwer'}">Bei schweren Fragen</button>
+              <button class="chip" data-set="optionenZeigen" data-wert="immer" aria-pressed="${e.optionenZeigen === 'immer'}">Immer</button>
+            </div>
+            <p class="hint">Sonst blendest du sie bei jeder Frage einzeln ein.</p>
+          </div>
+
+          <div class="setting">
             <span class="label">Fragengedächtnis</span>
             <p class="hint" id="gedaechtnisHinweis" style="margin-bottom:8px"></p>
             <button class="chip" id="gedaechtnisReset">Gedächtnis zurücksetzen</button>
@@ -328,7 +348,7 @@
             <div class="chips">
               <button class="chip" data-toggle="jaNein" aria-pressed="${e.jaNein}">❓ Ja/Nein-Fragen</button>
               <button class="chip" data-toggle="sound" aria-pressed="${e.sound}">🔊 Sound</button>
-              <button class="chip" data-toggle="uebergabe" aria-pressed="${e.uebergabe}">🔁 „Du bist dran“-Bildschirm</button>
+              <button class="chip" id="uebergabeChip" data-toggle="uebergabe" aria-pressed="${e.uebergabe}">🔁 „Du bist dran“-Bildschirm</button>
             </div>
           </div>
         </details>
@@ -416,6 +436,17 @@
         voting: 'Erst wird gespielt, dann gerichtet: Nach den eingestellten Runden stimmen alle ab, welche Antwort die dümmste war. Wer die meisten Stimmen bekommt, verliert ein Leben – wer keins mehr hat, fliegt raus. Bei Gleichstand entscheidet ein Stechen.'
       }[e.modus];
     }
+    const modAn = e.moderator;
+    const optSet = app.querySelector('#optionenSetting');
+    const modHin = app.querySelector('#moderatorHinweis');
+    const ueberChip = app.querySelector('#uebergabeChip');
+    if (optSet) optSet.classList.toggle('hidden', !modAn);
+    if (ueberChip) ueberChip.classList.toggle('hidden', modAn);
+    if (modHin) {
+      modHin.textContent = modAn
+        ? 'Einer liest die Fragen vor und wertet: Die Frage erscheint offen, die Lösung steht klein darunter, und du tippst nur noch auf Richtig oder Falsch. Antwortmöglichkeiten kannst du bei Bedarf einblenden.'
+        : 'Alle spielen an einem Gerät und geben es reihum weiter. Jede Frage hat vier Antworten zum Antippen.';
+    }
     const lebLabel = app.querySelector('#lebenLabel');
     if (lebLabel) {
       lebLabel.textContent = e.modus === 'voting'
@@ -490,8 +521,13 @@
 
     S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now() });
 
-    if (S.einstellungen.uebergabe) zeigeUebergabe(p);
+    if (uebergabeNoetig()) zeigeUebergabe(p);
     else zeigeFrage();
+  }
+
+  /* Beim Moderator wandert das Gerät nicht – der Zwischenbildschirm entfällt */
+  function uebergabeNoetig() {
+    return S.einstellungen.uebergabe && !S.einstellungen.moderator;
   }
 
   function stechenZug() {
@@ -499,7 +535,7 @@
     if (st.idx >= st.reihe.length) return stechenAuswerten();
     const pid = st.reihe[st.idx];
     S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now(), stechen: true });
-    if (S.einstellungen.uebergabe) zeigeUebergabe(spielerVon(pid), 'Stechfrage!');
+    if (uebergabeNoetig()) zeigeUebergabe(spielerVon(pid), 'Stechfrage!');
     else zeigeFrage();
   }
 
@@ -521,6 +557,7 @@
      Frage anzeigen
      --------------------------------------------------------- */
   function zeigeFrage() {
+    if (S.einstellungen.moderator) return zeigeFrageModerator();
     S.screen = 'frage';
     const a = S.aktuell;
     const p = spielerVon(a.pid);
@@ -552,14 +589,112 @@
     starteTimer();
   }
 
-  function starteTimer() {
+  /* ---------------------------------------------------------
+     Moderatoransicht: offene Frage, der Moderator wertet
+     --------------------------------------------------------- */
+  function zeigeFrageModerator() {
+    S.screen = 'frage';
+    const a = S.aktuell;
+    const e = S.einstellungen;
+    const p = spielerVon(a.pid);
+    const stufe = ['', 'Leicht', 'Mittel', 'Schwer'][a.frage.s];
+    a.start = Date.now();
+
+    if (a.optionenSichtbar === undefined) {
+      a.optionenSichtbar = !a.frage.jn && (
+        e.optionenZeigen === 'immer' || (e.optionenZeigen === 'schwer' && a.frage.s === 3)
+      );
+    }
+
+    app.innerHTML = kopf() + `
+      <div class="card fade">
+        ${e.zeit ? `<div class="timer${a.zeitGestartet ? '' : ' idle'}" id="timer"><div></div></div>` : ''}
+        <div class="meta">
+          <span class="tag">${esc(a.frage.k)}</span>
+          <span class="tag diff">${'★'.repeat(a.frage.s)}${'☆'.repeat(3 - a.frage.s)} ${stufe}</span>
+          ${a.frage.jn ? '<span class="tag">Ja oder Nein?</span>' : ''}
+          ${a.stechen ? '<span class="tag" style="background:rgba(255,77,141,.25)">Stechen</span>' : ''}
+          <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
+        </div>
+
+        <div class="question">${esc(a.frage.f)}</div>
+
+        <div class="loesung">
+          <span class="loesung-label">Lösung</span>
+          <span class="loesung-text">${esc(a.frage.r)}</span>
+        </div>
+
+        ${a.optionenSichtbar
+          ? `<p class="hint">Zum Vorlesen – ein Klick wertet direkt:</p>
+             <div class="answers${a.frage.jn ? ' zwei' : ''}" id="antworten">
+               ${a.antworten.map((t, i) => `
+                 <button class="answer" data-i="${i}">
+                   <span class="key">${KEYS[i]}</span><span>${esc(t)}</span>
+                 </button>`).join('')}
+             </div>`
+          : `<button class="btn ghost block" id="optionen">Antwortmöglichkeiten einblenden</button>`}
+
+        <input class="antwort-feld" id="gesagt" type="text" maxlength="60"
+               placeholder="Was hat ${esc(p.name)} geantwortet? (optional)"
+               autocomplete="off">
+
+        <div class="judge">
+          <button class="btn good" id="jaRichtig">✓ Richtig</button>
+          <button class="btn bad" id="jaFalsch">✗ Falsch</button>
+        </div>
+
+        ${e.zeit && !a.zeitGestartet
+          ? `<button class="btn ghost block" id="zeitStart" style="margin-top:10px">Bedenkzeit starten (${e.zeit} s)</button>`
+          : ''}
+        <p class="hint">Tastatur: <kbd>R</kbd> richtig, <kbd>F</kbd> falsch${a.optionenSichtbar ? ', <kbd>1</kbd>–<kbd>4</kbd> für die Antwort' : ''}.</p>
+      </div>`;
+
+    const feld = app.querySelector('#gesagt');
+    const gesagt = () => (feld && feld.value) || '';
+
+    app.querySelectorAll('.answer').forEach(b => b.addEventListener('click', () => {
+      const i = Number(b.dataset.i);
+      const richtigIdx = a.antworten.indexOf(a.frage.r);
+      wertung(i === richtigIdx, { gewaehlt: i, text: gesagt() || a.antworten[i] });
+    }));
+
+    const opt = app.querySelector('#optionen');
+    if (opt) opt.addEventListener('click', () => {
+      const lief = S.timerId !== null;
+      const rest = S.restMs;
+      const gemerkt = gesagt();
+      stoppeTimer();
+      a.optionenSichtbar = true;
+      zeigeFrageModerator();
+      const neu = app.querySelector('#gesagt');
+      if (neu) neu.value = gemerkt;
+      if (lief) starteTimer(rest);
+    });
+
+    app.querySelector('#jaRichtig').addEventListener('click', () => wertung(true, { text: gesagt() }));
+    app.querySelector('#jaFalsch').addEventListener('click', () => wertung(false, { text: gesagt() }));
+
+    const zeit = app.querySelector('#zeitStart');
+    if (zeit) zeit.addEventListener('click', () => {
+      zeit.disabled = true;
+      a.zeitGestartet = true;
+      a.start = Date.now();
+      const bar = app.querySelector('#timer');
+      if (bar) bar.classList.remove('idle');
+      starteTimer();
+    });
+  }
+
+  function starteTimer(rest) {
     stoppeTimer();
     if (!S.einstellungen.zeit) return;
-    S.restMs = S.einstellungen.zeit * 1000;
+    const gesamt = S.einstellungen.zeit * 1000;
+    S.restMs = rest === undefined ? gesamt : rest;
     S.letzterTick = Math.ceil(S.restMs / 1000);
     const bar = app.querySelector('#timer');
+    if (!bar) return;
     const fill = bar.firstElementChild;
-    const gesamt = S.restMs;
+    fill.style.width = Math.max(0, (S.restMs / gesamt) * 100) + '%';
     S.timerId = setInterval(() => {
       S.restMs -= 100;
       const anteil = Math.max(0, S.restMs / gesamt);
@@ -580,18 +715,30 @@
      --------------------------------------------------------- */
   function antworten(i) {
     if (S.screen !== 'frage') return;
+    const a = S.aktuell;
+    const richtigIdx = a.antworten.indexOf(a.frage.r);
+    wertung(i !== null && i === richtigIdx, {
+      gewaehlt: i,
+      abgelaufen: i === null,
+      text: i === null ? '' : a.antworten[i]
+    });
+  }
+
+  /* Kern der Auswertung – aus der Antwortauswahl wie aus der Moderatorwertung */
+  function wertung(korrekt, o) {
+    if (S.screen !== 'frage') return;
     stoppeTimer();
     S.screen = 'aufloesung';
 
     const a = S.aktuell;
     const p = spielerVon(a.pid);
     const richtigIdx = a.antworten.indexOf(a.frage.r);
-    const korrekt = i !== null && i === richtigIdx;
     const dauer = (Date.now() - a.start) / 1000;
 
-    a.gewaehlt = i;
+    a.gewaehlt = o.gewaehlt === undefined ? null : o.gewaehlt;
     a.korrekt = korrekt;
-    a.abgelaufen = i === null;
+    a.abgelaufen = !!o.abgelaufen;
+    a.gesagt = (o.text || '').trim();
     p.zeit += Math.min(dauer, S.einstellungen.zeit || 60);
 
     if (korrekt) {
@@ -609,7 +756,7 @@
       S.protokoll.push({
         pid: p.id,
         frage: a.frage.f,
-        antwort: i === null ? '(keine Antwort)' : a.antworten[i],
+        antwort: a.gesagt || (a.abgelaufen ? '(keine Antwort)' : '(nicht notiert)'),
         richtigeAntwort: a.frage.r,
         korrekt
       });
@@ -646,14 +793,20 @@
           <span class="tag">${avatar(p, 'inline')} ${esc(p.name)}</span>
         </div>
         <div class="question">${esc(a.frage.f)}</div>
-        <div class="answers${a.frage.jn ? ' zwei' : ''}">
+        ${S.einstellungen.moderator
+          ? `<div class="loesung">
+               <span class="loesung-label">Lösung</span>
+               <span class="loesung-text">${esc(a.frage.r)}</span>
+             </div>
+             ${a.gesagt ? `<p class="hint">Geantwortet: „${esc(a.gesagt)}“</p>` : ''}`
+          : `<div class="answers${a.frage.jn ? ' zwei' : ''}">
           ${a.antworten.map((t, i) => {
             let cls = 'answer dim';
             if (i === richtigIdx) cls = 'answer correct';
             else if (i === a.gewaehlt) cls = 'answer wrong';
             return `<button class="${cls}" disabled><span class="key">${KEYS[i]}</span><span>${esc(t)}</span></button>`;
           }).join('')}
-        </div>
+        </div>`}
         <div class="verdict ${a.korrekt ? 'good' : 'bad'}">${a.korrekt ? 'Richtig! 🎉' : 'Falsch! 💀'}</div>
         <div class="verdict-sub">${unter}</div>
         <button class="btn block" id="weiter">Weiter</button>
@@ -789,7 +942,7 @@
     // Wer nur über eigene Antworten abstimmen könnte, wird übersprungen
     if (!ab.kandidaten.some(k => k.pid !== waehler.id)) { ab.idx++; return abstimmungZug(); }
 
-    if (S.einstellungen.uebergabe) zeigeUebergabe(waehler, 'Abstimmung', zeigeAbstimmung);
+    if (uebergabeNoetig()) zeigeUebergabe(waehler, 'Abstimmung', zeigeAbstimmung);
     else zeigeAbstimmung();
   }
 
@@ -810,10 +963,11 @@
           ${ab.kandidaten.map(k => {
             const p = spielerVon(k.pid);
             const eigen = k.pid === waehler.id;
+            const ohneText = k.antwort.startsWith('(');
             return `
               <button class="vote" data-key="${k.key}" ${eigen ? 'disabled' : ''}>
-                <span class="vote-antwort">„${esc(k.antwort)}“</span>
-                <span class="vote-meta">${avatar(p, 'inline')} ${esc(p.name)} · ${esc(k.frage)}</span>
+                <span class="vote-antwort">${ohneText ? esc(k.frage) : '„' + esc(k.antwort) + '“'}</span>
+                <span class="vote-meta">${avatar(p, 'inline')} ${esc(p.name)}${ohneText ? ' · ' + esc(k.antwort) : ' · ' + esc(k.frage)}</span>
                 <span class="vote-flag ${k.korrekt ? 'good' : 'bad'}">${k.korrekt
                   ? 'war richtig'
                   : 'richtig wäre: ' + esc(k.richtigeAntwort)}</span>
@@ -1064,8 +1218,18 @@
     if (ev.target && ['INPUT', 'TEXTAREA'].includes(ev.target.tagName)) return;
 
     if (S.screen === 'frage') {
+      const taste = ev.key.toLowerCase();
+
+      if (S.einstellungen.moderator) {
+        const feld = app.querySelector('#gesagt');
+        const text = feld ? feld.value : '';
+        if (taste === 'r') { ev.preventDefault(); return wertung(true, { text }); }
+        if (taste === 'f') { ev.preventDefault(); return wertung(false, { text }); }
+        if (!S.aktuell.optionenSichtbar) return;
+      }
+
       const map = { '1': 0, '2': 1, '3': 2, '4': 3, a: 0, b: 1, c: 2, d: 3 };
-      const i = map[ev.key.toLowerCase()];
+      const i = map[taste];
       if (i !== undefined && i < S.aktuell.antworten.length) {
         ev.preventDefault();
         antworten(i);
