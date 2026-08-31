@@ -609,3 +609,26 @@ textarea.antwort-feld {
   box-shadow: 0 0 0 1px rgba(255, 206, 58, .25), var(--shadow);
 }
 .card.fortsetzen .hint { margin-top: 4px; }
+
+/* ---------- Editor für eigene Fragen ---------- */
+
+.eigene-liste { display: grid; gap: 10px; }
+.eigene-zeile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.eigene-frage { font-weight: 700; }
+.eigene-meta { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+.eigene-knoepfe { display: flex; gap: 6px; }
+
+.hint.fehler { color: var(--bad); font-weight: 600; }
+
+#efKat, #efFrage, #efRichtig, #efW1, #efW2, #efW3 { margin: 0 0 8px; }

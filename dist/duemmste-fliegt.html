@@ -621,6 +621,29 @@ textarea.antwort-feld {
 }
 .card.fortsetzen .hint { margin-top: 4px; }
 
+/* ---------- Editor für eigene Fragen ---------- */
+
+.eigene-liste { display: grid; gap: 10px; }
+.eigene-zeile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.eigene-frage { font-weight: 700; }
+.eigene-meta { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+.eigene-knoepfe { display: flex; gap: 6px; }
+
+.hint.fehler { color: var(--bad); font-weight: 600; }
+
+#efKat, #efFrage, #efRichtig, #efW1, #efW2, #efW3 { margin: 0 0 8px; }
+
 </style>
 
 </head>
@@ -2430,9 +2453,12 @@ window.FRAGEN.push(
   const GEDAECHTNIS = 'ddf-gestellt-v1';
   const MELDUNGEN = 'ddf-gemeldet-v1';
   const SPIELSTAND = 'ddf-spielstand-v1';
+  const EIGENE = 'ddf-eigene-v1';
 
   const app = document.getElementById('app');
-  const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
+  /* Der spielbare Katalog besteht aus den mitgelieferten und den eigenen Fragen */
+  const katalog = () => window.FRAGEN.concat(S.eigene);
+  const alleKategorien = () => [...new Set(katalog().map(f => f.k))];
 
   /* ---------------------------------------------------------
      Zustand
@@ -2446,7 +2472,7 @@ window.FRAGEN.push(
       fragenProRunde: 2,
       abstimmungNach: 2,       // Runden bis zur Abstimmung (Abstimmungsmodus)
       schwierigkeit: 'auto',   // 'auto' | 1 | 2 | 3 | 'mix'
-      kategorien: alleKategorien.slice(),
+      kategorien: [],           // leer = beim ersten Start alle
       jaNein: true,            // Ja/Nein-Fragen mitspielen?
       sound: true,
       uebergabe: true,         // Zwischenbildschirm "XY ist dran"
@@ -2466,6 +2492,8 @@ window.FRAGEN.push(
     abstimmung: null,          // { kandidaten, waehler, idx, stimmen }
     gestellt: new Set(),       // schon gestellte Fragen (auch über Spielabende hinweg)
     gemeldet: [],              // als fehlerhaft gemeldete Fragen
+    eigene: [],                // selbst angelegte Fragen
+    bearbeitet: null,          // Index der Frage, die gerade bearbeitet wird
     rausFolge: [],
     pool: [],
     aktuell: null,
@@ -2541,7 +2569,7 @@ window.FRAGEN.push(
      --------------------------------------------------------- */
   function passendeFragen() {
     const e = S.einstellungen;
-    let fragen = window.FRAGEN.filter(f => e.kategorien.includes(f.k) && !istGemeldet(f));
+    let fragen = katalog().filter(f => e.kategorien.includes(f.k) && !istGemeldet(f));
     if (!e.jaNein) fragen = fragen.filter(f => !f.jn);
     return fragen;
   }
@@ -2578,9 +2606,22 @@ window.FRAGEN.push(
 
   const istGemeldet = f => S.gemeldet.some(x => x.f === f.f);
 
+  function ladeEigene() {
+    try {
+      const roh = localStorage.getItem(EIGENE);
+      S.eigene = roh ? JSON.parse(roh) : [];
+    } catch (e) { S.eigene = []; }
+    if (!Array.isArray(S.eigene)) S.eigene = [];
+    S.eigene = S.eigene.filter(f => f && f.f && f.r && Array.isArray(f.w));
+  }
+
+  function speichereEigene() {
+    try { localStorage.setItem(EIGENE, JSON.stringify(S.eigene)); } catch (e) { /* egal */ }
+  }
+
   function poolAufbauen() {
     let fragen = passendeFragen();
-    if (!fragen.length) fragen = window.FRAGEN.slice();
+    if (!fragen.length) fragen = katalog();
 
     // Fragen, die auf diesem Gerät noch nie dran waren, haben Vorrang
     let frisch = fragen.filter(f => !S.gestellt.has(fid(f)));
@@ -2637,7 +2678,7 @@ window.FRAGEN.push(
         namen: S.namen,
         handicaps: S.handicaps,
         einstellungen: S.einstellungen,
-        bekannteKategorien: alleKategorien
+        bekannteKategorien: alleKategorien()
       }));
     } catch (e) { /* egal */ }
   }
@@ -2652,17 +2693,17 @@ window.FRAGEN.push(
       if (d.einstellungen) {
         Object.assign(S.einstellungen, d.einstellungen);
         S.einstellungen.kategorien = (S.einstellungen.kategorien || [])
-          .filter(k => alleKategorien.includes(k));
+          .filter(k => alleKategorien().includes(k));
 
         // Kategorien, die es beim letzten Spielabend noch nicht gab, sind automatisch dabei
         const bekannt = Array.isArray(d.bekannteKategorien) ? d.bekannteKategorien : [];
-        alleKategorien.forEach(k => {
+        alleKategorien().forEach(k => {
           if (!bekannt.includes(k) && !S.einstellungen.kategorien.includes(k)) {
             S.einstellungen.kategorien.push(k);
           }
         });
 
-        if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien.slice();
+        if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien();
       }
     } catch (e) { /* egal */ }
   }
@@ -2682,7 +2723,7 @@ window.FRAGEN.push(
       <div class="logo">
         <div class="kicker">Das Quiz-Partyspiel</div>
         <h1>Der Dümmste fliegt</h1>
-        <p>${window.FRAGEN.length.toLocaleString('de-DE')} Fragen · 2–10 Spieler · ein Gerät reicht</p>
+        <p>${katalog().length.toLocaleString('de-DE')} Fragen · 2–10 Spieler · ein Gerät reicht</p>
       </div>
 
       ${(() => {
@@ -2780,9 +2821,15 @@ window.FRAGEN.push(
           <div class="setting">
             <span class="label">Kategorien</span>
             <div class="chips">
-              ${alleKategorien.map(k => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${e.kategorien.includes(k)}">${esc(k)}</button>`).join('')}
+              ${alleKategorien().map(k => `<button class="chip" data-kat="${esc(k)}" aria-pressed="${e.kategorien.includes(k)}">${esc(k)}</button>`).join('')}
             </div>
             <p class="hint" id="katHinweis"></p>
+          </div>
+
+          <div class="setting">
+            <span class="label">Eigene Fragen</span>
+            <p class="hint" id="eigeneHinweis" style="margin-bottom:8px"></p>
+            <button class="chip" id="eigeneOeffnen">Eigene Fragen verwalten</button>
           </div>
 
           <div class="setting">
@@ -2906,6 +2953,12 @@ window.FRAGEN.push(
       speichern();
     }));
 
+    app.querySelector('#eigeneOeffnen').addEventListener('click', () => {
+      S.bearbeitet = null;
+      S.formular = leeresFormular();
+      zeigeEditor();
+    });
+
     app.querySelector('#meldungenKopieren').addEventListener('click', () => {
       const feld = app.querySelector('#meldungenText');
       const knopf = app.querySelector('#meldungenKopieren');
@@ -2985,8 +3038,15 @@ window.FRAGEN.push(
       }
     }
 
+    const eig = app.querySelector('#eigeneHinweis');
+    if (eig) {
+      eig.textContent = S.eigene.length
+        ? `${S.eigene.length} eigene ${S.eigene.length === 1 ? 'Frage' : 'Fragen'} – sie mischen sich unter die anderen.`
+        : 'Noch keine eigenen Fragen. Perfekt für Insider-Fragen über euch selbst.';
+    }
+
     if (ged) {
-      const gesamt = window.FRAGEN.length;
+      const gesamt = katalog().length;
       ged.textContent = S.gestellt.size
         ? `${S.gestellt.size} von ${gesamt} Fragen waren auf diesem Gerät schon dran – sie kommen erst wieder, wenn der Rest durch ist.`
         : `Noch keine Frage gestellt. Gespielte Fragen werden gemerkt, damit sich beim nächsten Mal nichts wiederholt.`;
@@ -2997,6 +3057,257 @@ window.FRAGEN.push(
       kat.textContent = fragen.length + ' Fragen ausgewählt'
         + (jaNein ? ` (davon ${jaNein} Ja/Nein-Fragen)` : '') + '.';
     }
+  }
+
+  /* ---------------------------------------------------------
+     Editor für eigene Fragen
+     --------------------------------------------------------- */
+  const leeresFormular = () => ({ typ: 'mc', k: '', s: 2, f: '', r: '', w: ['', '', ''] });
+
+  function formularLesen() {
+    if (!app.querySelector('#efFrage')) return;
+    const v = id => { const el = app.querySelector(id); return el ? el.value : ''; };
+    const fo = S.formular;
+    fo.f = v('#efFrage');
+    fo.k = v('#efKat');
+    if (fo.typ === 'mc') {
+      fo.r = v('#efRichtig');
+      fo.w = [v('#efW1'), v('#efW2'), v('#efW3')];
+    }
+  }
+
+  function zeigeEditor(fehler) {
+    S.screen = 'editor';
+    stoppeTimer();
+    const fo = S.formular || (S.formular = leeresFormular());
+    const bearbeitet = S.bearbeitet !== null;
+
+    app.innerHTML = `
+      <div class="logo" style="margin-bottom:18px">
+        <div class="kicker">Fragen selbst schreiben</div>
+        <h1 style="font-size:clamp(1.6rem,5vw,2.4rem)">Eigene Fragen</h1>
+        <p>Sie mischen sich ganz normal unter die ${window.FRAGEN.length.toLocaleString('de-DE')} mitgelieferten Fragen.</p>
+      </div>
+
+      <div class="card">
+        <span class="label">${bearbeitet ? 'Frage bearbeiten' : 'Neue Frage'}</span>
+
+        <div class="setting">
+          <span class="label">Art der Frage</span>
+          <div class="chips">
+            <button class="chip" data-typ="mc" aria-pressed="${fo.typ === 'mc'}">Vier Antworten</button>
+            <button class="chip" data-typ="jn" aria-pressed="${fo.typ === 'jn'}">Ja oder Nein</button>
+          </div>
+        </div>
+
+        <div class="setting">
+          <span class="label">Schwierigkeit</span>
+          <div class="chips">
+            ${[1, 2, 3, 4].map(n => `<button class="chip num" data-stufe="${n}" aria-pressed="${fo.s === n}">${sterne(n)}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="setting">
+          <span class="label">Kategorie</span>
+          <input class="antwort-feld" id="efKat" list="efKatListe" maxlength="30"
+                 placeholder="z. B. Insider oder Freunde" value="${esc(fo.k)}">
+          <datalist id="efKatListe">
+            ${alleKategorien().map(k => `<option value="${esc(k)}"></option>`).join('')}
+          </datalist>
+        </div>
+
+        <div class="setting">
+          <span class="label">Frage</span>
+          <input class="antwort-feld" id="efFrage" maxlength="160"
+                 placeholder="Wen hat Jonas letzten Silvester angerufen?" value="${esc(fo.f)}">
+        </div>
+
+        ${fo.typ === 'jn' ? `
+          <div class="setting">
+            <span class="label">Richtige Antwort</span>
+            <div class="chips">
+              <button class="chip" data-jn="Ja" aria-pressed="${fo.r !== 'Nein'}">Ja</button>
+              <button class="chip" data-jn="Nein" aria-pressed="${fo.r === 'Nein'}">Nein</button>
+            </div>
+          </div>` : `
+          <div class="setting">
+            <span class="label">Richtige Antwort</span>
+            <input class="antwort-feld" id="efRichtig" maxlength="80" placeholder="Die richtige Lösung" value="${esc(fo.r)}">
+          </div>
+          <div class="setting">
+            <span class="label">Falsche Antworten</span>
+            <input class="antwort-feld" id="efW1" maxlength="80" placeholder="Falsche Antwort 1" value="${esc(fo.w[0] || '')}">
+            <input class="antwort-feld" id="efW2" maxlength="80" placeholder="Falsche Antwort 2 (optional)" value="${esc(fo.w[1] || '')}">
+            <input class="antwort-feld" id="efW3" maxlength="80" placeholder="Falsche Antwort 3 (optional)" value="${esc(fo.w[2] || '')}">
+          </div>`}
+
+        ${fehler ? `<p class="hint fehler">${esc(fehler)}</p>` : ''}
+        <div class="row">
+          <button class="btn" id="efSpeichern">${bearbeitet ? 'Änderung speichern' : 'Frage hinzufügen'}</button>
+          ${bearbeitet ? '<button class="btn ghost" id="efAbbrechen">Abbrechen</button>' : ''}
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label">Deine Fragen (${S.eigene.length})</span>
+        ${S.eigene.length ? `
+          <div class="eigene-liste">
+            ${S.eigene.map((f, i) => `
+              <div class="eigene-zeile">
+                <div>
+                  <div class="eigene-frage">${esc(f.f)}</div>
+                  <div class="eigene-meta">${esc(f.k)} · ${sterne(f.s)} · Antwort: ${esc(f.r)}${f.jn ? ' (Ja/Nein)' : ''}</div>
+                </div>
+                <div class="eigene-knoepfe">
+                  <button class="btn ghost small" data-edit="${i}">Bearbeiten</button>
+                  <button class="btn ghost small" data-del="${i}">Löschen</button>
+                </div>
+              </div>`).join('')}
+          </div>` : '<p class="hint">Noch nichts da. Schreib oben die erste.</p>'}
+      </div>
+
+      <div class="card">
+        <details>
+          <summary style="cursor:pointer;font-weight:700">Sichern und weitergeben</summary>
+          <p class="hint" style="margin-top:10px">Text kopieren und aufheben – oder in ein anderes Gerät einfügen und importieren.</p>
+          <textarea class="antwort-feld" id="efText" rows="6" style="resize:vertical">${esc(JSON.stringify(S.eigene))}</textarea>
+          <div class="chips">
+            <button class="chip" id="efKopieren">Kopieren</button>
+            <button class="chip" id="efImport">Aus dem Feld importieren</button>
+          </div>
+        </details>
+      </div>
+
+      <button class="btn block" id="efFertig">Fertig</button>`;
+
+    app.querySelectorAll('[data-typ]').forEach(b => b.addEventListener('click', () => {
+      formularLesen();
+      S.formular.typ = b.dataset.typ;
+      // „Ja“/„Nein“ gehören nicht ins Freitextfeld der Multiple-Choice-Frage
+      if (S.formular.typ === 'mc' && ['Ja', 'Nein'].includes(S.formular.r)) S.formular.r = '';
+      zeigeEditor();
+    }));
+    app.querySelectorAll('[data-stufe]').forEach(b => b.addEventListener('click', () => {
+      formularLesen();
+      S.formular.s = Number(b.dataset.stufe);
+      zeigeEditor();
+    }));
+    app.querySelectorAll('[data-jn]').forEach(b => b.addEventListener('click', () => {
+      formularLesen();
+      S.formular.r = b.dataset.jn;
+      zeigeEditor();
+    }));
+    app.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => {
+      const f = S.eigene[Number(b.dataset.edit)];
+      S.bearbeitet = Number(b.dataset.edit);
+      S.formular = {
+        typ: f.jn ? 'jn' : 'mc',
+        k: f.k, s: f.s, f: f.f, r: f.r,
+        w: f.jn ? ['', '', ''] : [f.w[0] || '', f.w[1] || '', f.w[2] || '']
+      };
+      zeigeEditor();
+      app.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+    app.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+      const i = Number(b.dataset.del);
+      if (!confirm(`„${S.eigene[i].f}“ wirklich löschen?`)) return;
+      S.eigene.splice(i, 1);
+      speichereEigene();
+      S.bearbeitet = null;
+      S.formular = leeresFormular();
+      zeigeEditor();
+    }));
+
+    app.querySelector('#efSpeichern').addEventListener('click', eigeneSpeichern);
+    const abbr = app.querySelector('#efAbbrechen');
+    if (abbr) abbr.addEventListener('click', () => {
+      S.bearbeitet = null;
+      S.formular = leeresFormular();
+      zeigeEditor();
+    });
+
+    app.querySelector('#efKopieren').addEventListener('click', () => {
+      const feld = app.querySelector('#efText');
+      const knopf = app.querySelector('#efKopieren');
+      feld.select();
+      const fertig = () => { knopf.textContent = 'Kopiert ✓'; setTimeout(() => knopf.textContent = 'Kopieren', 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(feld.value).then(fertig, () => knopf.textContent = 'Markiert – Strg+C');
+      } else knopf.textContent = 'Markiert – Strg+C';
+    });
+    app.querySelector('#efImport').addEventListener('click', eigeneImportieren);
+
+    app.querySelector('#efFertig').addEventListener('click', zeigeSetup);
+  }
+
+  function eigeneSpeichern() {
+    formularLesen();
+    const fo = S.formular;
+    const k = (fo.k || '').trim() || 'Eigene Fragen';
+    const f = (fo.f || '').trim();
+    let r, w;
+
+    if (fo.typ === 'jn') {
+      r = fo.r === 'Nein' ? 'Nein' : 'Ja';
+      w = [r === 'Ja' ? 'Nein' : 'Ja'];
+    } else {
+      r = (fo.r || '').trim();
+      w = fo.w.map(x => (x || '').trim()).filter(Boolean);
+    }
+
+    if (!f) return zeigeEditor('Die Frage fehlt.');
+    if (fo.typ === 'mc' && !r) return zeigeEditor('Die richtige Antwort fehlt.');
+    if (fo.typ === 'mc' && !w.length) return zeigeEditor('Mindestens eine falsche Antwort eintragen.');
+    if (new Set([r, ...w]).size !== w.length + 1) return zeigeEditor('Die Antworten müssen sich unterscheiden.');
+
+    const doppelt = katalog().some((x, i) => x.f === f && !(S.bearbeitet !== null && x === S.eigene[S.bearbeitet]));
+    if (doppelt) return zeigeEditor('Diese Frage gibt es schon.');
+
+    const neu = { k, s: fo.s, f, r, w, eigen: true };
+    if (fo.typ === 'jn') neu.jn = true;
+
+    if (S.bearbeitet !== null) S.eigene[S.bearbeitet] = neu;
+    else S.eigene.push(neu);
+    speichereEigene();
+
+    // Eine frisch erfundene Kategorie soll gleich mitspielen
+    if (!S.einstellungen.kategorien.includes(k)) {
+      S.einstellungen.kategorien.push(k);
+      speichern();
+    }
+
+    S.bearbeitet = null;
+    S.formular = leeresFormular();
+    zeigeEditor();
+  }
+
+  function eigeneImportieren() {
+    const feld = app.querySelector('#efText');
+    let daten;
+    try { daten = JSON.parse(feld.value); } catch (e) { return zeigeEditor('Der Text ist keine gültige Fragenliste.'); }
+    if (!Array.isArray(daten)) return zeigeEditor('Der Text ist keine gültige Fragenliste.');
+
+    let neu = 0;
+    daten.forEach(x => {
+      if (!x || typeof x.f !== 'string' || typeof x.r !== 'string' || !Array.isArray(x.w)) return;
+      if (katalog().some(y => y.f === x.f)) return;
+      const frage = {
+        k: String(x.k || 'Eigene Fragen').slice(0, 30),
+        s: [1, 2, 3, 4].includes(x.s) ? x.s : 2,
+        f: x.f.slice(0, 160),
+        r: x.r.slice(0, 80),
+        w: x.w.filter(t => typeof t === 'string').map(t => t.slice(0, 80)).slice(0, 3),
+        eigen: true
+      };
+      if (x.jn) frage.jn = true;
+      if (!frage.w.length) return;
+      S.eigene.push(frage);
+      if (!S.einstellungen.kategorien.includes(frage.k)) S.einstellungen.kategorien.push(frage.k);
+      neu++;
+    });
+    speichereEigene();
+    speichern();
+    zeigeEditor(neu ? `${neu} ${neu === 1 ? 'Frage' : 'Fragen'} importiert.` : 'Nichts Neues dabei – alles schon vorhanden.');
   }
 
   /* ---------------------------------------------------------
@@ -3955,9 +4266,11 @@ window.FRAGEN.push(
   /* ---------------------------------------------------------
      Los geht's
      --------------------------------------------------------- */
+  ladeEigene();
   laden();
   ladeGestellt();
   ladeGemeldet();
+  if (!S.einstellungen.kategorien.length) S.einstellungen.kategorien = alleKategorien();
   zeigeSetup();
 })();
 

@@ -81,6 +81,27 @@ Textfeld steht), <kbd>1</kbd>–<kbd>4</kbd> für eine eingeblendete Antwort.
 
 Einstellungen und Namen werden im Browser gespeichert und beim nächsten Start wieder geladen.
 
+## Eigene Fragen
+
+Im Einrichtungsbildschirm führt **Eigene Fragen verwalten** in einen kleinen Editor. Dort legt ihr
+Fragen über euch selbst an – die, bei denen ein Quizabend erst richtig eskaliert.
+
+Pro Frage wählt ihr:
+
+- **Art**: vier Antworten oder Ja/Nein
+- **Schwierigkeit**: ★ bis ★★★★
+- **Kategorie**: eine vorhandene oder eine neue (z. B. „Insider“). Neue Kategorien tauchen sofort in
+  der Kategorieauswahl auf und sind automatisch aktiv.
+- **Frage**, **richtige Antwort** und **ein bis drei falsche Antworten** – bei nur einer oder zwei
+  falschen erscheinen entsprechend weniger Antwortknöpfe.
+
+Eigene Fragen mischen sich ganz normal unter die mitgelieferten und zählen wie jede andere Frage.
+Wollt ihr eine Runde nur mit euren eigenen: einfach alle anderen Kategorien abwählen.
+
+Bestehende Fragen lassen sich bearbeiten und löschen. Unter **Sichern und weitergeben** steht die
+komplette Sammlung als Text – zum Aufheben oder um sie auf einem anderen Gerät wieder einzufügen
+und zu importieren. Doppelte Fragen werden beim Import übersprungen.
+
 ## Handicap
 
 Hinter jedem Namen sitzt ein kleiner Knopf, der drei Zustände durchläuft:
@@ -178,4 +199,15 @@ index.html      Grundgerüst
 css/style.css   Aussehen
 js/fragen.js    Fragenkatalog
 js/app.js       Spiellogik
+build.mjs       baut dist/duemmste-fliegt.html als Einzeldatei
 ```
+
+Was im Browser gespeichert wird (alles lokal, nichts verlässt das Gerät):
+
+| Schlüssel | Inhalt |
+| --- | --- |
+| `ddf-setup-v1` | Namen, Handicaps, Einstellungen |
+| `ddf-gestellt-v1` | Fragengedächtnis |
+| `ddf-gemeldet-v1` | gemeldete Fragen |
+| `ddf-spielstand-v1` | angefangenes Spiel |
+| `ddf-eigene-v1` | eigene Fragen |
