@@ -159,12 +159,12 @@ Im Einrichtungsbildschirm steht, wie viele Fragen schon verbraucht sind; ein Kli
 
 ## Fragenkatalog
 
-Aktuell **2.273 deutsche Fragen** in 12 Kategorien:
+Aktuell **2.443 deutsche Fragen** in 12 Kategorien:
 
-- **2.109 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
+- **2.279 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
 - **164 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
 
-Vier Schwierigkeitsstufen: **288 leicht · 757 mittel · 694 schwer · 534 ★★★★ Ultra**.
+Vier Schwierigkeitsstufen: **395 leicht · 817 mittel · 697 schwer · 534 ★★★★ Ultra**.
 
 Ultra ist die Stufe für Leute, die sonst alles wissen – Jahreszahlen, Einheiten, Hauptstädte
 abseits der üblichen Verdächtigen. In der Moderatoransicht ist das die einzige Stufe, bei der
