@@ -3260,3 +3260,130 @@ window.FRAGEN.push(
   q("Musik", 4, "Aus welchem Land stammt die Bossa Nova?", "Brasilien", "Argentinien", "Kuba", "Portugal"),
   q("Musik", 4, "In welcher US-Stadt entstand das Musiklabel Motown?", "Detroit", "Chicago", "Memphis", "New Orleans")
 );
+
+/* =========================================================
+   Nachschub: Berühmte Menschen
+   ========================================================= */
+window.FRAGEN.push(
+  /* --- Wissenschaft und Medizin --- */
+  q("Wissenschaft", 3, "Wofür wurde Stephen Hawking bekannt?", "Für seine Forschung zu Schwarzen Löchern", "Für die Entdeckung des Penicillins", "Für die Relativitätstheorie", "Für das Periodensystem"),
+  q("Wissenschaft", 3, "Wofür wurde Alan Turing bekannt?", "Für die Grundlagen der Informatik und das Knacken der Enigma", "Für die Erfindung des Telefons", "Für die Entdeckung der DNA", "Für die erste Rakete"),
+  q("Wissenschaft", 3, "Wofür wurde Nikola Tesla bekannt?", "Für seine Arbeiten zum Wechselstrom", "Für die Glühlampe", "Für das Radio als Alleinerfinder", "Für den Verbrennungsmotor"),
+  q("Wissenschaft", 3, "Wofür wurde Robert Koch bekannt?", "Für die Entdeckung des Tuberkulose-Erregers", "Für die Impfung gegen Pocken", "Für die Blutgruppen", "Für das Röntgenbild"),
+  q("Wissenschaft", 3, "Wofür wurde Louis Pasteur bekannt?", "Für die Keimtheorie und das Haltbarmachen von Lebensmitteln", "Für die Narkose", "Für das Stethoskop", "Für die Röntgenstrahlen"),
+  q("Wissenschaft", 4, "Wofür wurde Max Planck bekannt?", "Für die Begründung der Quantentheorie", "Für die Relativitätstheorie", "Für die Kernspaltung", "Für die Radioaktivität"),
+  q("Wissenschaft", 4, "Wofür wurde Werner Heisenberg bekannt?", "Für die Unschärferelation", "Für das Atommodell mit Schalen", "Für die Entdeckung des Neutrons", "Für die Supraleitung"),
+  q("Wissenschaft", 4, "Wofür wurde Florence Nightingale bekannt?", "Für die moderne Krankenpflege", "Für die erste Impfung", "Für die Entdeckung der Zelle", "Für die Chirurgie mit Betäubung"),
+  q("Wissenschaft", 4, "Wofür wurde Jane Goodall bekannt?", "Für ihre Schimpansenforschung", "Für die Erforschung der Wale", "Für die Entdeckung des Urmenschen", "Für die Vogelkunde"),
+  q("Wissenschaft", 4, "Wofür wurde Jacques Cousteau bekannt?", "Für Meeresforschung und Unterwasserfilme", "Für Polarexpeditionen", "Für die Höhlenforschung", "Für die Raumfahrt"),
+
+  /* --- Politik und Gesellschaft --- */
+  q("Geschichte", 2, "Wofür wurde Barack Obama bekannt?", "Als erster schwarzer Präsident der USA", "Als Erfinder des Internets", "Als UN-Generalsekretär", "Als Bürgerrechtler der 1960er"),
+  q("Geschichte", 3, "Welches Amt hatte Winston Churchill im Zweiten Weltkrieg?", "Britischer Premierminister", "US-Präsident", "Französischer Staatschef", "Britischer König"),
+  q("Geschichte", 3, "Wofür wurde Che Guevara bekannt?", "Als Revolutionär in Lateinamerika", "Als Präsident Argentiniens", "Als Schriftsteller", "Als Fußballtrainer"),
+  q("Geschichte", 3, "Wofür wurde Mutter Teresa bekannt?", "Für ihre Arbeit mit Armen in Kalkutta", "Für ihre Forschung", "Für ihre Malerei", "Für ihre Politik in Albanien"),
+  q("Geschichte", 3, "Welches Land führte Fidel Castro jahrzehntelang?", "Kuba", "Venezuela", "Nicaragua", "Bolivien"),
+  q("Geschichte", 3, "Welches Land führte Mao Zedong?", "China", "Vietnam", "Nordkorea", "Kambodscha"),
+  q("Geschichte", 4, "Wofür wurde Albert Schweitzer bekannt?", "Für sein Urwaldkrankenhaus in Afrika", "Für die Erfindung des Impfstoffs", "Für die Erforschung der Antarktis", "Für die Gründung des Roten Kreuzes"),
+  q("Geschichte", 4, "Welches Amt hatte Charles de Gaulle?", "Französischer Staatspräsident", "Belgischer König", "Britischer General ohne Amt", "Schweizer Bundesrat"),
+  q("Geschichte", 4, "Wofür wurde Amelia Earhart bekannt?", "Als Flugpionierin", "Als Autorennfahrerin", "Als Bergsteigerin", "Als Seglerin"),
+
+  /* --- Kunst, Mode, Denken --- */
+  q("Allgemeinwissen", 3, "Wofür wurde Sigmund Freud bekannt?", "Für die Psychoanalyse", "Für die Verhaltenstherapie", "Für die Hirnchirurgie", "Für die Pädagogik"),
+  q("Allgemeinwissen", 3, "Wofür wurde Coco Chanel bekannt?", "Für Mode und das kleine Schwarze", "Für Parfüm als Erfinderin des Duftes an sich", "Für die Malerei", "Für den Tanz"),
+  q("Allgemeinwissen", 3, "Wofür wurde Andy Warhol bekannt?", "Für die Pop Art", "Für den Kubismus", "Für den Impressionismus", "Für die Bildhauerei"),
+  q("Allgemeinwissen", 3, "Aus welchem Land stammte die Malerin Frida Kahlo?", "Mexiko", "Spanien", "Argentinien", "Kolumbien"),
+  q("Allgemeinwissen", 3, "Wofür wurde Walt Disney bekannt?", "Für Zeichentrickfilme und Freizeitparks", "Für Stummfilmkomödien", "Für Musicals am Broadway", "Für Fotografie"),
+  q("Allgemeinwissen", 3, "Wofür wurde Charlie Chaplin bekannt?", "Für seine Stummfilmkomödien", "Für Westernfilme", "Für Opernregie", "Für Zeichentrick"),
+  q("Allgemeinwissen", 4, "In welcher Stadt lehrte der Philosoph Immanuel Kant?", "In Königsberg", "In Berlin", "In Jena", "In Heidelberg"),
+  q("Allgemeinwissen", 4, "Von wem stammt der Satz „Gott ist tot“?", "Von Friedrich Nietzsche", "Von Immanuel Kant", "Von Karl Marx", "Von Arthur Schopenhauer"),
+  q("Allgemeinwissen", 4, "Wofür wurde Karl Lagerfeld bekannt?", "Als Modedesigner", "Als Fotograf ausschließlich", "Als Architekt", "Als Verleger"),
+  q("Allgemeinwissen", 4, "Aus welchem Land stammte der Philosoph Konfuzius?", "China", "Indien", "Japan", "Persien"),
+
+  /* --- Film und Bühne --- */
+  q("Film & TV", 3, "Wofür wurde Alfred Hitchcock bekannt?", "Für Spannungsfilme", "Für Musicals", "Für Zeichentrick", "Für Dokumentationen"),
+  q("Film & TV", 3, "Wofür wurde Marilyn Monroe bekannt?", "Als Filmschauspielerin", "Als Opernsängerin", "Als Malerin", "Als Tänzerin am Broadway"),
+  q("Film & TV", 3, "Wofür wurde Audrey Hepburn neben ihrer Filmkarriere bekannt?", "Für ihr Engagement als UNICEF-Botschafterin", "Für ihre Malerei", "Für ihre Modelinie", "Für ihre Musikkarriere"),
+  q("Film & TV", 4, "Welcher Regisseur drehte „Taxi Driver“ und „Good Fellas“?", "Martin Scorsese", "Francis Ford Coppola", "Brian De Palma", "Oliver Stone"),
+  q("Film & TV", 4, "Wofür wurde Stan Lee bekannt?", "Als Comic-Autor bei Marvel", "Als Regisseur bei DC", "Als Zeichner bei Disney", "Als Produzent von Star Wars"),
+
+  /* --- Unternehmer --- */
+  q("Marken & Logos", 2, "Welche Firma gründete Steve Jobs mit?", "Apple", "Microsoft", "Google", "IBM"),
+  q("Marken & Logos", 2, "Wer gründete Facebook?", "Mark Zuckerberg", "Jack Dorsey", "Larry Page", "Evan Spiegel"),
+  q("Marken & Logos", 3, "Mit welchen Unternehmen wurde Elon Musk bekannt?", "Mit Tesla und SpaceX", "Mit Apple und Google", "Mit Amazon und Netflix", "Mit Intel und AMD"),
+  q("Marken & Logos", 4, "Wofür ist Warren Buffett bekannt?", "Als einer der erfolgreichsten Investoren", "Als Gründer von Microsoft", "Als Erfinder der Kreditkarte", "Als Chef von Coca-Cola"),
+  q("Marken & Logos", 4, "Wer gründete das Autounternehmen mit dem Fließband für den „Model T“?", "Henry Ford", "Carl Benz", "Ferdinand Porsche", "Louis Chevrolet"),
+
+  /* --- Sport --- */
+  q("Sport", 3, "Wofür wurde Jesse Owens 1936 in Berlin bekannt?", "Für vier olympische Goldmedaillen", "Für einen Weltrekord im Marathon", "Für den ersten Boxweltmeistertitel", "Für einen Skisprungrekord"),
+  q("Sport", 3, "In welcher Sportart wurde Pelé weltberühmt?", "Fußball", "Basketball", "Volleyball", "Leichtathletik"),
+  q("Sport", 3, "In welcher Sportart wurde Michael Jordan weltberühmt?", "Basketball", "American Football", "Baseball", "Golf"),
+  q("Sport", 3, "In welcher Sportart wurde Tiger Woods weltberühmt?", "Golf", "Tennis", "Baseball", "Basketball"),
+  q("Sport", 4, "In welcher Sportart wurde Jan Ullrich bekannt?", "Radsport", "Skispringen", "Leichtathletik", "Schwimmen"),
+  q("Sport", 4, "In welcher Sportart wurde Franziska van Almsick bekannt?", "Schwimmen", "Turnen", "Leichtathletik", "Fechten"),
+  q("Sport", 4, "In welcher Sportart wurde Katarina Witt bekannt?", "Eiskunstlauf", "Skilanglauf", "Turnen", "Biathlon"),
+
+  /* --- Religion und Weltanschauung --- */
+  q("Geschichte", 3, "Wer gilt als Begründer des Buddhismus?", "Siddhartha Gautama", "Konfuzius", "Laotse", "Ashoka"),
+  q("Geschichte", 3, "Wie heißt das geistliche Oberhaupt der tibetischen Buddhisten?", "Der Dalai Lama", "Der Patriarch", "Der Mufti", "Der Guru"),
+  q("Geschichte", 3, "Wer ist das Oberhaupt der katholischen Kirche?", "Der Papst", "Der Erzbischof von Canterbury", "Der Patriarch von Konstantinopel", "Der Kardinalstaatssekretär"),
+  q("Geschichte", 4, "In welcher Stadt liegt der Sitz des Papstes?", "In Rom im Vatikan", "In Jerusalem", "In Assisi", "In Avignon")
+);
+
+/* =========================================================
+   Nachschub: Rekorde und Superlative
+   ========================================================= */
+window.FRAGEN.push(
+  /* --- Erde --- */
+  q("Geografie", 3, "Welche Metropolregion ist die bevölkerungsreichste der Welt?", "Tokio", "Delhi", "Shanghai", "New York"),
+  q("Geografie", 3, "Welcher Ort gilt als heißester gemessener Fleck der Erde?", "Das Death Valley", "Die Sahara bei Timbuktu", "Die Wüste Lut", "Alice Springs"),
+  q("Geografie", 4, "Welches bewohnte Dorf gilt als kältester Ort der Welt?", "Oimjakon in Sibirien", "Nuuk in Grönland", "Barrow in Alaska", "Ushuaia in Argentinien"),
+  q("Geografie", 4, "Welche Wüste gilt als trockenste der Welt?", "Die Atacama", "Die Sahara", "Die Gobi", "Die Namib"),
+  q("Geografie", 3, "Welcher See hat die größte Fläche aller Süßwasserseen?", "Der Obere See in Nordamerika", "Der Baikalsee", "Der Viktoriasee", "Der Michigansee"),
+  q("Geografie", 3, "Welches Gewässer ist das größte Binnengewässer der Erde?", "Das Kaspische Meer", "Der Baikalsee", "Der Obere See", "Der Aralsee"),
+  q("Geografie", 4, "Welcher Punkt an Land liegt am tiefsten unter dem Meeresspiegel?", "Das Ufer des Toten Meeres", "Das Death Valley", "Die Kaspische Senke", "Die Danakil-Senke"),
+  q("Geografie", 4, "Welcher Eisenbahntunnel ist der längste der Welt?", "Der Gotthard-Basistunnel", "Der Eurotunnel", "Der Seikan-Tunnel", "Der Lötschbergtunnel"),
+  q("Geografie", 4, "Welches Land hat die meisten Nachbarstaaten?", "China und Russland mit je 14", "Deutschland mit 9", "Brasilien mit 10", "Indien mit 7"),
+  q("Geografie", 4, "Welcher Kontinent ist der windigste und trockenste zugleich?", "Die Antarktis", "Australien", "Afrika", "Asien"),
+
+  /* --- Bauwerke und Kultur --- */
+  q("Allgemeinwissen", 3, "Welches Museum wird weltweit am häufigsten besucht?", "Der Louvre", "Das British Museum", "Das MoMA", "Die Eremitage"),
+  q("Allgemeinwissen", 3, "Welches Buch gilt als das meistgedruckte der Welt?", "Die Bibel", "Der Koran", "Don Quijote", "Mao-Bibel"),
+  q("Allgemeinwissen", 4, "Welches Stadion ist das größte der Welt nach Zuschauerkapazität?", "Das Rungrado-Stadion in Nordkorea", "Das Camp Nou", "Das Wembley-Stadion", "Das Maracanã"),
+  q("Allgemeinwissen", 4, "Welche Kirche ist die größte der Welt?", "Der Petersdom", "Die Kathedrale von Sevilla", "Der Kölner Dom", "Die Hagia Sophia"),
+  q("Allgemeinwissen", 4, "Welche Universität Europas gilt als die älteste durchgehend bestehende?", "Bologna", "Oxford", "Paris", "Heidelberg"),
+  q("Allgemeinwissen", 4, "Welcher Zoo gilt als der älteste noch bestehende der Welt?", "Schönbrunn in Wien", "Der Berliner Zoo", "Der Londoner Zoo", "Der Zoo von Amsterdam"),
+  q("Allgemeinwissen", 4, "Welche Brücke hat die höchsten Pfeiler der Welt?", "Das Viadukt von Millau", "Die Golden Gate Bridge", "Die Akashi-Kaikyō-Brücke", "Die Öresundbrücke"),
+
+  /* --- Tiere und Pflanzen --- */
+  q("Natur & Tiere", 3, "Welches Tier gilt als das lauteste der Welt?", "Der Pottwal", "Der Löwe", "Der Brüllaffe", "Der Elefant"),
+  q("Natur & Tiere", 3, "Welcher Fisch schwimmt am schnellsten?", "Der Segelfisch", "Der Thunfisch", "Der Weiße Hai", "Der Schwertfisch"),
+  q("Natur & Tiere", 3, "Welcher Baum ist nach Volumen der größte Einzelbaum der Welt?", "Der Riesenmammutbaum „General Sherman“", "Eine Eiche in England", "Ein Baobab in Afrika", "Eine Zypresse in Mexiko"),
+  q("Natur & Tiere", 4, "Welches Meerestier gilt als eines der giftigsten überhaupt?", "Die Seewespe", "Der Rotfeuerfisch", "Der Tigerhai", "Die Muräne"),
+  q("Natur & Tiere", 4, "Was gilt als größter lebender Organismus der Erde?", "Ein Hallimasch-Pilzgeflecht", "Der Blauwal", "Ein Mammutbaum", "Ein Korallenriff-Polyp"),
+  q("Natur & Tiere", 4, "Welches Tier hat die längste bekannte Wanderung im Jahr?", "Die Küstenseeschwalbe", "Der Buckelwal", "Das Gnu", "Der Monarchfalter"),
+  q("Natur & Tiere", 4, "Welches Landtier hat die längste Lebenserwartung?", "Die Riesenschildkröte", "Der Elefant", "Der Papagei", "Der Mensch"),
+
+  /* --- Menschen und Zahlen --- */
+  q("Allgemeinwissen", 4, "Wie alt wurde der älteste dokumentierte Mensch?", "122 Jahre", "105 Jahre", "134 Jahre", "115 Jahre"),
+  q("Allgemeinwissen", 3, "Welches Sportereignis hat weltweit die meisten Zuschauer?", "Das Finale der Fußball-WM", "Der Super Bowl", "Die Tour de France", "Das Formel-1-Finale"),
+  q("Allgemeinwissen", 4, "Welche Sprache hat weltweit die meisten Sprecher, wenn man Zweitsprachler mitzählt?", "Englisch", "Chinesisch", "Spanisch", "Hindi"),
+  q("Allgemeinwissen", 4, "Welches Land hat die meisten Zeitzonen inklusive Überseegebiete?", "Frankreich", "Russland", "USA", "Australien"),
+  q("Allgemeinwissen", 4, "In welchem Land leben besonders viele Menschen über 100 Jahre, bezogen auf die Einwohnerzahl?", "Japan", "Deutschland", "Die USA", "Russland"),
+  q("Allgemeinwissen", 4, "Welches Land verbraucht pro Kopf am meisten Schokolade?", "Die Schweiz", "Deutschland", "Belgien", "Frankreich"),
+  q("Allgemeinwissen", 4, "Welches Land hat die meisten Nobelpreisträger?", "Die USA", "Großbritannien", "Deutschland", "Frankreich"),
+  q("Allgemeinwissen", 4, "Welches Verkehrsmittel gilt statistisch als das sicherste?", "Das Flugzeug", "Das Auto", "Der Bus", "Das Motorrad"),
+
+  /* --- Weltall --- */
+  q("Wissenschaft", 3, "Welcher Planet ist der heißeste im Sonnensystem?", "Venus", "Merkur", "Mars", "Jupiter"),
+  q("Wissenschaft", 4, "Welcher Planet hat die stärksten Stürme im Sonnensystem?", "Neptun", "Erde", "Mars", "Merkur"),
+  q("Wissenschaft", 4, "Wie heißt der größte bekannte Krater auf dem Mond auf der erdabgewandten Seite?", "Das Südpol-Aitken-Becken", "Der Tycho-Krater", "Das Mare Tranquillitatis", "Der Kopernikus-Krater"),
+  q("Wissenschaft", 4, "Welcher Stoff ist das Hauptmaterial der Saturnringe?", "Wassereis", "Gestein", "Staub aus Metall", "Gefrorenes Methan"),
+  q("Wissenschaft", 4, "Wie lange bräuchte ein Auto mit Tempo 100 bis zur Sonne?", "Rund 170 Jahre", "Rund 17 Jahre", "Rund 1.700 Jahre", "Rund 5 Jahre"),
+
+  /* --- Technik und Verkehr --- */
+  q("Wissenschaft", 3, "Welches Fahrzeug hält den Landgeschwindigkeitsrekord?", "Ein Raketenauto mit Überschall", "Ein Formel-1-Wagen", "Ein Motorrad", "Ein Zug"),
+  q("Wissenschaft", 4, "Welcher Zugtyp erreicht im Regelbetrieb die höchste Geschwindigkeit?", "Magnetschwebebahnen", "Dieselloks", "Dampfloks", "Straßenbahnen"),
+  q("Wissenschaft", 4, "Welches Flugzeug war das schnellste Passagierflugzeug im Liniendienst?", "Die Concorde", "Die Boeing 747", "Der Airbus A380", "Die Tupolew Tu-154"),
+  q("Wissenschaft", 4, "Wie tief taucht ein U-Boot der Forschung maximal?", "Bis auf über 10.000 Meter", "Bis rund 1.000 Meter", "Bis rund 3.000 Meter", "Bis rund 500 Meter")
+);
