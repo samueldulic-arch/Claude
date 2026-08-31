@@ -81,6 +81,32 @@ Textfeld steht), <kbd>1</kbd>–<kbd>4</kbd> für eine eingeblendete Antwort.
 
 Einstellungen und Namen werden im Browser gespeichert und beim nächsten Start wieder geladen.
 
+## Handicap
+
+Hinter jedem Namen sitzt ein kleiner Knopf, der drei Zustände durchläuft:
+
+| | Bedeutung |
+| --- | --- |
+| **=** | normale Fragen |
+| **▲** | eine Stufe schwerer |
+| **▼** | eine Stufe leichter |
+
+Gedacht für die Runde, in der immer dieselbe Person gewinnt: Wer alles weiß, bekommt mit ▲
+durchgehend härtere Fragen, ohne dass jemand absichtlich danebenliegen muss. Über die höchste
+bzw. niedrigste Stufe hinaus geht es nicht. Das Handicap steht während des Spiels klein neben dem
+Namen in der Punkteleiste und wird zusammen mit den Namen gespeichert.
+
+## Angefangenes Spiel fortsetzen
+
+Der Spielstand wird vor jeder Frage automatisch gesichert. Wenn der Tab zugeht, das Handy zusperrt
+oder jemand versehentlich neu lädt, steht beim nächsten Start oben eine Karte:
+**„Angefangenes Spiel – Runde 4, 3 von 5 Spielern übrig, vor 12 Minuten"** mit den Knöpfen
+*Spiel fortsetzen* und *Verwerfen*.
+
+Fortgesetzt wird am Anfang der Frage, die gerade dran war – eine angefangene Frage wird also neu
+gestellt, gewertet war sie ja noch nicht. Punkte, Leben, Rauswürfe, Rundenstand und eine laufende
+Abstimmung bleiben erhalten. Am Spielende und beim Abbrechen wird der Stand gelöscht.
+
 ## Wenn etwas schiefgeht
 
 Zwei Knöpfe für den Ernstfall am Spieleabend:

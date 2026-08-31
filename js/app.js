@@ -11,9 +11,11 @@
   const KEYS = ['A', 'B', 'C', 'D'];
   const STUFEN = ['', 'Leicht', 'Mittel', 'Schwer', 'Ultra'];
   const sterne = s => '★'.repeat(s) + '☆'.repeat(4 - s);
+  const HANDICAP_ZEICHEN = { '-1': '▼', '0': '=', '1': '▲' };
   const SPEICHER = 'ddf-setup-v1';
   const GEDAECHTNIS = 'ddf-gestellt-v1';
   const MELDUNGEN = 'ddf-gemeldet-v1';
+  const SPIELSTAND = 'ddf-spielstand-v1';
 
   const app = document.getElementById('app');
   const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
@@ -38,6 +40,7 @@
       optionenZeigen: 'ultra'  // Antwortmöglichkeiten: 'nie' | 'ultra' | 'schwer' | 'immer'
     },
     namen: ['Spieler 1', 'Spieler 2', 'Spieler 3'],
+    handicaps: [0, 0, 0],      // je Spieler: -1 leichter, 0 normal, +1 schwerer
     spieler: [],
     runde: 1,
     reihenfolge: [],
@@ -176,20 +179,26 @@
     S.pool = mischen(frisch);
   }
 
-  function zielStufe() {
+  function zielStufe(spieler) {
     const e = S.einstellungen;
     if (e.schwierigkeit === 'mix') return 0;
-    if (e.schwierigkeit !== 'auto') return Number(e.schwierigkeit);
-    // Automatisch: es wird von Runde zu Runde schwerer
-    if (S.runde <= 2) return 1;
-    if (S.runde <= 4) return 2;
-    if (S.runde <= 6) return 3;
-    return 4;
+
+    let stufe;
+    if (e.schwierigkeit !== 'auto') {
+      stufe = Number(e.schwierigkeit);
+    } else {
+      // Automatisch: es wird von Runde zu Runde schwerer
+      stufe = S.runde <= 2 ? 1 : S.runde <= 4 ? 2 : S.runde <= 6 ? 3 : 4;
+    }
+
+    // Handicap verschiebt die Stufe für einzelne Spieler
+    if (spieler && spieler.handicap) stufe += spieler.handicap;
+    return Math.min(4, Math.max(1, stufe));
   }
 
-  function frageZiehen() {
+  function frageZiehen(spieler) {
     if (!S.pool.length) poolAufbauen();
-    const stufe = zielStufe();
+    const stufe = zielStufe(spieler);
     let idx = 0;
     if (stufe) {
       idx = S.pool.findIndex(f => f.s === stufe);
@@ -212,6 +221,7 @@
     try {
       localStorage.setItem(SPEICHER, JSON.stringify({
         namen: S.namen,
+        handicaps: S.handicaps,
         einstellungen: S.einstellungen,
         bekannteKategorien: alleKategorien
       }));
@@ -224,6 +234,7 @@
       if (!roh) return;
       const d = JSON.parse(roh);
       if (Array.isArray(d.namen) && d.namen.length >= 2) S.namen = d.namen.slice(0, 10);
+      S.handicaps = S.namen.map((_, i) => (Array.isArray(d.handicaps) ? d.handicaps[i] : 0) || 0);
       if (d.einstellungen) {
         Object.assign(S.einstellungen, d.einstellungen);
         S.einstellungen.kategorien = (S.einstellungen.kategorien || [])
@@ -257,8 +268,26 @@
       <div class="logo">
         <div class="kicker">Das Quiz-Partyspiel</div>
         <h1>Der Dümmste fliegt</h1>
-        <p>${window.FRAGEN.length} Fragen · 2–10 Spieler · ein Gerät reicht</p>
+        <p>${window.FRAGEN.length.toLocaleString('de-DE')} Fragen · 2–10 Spieler · ein Gerät reicht</p>
       </div>
+
+      ${(() => {
+        const d = spielstandLesen();
+        if (!d) return '';
+        const dabei = d.spieler.filter(x => x.dabei);
+        return `
+          <div class="card fortsetzen">
+            <div>
+              <strong>Angefangenes Spiel</strong>
+              <p class="hint">Runde ${d.runde} · ${dabei.length} von ${d.spieler.length} Spielern übrig ·
+                ${esc(vorWieLange(d.zeit))}<br>${esc(dabei.map(x => x.name).join(', '))}</p>
+            </div>
+            <div class="row">
+              <button class="btn" id="fortsetzen">Spiel fortsetzen</button>
+              <button class="btn ghost" id="verwerfen">Verwerfen</button>
+            </div>
+          </div>`;
+      })()}
 
       <div class="card">
         <span class="label">Wie viele spielen mit?</span>
@@ -272,9 +301,12 @@
             <div class="player-row">
               <span class="avatar" style="background:${AVATAR_COLORS[i % AVATAR_COLORS.length]}">${esc((n.trim()[0] || String(i + 1)).toUpperCase())}</span>
               <input type="text" data-name="${i}" value="${esc(n)}" maxlength="14" placeholder="Spieler ${i + 1}">
+              <button class="handicap${S.handicaps[i] ? ' aktiv' : ''}" data-handicap="${i}" title="Handicap ändern">${HANDICAP_ZEICHEN[S.handicaps[i] || 0]}</button>
             </div>`).join('')}
         </div>
-        <p class="hint">Tipp: Ihr spielt zusammen an einem Gerät und gebt es reihum weiter.</p>
+        <p class="hint">Tipp: Ihr spielt zusammen an einem Gerät und gebt es reihum weiter.<br>
+          Der Knopf hinter dem Namen setzt ein Handicap: <b>=</b> normal,
+          <b>▲</b> eine Stufe schwerere Fragen, <b>▼</b> eine Stufe leichtere.</p>
       </div>
 
       <div class="card">
@@ -392,14 +424,33 @@
 
     aktualisiereSetupHinweise();
 
+    const fort = app.querySelector('#fortsetzen');
+    if (fort) fort.addEventListener('click', spielFortsetzen);
+    const verw = app.querySelector('#verwerfen');
+    if (verw) verw.addEventListener('click', () => { spielstandVerwerfen(); zeigeSetup(); });
+
     app.querySelectorAll('[data-anzahl]').forEach(b => b.addEventListener('click', () => {
       const n = Number(b.dataset.anzahl);
       const alt = S.namen.slice();
+      const altH = S.handicaps.slice();
       S.namen = [];
-      for (let i = 0; i < n; i++) S.namen.push(alt[i] || 'Spieler ' + (i + 1));
+      S.handicaps = [];
+      for (let i = 0; i < n; i++) {
+        S.namen.push(alt[i] || 'Spieler ' + (i + 1));
+        S.handicaps.push(altH[i] || 0);
+      }
       S.setupOffen = app.querySelector('details.settings').open;
       speichern();
       zeigeSetup();
+    }));
+
+    app.querySelectorAll('[data-handicap]').forEach(b => b.addEventListener('click', () => {
+      const i = Number(b.dataset.handicap);
+      const jetzt = S.handicaps[i] || 0;
+      S.handicaps[i] = jetzt === 0 ? 1 : jetzt === 1 ? -1 : 0;
+      b.textContent = HANDICAP_ZEICHEN[S.handicaps[i]];
+      b.classList.toggle('aktiv', S.handicaps[i] !== 0);
+      speichern();
     }));
 
     app.querySelectorAll('[data-name]').forEach(inp => {
@@ -535,6 +586,75 @@
   }
 
   /* ---------------------------------------------------------
+     Spielstand: überlebt zugeklappte Tabs und leere Akkus
+     --------------------------------------------------------- */
+  function spielSichern() {
+    try {
+      localStorage.setItem(SPIELSTAND, JSON.stringify({
+        zeit: Date.now(),
+        einstellungen: S.einstellungen,
+        namen: S.namen,
+        handicaps: S.handicaps,
+        spieler: S.spieler,
+        runde: S.runde,
+        reihenfolge: S.reihenfolge,
+        rIndex: S.rIndex,
+        rundenPunkte: S.rundenPunkte,
+        stechen: S.stechen,
+        blockRunde: S.blockRunde,
+        protokoll: S.protokoll,
+        abstimmung: S.abstimmung,
+        rausFolge: S.rausFolge
+      }));
+    } catch (e) { /* egal */ }
+  }
+
+  function spielstandLesen() {
+    try {
+      const roh = localStorage.getItem(SPIELSTAND);
+      const d = roh ? JSON.parse(roh) : null;
+      if (!d || !Array.isArray(d.spieler) || d.spieler.filter(p => p.dabei).length < 2) return null;
+      return d;
+    } catch (e) { return null; }
+  }
+
+  function spielstandVerwerfen() {
+    try { localStorage.removeItem(SPIELSTAND); } catch (e) { /* egal */ }
+  }
+
+  function spielFortsetzen() {
+    const d = spielstandLesen();
+    if (!d) return;
+    Sound.hole();
+    Object.assign(S.einstellungen, d.einstellungen || {});
+    S.namen = d.namen || S.namen;
+    S.handicaps = d.handicaps || S.handicaps;
+    S.spieler = d.spieler;
+    S.runde = d.runde || 1;
+    S.reihenfolge = d.reihenfolge || [];
+    S.rIndex = d.rIndex || 0;
+    S.rundenPunkte = d.rundenPunkte || {};
+    S.stechen = d.stechen || null;
+    S.blockRunde = d.blockRunde || 1;
+    S.protokoll = d.protokoll || [];
+    S.abstimmung = d.abstimmung || null;
+    S.rausFolge = d.rausFolge || [];
+    poolAufbauen();
+    if (S.abstimmung) abstimmungZug();
+    else naechsterZug();
+  }
+
+  function vorWieLange(zeit) {
+    const min = Math.round((Date.now() - zeit) / 60000);
+    if (min < 1) return 'gerade eben';
+    if (min < 60) return `vor ${min} Minute${min === 1 ? '' : 'n'}`;
+    const std = Math.round(min / 60);
+    if (std < 24) return `vor ${std} Stunde${std === 1 ? '' : 'n'}`;
+    const tage = Math.round(std / 24);
+    return `vor ${tage} Tag${tage === 1 ? '' : 'en'}`;
+  }
+
+  /* ---------------------------------------------------------
      Spielstart
      --------------------------------------------------------- */
   function spielStarten() {
@@ -544,6 +664,7 @@
       name: (n || '').trim() || 'Spieler ' + (i + 1),
       farbe: AVATAR_COLORS[i % AVATAR_COLORS.length],
       leben: S.einstellungen.leben,
+      handicap: S.handicaps[i] || 0,
       dabei: true,
       richtig: 0,
       falsch: 0,
@@ -579,6 +700,7 @@
      Zugsteuerung
      --------------------------------------------------------- */
   function naechsterZug() {
+    spielSichern();
     if (S.stechen) return stechenZug();
     if (S.rIndex >= S.reihenfolge.length) return rundeBeenden();
 
@@ -586,7 +708,7 @@
     const p = spielerVon(pid);
     if (!p.dabei) { S.rIndex++; return naechsterZug(); }
 
-    S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now() });
+    S.aktuell = Object.assign(frageZiehen(p), { pid, gewaehlt: null, start: Date.now() });
 
     if (uebergabeNoetig()) zeigeUebergabe(p);
     else zeigeFrage();
@@ -601,7 +723,7 @@
     const st = S.stechen;
     if (st.idx >= st.reihe.length) return stechenAuswerten();
     const pid = st.reihe[st.idx];
-    S.aktuell = Object.assign(frageZiehen(), { pid, gewaehlt: null, start: Date.now(), stechen: true });
+    S.aktuell = Object.assign(frageZiehen(spielerVon(pid)), { pid, gewaehlt: null, start: Date.now(), stechen: true });
     if (uebergabeNoetig()) zeigeUebergabe(spielerVon(pid), 'Stechfrage!');
     else zeigeFrage();
   }
@@ -773,7 +895,7 @@
     if (S.screen !== 'frage') return;
     stoppeTimer();
     const alt = S.aktuell;
-    S.aktuell = Object.assign(frageZiehen(), {
+    S.aktuell = Object.assign(frageZiehen(spielerVon(alt.pid)), {
       pid: alt.pid,
       gewaehlt: null,
       start: Date.now(),
@@ -1094,6 +1216,7 @@
   }
 
   function abstimmungZug() {
+    spielSichern();
     const ab = S.abstimmung;
     if (ab.idx >= ab.waehler.length) return abstimmungErgebnis();
 
@@ -1286,6 +1409,7 @@
   function zeigeEnde() {
     S.screen = 'ende';
     stoppeTimer();
+    spielstandVerwerfen();
     Sound.sieg();
 
     const sieger = lebende()[0];
@@ -1363,8 +1487,9 @@
           const zeigtLeben = e.modus === 'leben' || (e.modus === 'voting' && e.leben > 1);
           const leben = zeigtLeben && p.dabei ? `<span class="lives">${'❤'.repeat(Math.max(0, p.leben))}</span>` : '';
           const punkte = e.modus !== 'leben' && p.dabei ? `<span class="lives">${S.rundenPunkte[p.id] || 0}</span>` : '';
+          const hc = p.handicap ? `<span class="hc">${HANDICAP_ZEICHEN[p.handicap]}</span>` : '';
           return `<span class="score-pill ${p.dabei ? '' : 'out'} ${aktiv ? 'active' : ''}">
-            ${avatar(p)}${esc(p.name)} ${leben}${punkte}
+            ${avatar(p)}${esc(p.name)}${hc} ${leben}${punkte}
           </span>`;
         }).join('')}
       </div>`;
@@ -1408,6 +1533,7 @@
     if (confirm('Spiel wirklich abbrechen?')) {
       stoppeTimer();
       S.aktuell = null;
+      spielstandVerwerfen();
       zeigeSetup();
     }
   });
