@@ -2938,3 +2938,202 @@ window.FRAGEN.push(
   q("Wissenschaft", 2, "Warum sieht man bei Gewitter erst den Blitz?", "Weil Licht schneller ist als Schall", "Weil der Donner später entsteht", "Weil Blitze heller sind", "Weil Wolken den Schall schlucken"),
   q("Wissenschaft", 2, "Was zeigt ein Kompass an?", "Die Himmelsrichtung", "Die Höhe", "Die Temperatur", "Die Uhrzeit")
 );
+
+/* =========================================================
+   Nachschub: Marken und Firmen
+   ========================================================= */
+window.FRAGEN.push(
+  /* --- Autos --- */
+  q("Marken & Logos", 2, "Welche Automarke führt einen Löwen im Logo?", "Peugeot", "Renault", "Citroën", "Opel"),
+  q("Marken & Logos", 2, "Welche Automarke baut den „Mustang“?", "Ford", "Chevrolet", "Dodge", "Chrysler"),
+  q("Marken & Logos", 2, "Welche Automarke baut den „911“?", "Porsche", "BMW", "Audi", "Mercedes-Benz"),
+  q("Marken & Logos", 3, "Welche Automarke zeigt eine Schlange im Wappen?", "Alfa Romeo", "Lamborghini", "Ferrari", "Maserati"),
+  q("Marken & Logos", 3, "Welche Automarke baut den „Corolla“, das meistverkaufte Auto der Welt?", "Toyota", "Honda", "Nissan", "Mazda"),
+  q("Marken & Logos", 3, "Welche Automarke baut den Kleinwagen „Panda“?", "Fiat", "Renault", "Opel", "Seat"),
+  q("Marken & Logos", 3, "Welche Automarke baut den „Clio“?", "Renault", "Peugeot", "Citroën", "Dacia"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Citroën?", "Frankreich", "Italien", "Belgien", "Spanien"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Seat?", "Spanien", "Italien", "Portugal", "Frankreich"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Hyundai?", "Südkorea", "Japan", "China", "Taiwan"),
+  q("Marken & Logos", 4, "Welche Luxusmarke im VW-Konzern baut den „Bentayga“?", "Bentley", "Bugatti", "Lamborghini", "Rolls-Royce"),
+  q("Marken & Logos", 4, "Wofür steht die Abkürzung „VW“?", "Volkswagen", "Volkswerk", "Vereinigte Wagenwerke", "Verkehrswagen"),
+
+  /* --- Lebensmittel --- */
+  q("Marken & Logos", 2, "Welche Schokoladenmarke wirbt mit einer lila Kuh?", "Milka", "Ritter Sport", "Lindt", "Alpia"),
+  q("Marken & Logos", 2, "Welche Marke ist für Fertigsuppen und flüssige Würze bekannt?", "Maggi", "Knorr", "Erasco", "Kühne"),
+  q("Marken & Logos", 2, "Welche Marke steht für Pudding und Backmischungen mit einem Doktortitel im Namen?", "Dr. Oetker", "Dr. Best", "Dr. Beckmann", "Dr. Klaus"),
+  q("Marken & Logos", 3, "Welche Orangenbrause gehört zu Coca-Cola?", "Fanta", "Mirinda", "Orangina", "Schwip Schwap"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Nestlé?", "Schweiz", "Frankreich", "Deutschland", "Niederlande"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Heineken?", "Niederlande", "Belgien", "Dänemark", "Deutschland"),
+  q("Marken & Logos", 3, "Welche Marke ist für Cornflakes bekannt?", "Kellogg’s", "Nestlé Fitness", "Kölln", "Seitenbacher"),
+  q("Marken & Logos", 4, "Aus welchem Land stammt Danone?", "Frankreich", "Spanien", "Italien", "Belgien"),
+  q("Marken & Logos", 4, "Wofür steht der Name „Aldi“?", "Albrecht Diskont", "Allgemeiner Discount", "Alfred Discount", "Alle Dinge billig"),
+  q("Marken & Logos", 4, "Wofür stand der Name „Edeka“ ursprünglich?", "Einkaufsgenossenschaft der Kolonialwarenhändler", "Erste Deutsche Kaufhalle", "Einzelhandel der Kaufleute", "Edel-Kaufhaus"),
+
+  /* --- Technik --- */
+  q("Marken & Logos", 2, "Aus welchem Land stammt Siemens?", "Deutschland", "Österreich", "Schweiz", "Niederlande"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Philips?", "Niederlande", "Belgien", "Deutschland", "Frankreich"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt LG?", "Südkorea", "Japan", "China", "Taiwan"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Xiaomi?", "China", "Südkorea", "Japan", "Indien"),
+  q("Marken & Logos", 3, "Welche Firma stellt die Prozessoren der „Core i“-Reihe her?", "Intel", "AMD", "Nvidia", "Qualcomm"),
+  q("Marken & Logos", 3, "Welche Firma stellt die Prozessoren der „Ryzen“-Reihe her?", "AMD", "Intel", "Apple", "Samsung"),
+  q("Marken & Logos", 3, "Welche Firma steht hinter den Kameras der „EOS“-Reihe?", "Canon", "Nikon", "Sony", "Fujifilm"),
+  q("Marken & Logos", 4, "Welches Unternehmen steht hinter TikTok?", "ByteDance", "Tencent", "Alibaba", "Baidu"),
+  q("Marken & Logos", 4, "Aus welchem Land stammt Spotify?", "Schweden", "Norwegen", "Dänemark", "Finnland"),
+  q("Marken & Logos", 4, "Welche Firma stellt Werkzeuge und Haushaltsgeräte mit rotem Logo aus Schwaben her?", "Bosch", "Miele", "Makita", "Hilti"),
+
+  /* --- Mode und Sport --- */
+  q("Marken & Logos", 2, "Welche Jeansmarke erkennt man am roten Fähnchen an der Tasche?", "Levi’s", "Wrangler", "Lee", "Diesel"),
+  q("Marken & Logos", 3, "Nach welcher Göttin ist die Marke Nike benannt?", "Nach der griechischen Siegesgöttin", "Nach einer römischen Jagdgöttin", "Nach einer ägyptischen Göttin", "Nach einer nordischen Kriegerin"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt die Sportmarke Asics?", "Japan", "Südkorea", "China", "USA"),
+  q("Marken & Logos", 3, "Welche Modemarke zeigt einen Polospieler zu Pferd?", "Ralph Lauren", "Lacoste", "Tommy Hilfiger", "Gant"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Zara?", "Spanien", "Italien", "Portugal", "Frankreich"),
+  q("Marken & Logos", 3, "Welche Turnschuhe heißen nach dem Basketballer Chuck Taylor?", "Converse", "Vans", "New Balance", "Reebok"),
+  q("Marken & Logos", 4, "Welche Luxusmarke aus Frankreich kürzt sich „LV“ ab?", "Louis Vuitton", "Lanvin", "Longchamp", "Lacoste"),
+  q("Marken & Logos", 4, "Welche Outdoor-Marke trägt eine Tierspur im Logo?", "Jack Wolfskin", "The North Face", "Vaude", "Salewa"),
+
+  /* --- Sonstige Firmen --- */
+  q("Marken & Logos", 3, "Welche Fluggesellschaft befördert in Europa die meisten Passagiere?", "Ryanair", "Lufthansa", "Air France", "British Airways"),
+  q("Marken & Logos", 3, "Aus welchem Land stammt Ryanair?", "Irland", "Großbritannien", "Spanien", "Ungarn"),
+  q("Marken & Logos", 3, "Welcher Konzern steht hinter dem Waschmittel Persil?", "Henkel", "Procter & Gamble", "Unilever", "Beiersdorf"),
+  q("Marken & Logos", 3, "Welche Marke ist für orange Kettensägen bekannt?", "Stihl", "Husqvarna", "Makita", "Einhell"),
+  q("Marken & Logos", 4, "Welcher Buchverlag trägt einen Pinguin im Logo?", "Penguin", "Random House", "Harper", "Faber"),
+  q("Marken & Logos", 4, "Wofür steht die Abkürzung „ADAC“?", "Allgemeiner Deutscher Automobil-Club", "Auto- und Antriebs-Club", "Allgemeiner Deutscher Auto-Club", "Automobilclub Deutschland"),
+  q("Marken & Logos", 4, "Welche Suchmaschine ist in Russland Marktführer?", "Yandex", "Baidu", "Naver", "Seznam"),
+  q("Marken & Logos", 4, "Welcher Konzern steht hinter dem Waschmittel Ariel?", "Procter & Gamble", "Henkel", "Unilever", "Reckitt")
+);
+
+/* =========================================================
+   Nachschub: Sprache, Wörter, Rechtschreibung
+   ========================================================= */
+window.FRAGEN.push(
+  /* --- Fremdwörter --- */
+  q("Sprache & Wörter", 2, "Was bedeutet „plausibel“?", "Einleuchtend und nachvollziehbar", "Verboten", "Zufällig", "Kompliziert"),
+  q("Sprache & Wörter", 2, "Was bedeutet „effizient“?", "Mit möglichst wenig Aufwand zum Ziel", "Sehr schnell", "Besonders teuer", "Gut aussehend"),
+  q("Sprache & Wörter", 2, "Was bedeutet „skeptisch“?", "Zweifelnd", "Begeistert", "Gelangweilt", "Ängstlich"),
+  q("Sprache & Wörter", 3, "Was bedeutet „redundant“?", "Überflüssig, doppelt vorhanden", "Zwingend nötig", "Sehr selten", "Streng geheim"),
+  q("Sprache & Wörter", 3, "Was bedeutet „explizit“?", "Ausdrücklich", "Angedeutet", "Versehentlich", "Ungenau"),
+  q("Sprache & Wörter", 3, "Was bedeutet „kontrovers“?", "Umstritten", "Eindeutig", "Langweilig", "Freundlich"),
+  q("Sprache & Wörter", 3, "Was bedeutet „adäquat“?", "Angemessen", "Übertrieben", "Vorläufig", "Selten"),
+  q("Sprache & Wörter", 3, "Was bedeutet „pragmatisch“?", "Sachlich und auf Machbarkeit bedacht", "Theoretisch", "Streng nach Vorschrift", "Sehr optimistisch"),
+  q("Sprache & Wörter", 3, "Was bedeutet „Konsens“?", "Übereinstimmung", "Streit", "Vorschlag", "Vertrag"),
+  q("Sprache & Wörter", 3, "Was bedeutet „souverän“?", "Sicher und überlegen", "Unsicher", "Höflich", "Streng"),
+  q("Sprache & Wörter", 4, "Was bedeutet „akribisch“?", "Äußerst sorgfältig", "Sehr schnell", "Ziemlich schlampig", "Ungeduldig"),
+  q("Sprache & Wörter", 4, "Was bedeutet „lapidar“?", "Knapp und beiläufig", "Ausschweifend", "Feierlich", "Wütend"),
+  q("Sprache & Wörter", 4, "Was bedeutet „rudimentär“?", "Nur ansatzweise vorhanden", "Vollständig ausgebaut", "Sehr modern", "Fehlerfrei"),
+  q("Sprache & Wörter", 4, "Was bedeutet „sporadisch“?", "Vereinzelt und unregelmäßig", "Ständig", "Gleichzeitig", "Vorhersehbar"),
+  q("Sprache & Wörter", 4, "Was bedeutet „Diskrepanz“?", "Ein auffälliger Unterschied", "Eine Übereinstimmung", "Eine Entschuldigung", "Eine Verzögerung"),
+
+  /* --- Abkürzungen --- */
+  q("Sprache & Wörter", 2, "Wofür steht „d. h.“?", "Das heißt", "Der Herr", "Durch ihn", "Die Hälfte"),
+  q("Sprache & Wörter", 2, "Wofür steht „u. a.“?", "Unter anderem", "Und andere", "Unser Angebot", "Ungefähr am"),
+  q("Sprache & Wörter", 3, "Wofür steht „ggf.“?", "Gegebenenfalls", "Grundsätzlich gefordert", "Gleichfalls", "Größtenteils gefunden"),
+  q("Sprache & Wörter", 3, "Wofür steht „inkl.“?", "Inklusive", "Inkasso", "Inklination", "In Kürze"),
+  q("Sprache & Wörter", 3, "Wofür steht „zzgl.“?", "Zuzüglich", "Zeitzugleich", "Zusätzlich zur Gebühr", "Zur Zahlung gelistet"),
+  q("Sprache & Wörter", 4, "Wofür steht „z. Hd.“ auf einem Brief?", "Zu Händen", "Zur Handhabung", "Zum Handel", "Zwecks Herausgabe"),
+  q("Sprache & Wörter", 4, "Wofür steht „o. Ä.“?", "Oder Ähnliches", "Ohne Änderung", "Offiziell änderbar", "Ober-Ämter"),
+
+  /* --- Grammatik --- */
+  q("Sprache & Wörter", 2, "Wie lautet der Artikel von „Mädchen“?", "Das", "Die", "Der", "Alle drei sind möglich"),
+  q("Sprache & Wörter", 2, "Wie lautet die Steigerung von „gut“?", "Besser, am besten", "Guter, am gutesten", "Mehr gut, am meisten gut", "Güter, am gütesten"),
+  q("Sprache & Wörter", 3, "Wie lautet die Mehrzahl von „Museum“?", "Museen", "Museums", "Musea", "Museums-Häuser"),
+  q("Sprache & Wörter", 3, "Wie lautet die Mehrzahl von „Thema“?", "Themen", "Themas", "Themata als einzige Form", "Themes"),
+  q("Sprache & Wörter", 3, "Wie lautet die Mehrzahl von „Visum“?", "Visa", "Visums", "Visen", "Visumme"),
+  q("Sprache & Wörter", 4, "Wie lautet die Mehrzahl von „Lexikon“?", "Lexika", "Lexikons", "Lexiken", "Lexikone"),
+  q("Sprache & Wörter", 3, "Wie lautet die Steigerung von „viel“?", "Mehr, am meisten", "Vieler, am vielsten", "Mehrer, am mehrsten", "Viel, am vielesten"),
+  q("Sprache & Wörter", 4, "Welche Wortart ist „schnell“ in „er läuft schnell“?", "Ein Adverb", "Ein Substantiv", "Ein Verb", "Eine Präposition"),
+
+  /* --- Rechtschreibung --- */
+  q("Sprache & Wörter", 2, "Wie schreibt man es richtig: „seit“ oder „seid“ bei einer Zeitangabe?", "Seit", "Seid", "Beides möglich", "Seidt"),
+  q("Sprache & Wörter", 3, "Wie schreibt man richtig: „Standart“ oder „Standard“?", "Standard", "Standart", "Beides ist zulässig", "Standardt"),
+  q("Sprache & Wörter", 3, "Wie schreibt man das Wort für Regelmäßigkeit im Takt richtig?", "Rhythmus", "Rythmus", "Rhytmus", "Rythmuss"),
+  q("Sprache & Wörter", 3, "Wie schreibt man richtig: „agressiv“ oder „aggressiv“?", "Aggressiv", "Agressiv", "Aggresiv", "Agresiv"),
+  q("Sprache & Wörter", 3, "Wie schreibt man das Wort für Anteilnahme an einer Sache?", "Interesse", "Intresse", "Interessse", "Interese"),
+  q("Sprache & Wörter", 4, "Wie heißt die Redewendung richtig: aus dem …?", "Stegreif", "Stehgreif", "Stehgreiff", "Steckgreif"),
+  q("Sprache & Wörter", 4, "Wann benutzt man „wider“ ohne „e“?", "Wenn es „gegen“ bedeutet", "Wenn es „erneut“ bedeutet", "Immer bei Verben", "Nur in Fragen"),
+  q("Sprache & Wörter", 4, "Wie schreibt man Wochentage als Zeitangabe wie „dienstags“?", "Klein", "Groß", "Mit Bindestrich", "Beides ist erlaubt"),
+
+  /* --- Herkunft von Wörtern --- */
+  q("Sprache & Wörter", 3, "Aus welcher Sprache stammt das Wort „Alkohol“?", "Aus dem Arabischen", "Aus dem Lateinischen", "Aus dem Griechischen", "Aus dem Hebräischen"),
+  q("Sprache & Wörter", 3, "Aus welcher Sprache stammt das Wort „Tsunami“?", "Aus dem Japanischen", "Aus dem Chinesischen", "Aus dem Hawaiianischen", "Aus dem Koreanischen"),
+  q("Sprache & Wörter", 4, "Aus welcher Sprache stammt das Wort „Roboter“?", "Aus dem Tschechischen", "Aus dem Russischen", "Aus dem Polnischen", "Aus dem Ungarischen"),
+  q("Sprache & Wörter", 4, "Aus welcher Sprache stammt das Wort „Bungalow“?", "Aus dem Hindi", "Aus dem Spanischen", "Aus dem Suaheli", "Aus dem Malaiischen"),
+  q("Sprache & Wörter", 4, "Was ist am deutschen Wort „Handy“ besonders?", "Es ist ein Scheinanglizismus", "Es kommt aus dem Französischen", "Es ist ein Markenname", "Es ist eine Abkürzung"),
+  q("Sprache & Wörter", 4, "Welches deutsche Wort wurde als „wanderlust“ ins Englische übernommen?", "Wanderlust", "Weltschmerz", "Fernweh", "Sehnsucht"),
+  q("Sprache & Wörter", 4, "Welches deutsche Wort für den Geist einer Epoche nutzt auch das Englische?", "Zeitgeist", "Weltbild", "Epoche", "Stimmung"),
+
+  /* --- Sprachen der Welt --- */
+  q("Sprache & Wörter", 2, "Wie heißt „Ja“ auf Spanisch?", "Sí", "Oui", "Sim", "Da"),
+  q("Sprache & Wörter", 2, "Wie heißt „Nein“ auf Französisch?", "Non", "Nein", "No", "Nyet"),
+  q("Sprache & Wörter", 3, "Wie heißt „Danke“ auf Spanisch?", "Gracias", "Grazie", "Obrigado", "Merci"),
+  q("Sprache & Wörter", 3, "Wie heißt „Danke“ auf Italienisch?", "Grazie", "Gracias", "Merci", "Obrigado"),
+  q("Sprache & Wörter", 3, "In welcher Sprache heißt „Guten Tag“ „Dzień dobry“?", "Polnisch", "Tschechisch", "Ungarisch", "Kroatisch"),
+  q("Sprache & Wörter", 4, "Welche Schrift verwendet das Russische?", "Die kyrillische", "Die lateinische", "Die griechische", "Die arabische"),
+  q("Sprache & Wörter", 4, "Wie viele Schriftzeichensysteme nutzt das Japanische im Alltag?", "Drei", "Eins", "Zwei", "Vier")
+);
+
+/* =========================================================
+   Nachschub: Küche und Natur
+   ========================================================= */
+window.FRAGEN.push(
+  /* --- Zubereitung --- */
+  q("Essen & Trinken", 2, "Was bedeutet „panieren“?", "In Ei und Semmelbröseln wenden", "Scharf anbraten", "In Öl einlegen", "Mit Zucker überziehen"),
+  q("Essen & Trinken", 3, "Was bedeutet „blanchieren“?", "Kurz in kochendem Wasser garen und abschrecken", "Lange schmoren", "Im Ofen überbacken", "Roh marinieren"),
+  q("Essen & Trinken", 3, "Was bedeutet „pochieren“?", "In heißem Wasser knapp unter dem Siedepunkt garen", "In Fett ausbacken", "Auf dem Grill garen", "Im Dampf garen"),
+  q("Essen & Trinken", 3, "Was bedeutet „dünsten“?", "Schonend im eigenen Saft oder wenig Flüssigkeit garen", "Bei großer Hitze braten", "Im Backofen trocknen", "Über offenem Feuer räuchern"),
+  q("Essen & Trinken", 3, "Was passiert beim Flambieren?", "Alkohol wird über der Speise entzündet", "Das Gericht wird eingefroren", "Es wird mit Salz bedeckt", "Es wird kalt geräuchert"),
+  q("Essen & Trinken", 3, "Was bedeutet „gratinieren“?", "Mit Käse oder Kruste überbacken", "In Scheiben schneiden", "Kalt anrühren", "In Öl einlegen"),
+  q("Essen & Trinken", 3, "Wozu dient ein Schneebesen?", "Zum Aufschlagen und Verrühren", "Zum Abtropfen", "Zum Zerkleinern", "Zum Wenden in der Pfanne"),
+  q("Essen & Trinken", 4, "Wozu dient ein Mörser?", "Zum Zerstoßen von Gewürzen", "Zum Abmessen", "Zum Warmhalten", "Zum Abschmecken"),
+
+  /* --- Getränke --- */
+  q("Essen & Trinken", 2, "Welcher Cocktail enthält Kokos und Ananas?", "Piña Colada", "Mojito", "Margarita", "Daiquiri"),
+  q("Essen & Trinken", 3, "Welcher Cocktail wird mit Tequila gemixt?", "Margarita", "Mojito", "Cosmopolitan", "Negroni"),
+  q("Essen & Trinken", 3, "Welcher Cocktail enthält Tomatensaft?", "Bloody Mary", "Cuba Libre", "Sex on the Beach", "Aperol Spritz"),
+  q("Essen & Trinken", 3, "Welche Biersorte wird obergärig gebraut und stammt aus Köln?", "Kölsch", "Pils", "Bock", "Helles"),
+  q("Essen & Trinken", 3, "Welches Bier wird aus Weizenmalz gebraut?", "Weißbier", "Pils", "Kölsch", "Märzen"),
+  q("Essen & Trinken", 3, "Aus welchem Land stammt Scotch Whisky?", "Schottland", "Irland", "USA", "Kanada"),
+  q("Essen & Trinken", 4, "Wie entsteht Roséwein üblicherweise?", "Rote Trauben mit kurzer Schalenkontaktzeit", "Mischung aus Weiß- und Rotwein", "Weiße Trauben mit Farbstoff", "Rotwein mit Wasser verdünnt"),
+  q("Essen & Trinken", 4, "Was unterscheidet Sekt von Champagner?", "Champagner kommt aus der Champagne", "Sekt hat mehr Alkohol", "Champagner ist immer süß", "Sekt wird nicht vergoren"),
+
+  /* --- Obst, Gemüse, Käse --- */
+  q("Essen & Trinken", 2, "Wo wächst eine Ananas?", "Am Boden auf einer Staude", "Auf Palmen", "An Sträuchern", "Unter der Erde"),
+  q("Essen & Trinken", 2, "Welcher Teil der Kartoffelpflanze wird gegessen?", "Die Knolle", "Die Frucht", "Die Blüte", "Das Blatt"),
+  q("Essen & Trinken", 2, "Welche Frucht wächst an Dattelpalmen?", "Die Dattel", "Die Feige", "Die Olive", "Die Mandel"),
+  q("Essen & Trinken", 3, "Warum ist Spargel weiß statt grün?", "Weil er unter der Erde wächst", "Weil er jünger geerntet wird", "Weil er gebleicht wird", "Weil es eine andere Art ist"),
+  q("Essen & Trinken", 3, "Aus welchem Land stammt Parmesan?", "Italien", "Frankreich", "Schweiz", "Spanien"),
+  q("Essen & Trinken", 3, "Aus welchem Land stammt Gouda?", "Niederlande", "Belgien", "Deutschland", "Dänemark"),
+  q("Essen & Trinken", 3, "Aus welchem Land stammt Cheddar?", "England", "Irland", "Schottland", "USA"),
+  q("Essen & Trinken", 3, "Welche Nudelsorte ist gefüllt?", "Ravioli", "Spaghetti", "Penne", "Fusilli"),
+  q("Essen & Trinken", 4, "Von welcher Pflanze stammt die Vanilleschote?", "Von einer Orchidee", "Von einem Baum", "Von einem Gras", "Von einer Palme"),
+  q("Essen & Trinken", 4, "Welches Gewürz gehört traditionell in eine Béchamelsauce?", "Muskatnuss", "Kurkuma", "Paprika", "Zimt"),
+  q("Essen & Trinken", 4, "Was ist Laktose?", "Milchzucker", "Milcheiweiß", "Milchfett", "Ein Konservierungsstoff"),
+  q("Essen & Trinken", 4, "In welchen Getreiden steckt Gluten?", "In Weizen, Roggen und Gerste", "Nur in Mais", "Nur in Reis", "In allen Hülsenfrüchten"),
+
+  /* --- Pflanzen --- */
+  q("Natur & Tiere", 2, "Welches Blatt ziert die Flagge Kanadas?", "Das Ahornblatt", "Das Eichenblatt", "Das Lindenblatt", "Das Efeublatt"),
+  q("Natur & Tiere", 2, "Wo wachsen Kakteen von Natur aus?", "In trockenen Gebieten", "Im Regenwald", "Im Moor", "In der Arktis"),
+  q("Natur & Tiere", 2, "Was ist Efeu?", "Eine Kletterpflanze", "Ein Baum", "Ein Pilz", "Ein Gras"),
+  q("Natur & Tiere", 3, "Womit vermehren sich Farne?", "Mit Sporen", "Mit Samen", "Mit Knollen", "Mit Blüten"),
+  q("Natur & Tiere", 3, "Gehören Pilze zu den Pflanzen?", "Nein, sie bilden ein eigenes Reich", "Ja, sie sind Pflanzen", "Ja, sie sind Algen", "Nein, sie sind Tiere"),
+  q("Natur & Tiere", 3, "Woran erkennt man das Alter eines Baumes am Stamm?", "An den Jahresringen", "An der Rindenfarbe", "An der Anzahl der Äste", "An der Höhe"),
+  q("Natur & Tiere", 3, "Welcher Baum trägt Kastanien, die man nicht essen sollte?", "Die Rosskastanie", "Die Edelkastanie", "Die Walnuss", "Die Buche"),
+  q("Natur & Tiere", 4, "Was ist Humus?", "Fruchtbare, zersetzte organische Bodensubstanz", "Ein Mineraldünger", "Eine Tonschicht", "Ein Pflanzenschutzmittel"),
+  q("Natur & Tiere", 4, "Wozu sind Regenwürmer im Boden nützlich?", "Sie lockern und düngen ihn", "Sie fressen Schädlinge", "Sie speichern Wasser", "Sie bestäuben Pflanzen"),
+
+  /* --- Vögel und Insekten --- */
+  q("Natur & Tiere", 2, "Welcher Vogel klopft an Baumstämmen?", "Der Specht", "Die Amsel", "Die Meise", "Der Star"),
+  q("Natur & Tiere", 2, "Welcher Vogel gilt als Bote des Frühlings und zieht im Winter fort?", "Die Schwalbe", "Die Amsel", "Der Spatz", "Die Taube"),
+  q("Natur & Tiere", 2, "Welcher große Vogel brütet gern auf Hausdächern?", "Der Storch", "Der Reiher", "Der Kranich", "Der Milan"),
+  q("Natur & Tiere", 3, "Welche Mücken stechen?", "Nur die Weibchen", "Nur die Männchen", "Beide gleichermaßen", "Nur junge Tiere"),
+  q("Natur & Tiere", 3, "Was unterscheidet Wespen von Bienen?", "Wespen haben eine schmalere Taille und stechen mehrfach", "Wespen sammeln Honig", "Bienen sind größer", "Wespen sind Einzelgänger"),
+  q("Natur & Tiere", 3, "Wie leben Ameisen?", "In einem Staat mit Arbeitsteilung", "Als Einzelgänger", "In Paaren", "In wechselnden Gruppen"),
+  q("Natur & Tiere", 4, "Welches Insekt gilt als schnellster Flieger unter den heimischen Arten?", "Die Libelle", "Die Biene", "Die Fliege", "Der Schmetterling"),
+
+  /* --- Meer und Wasser --- */
+  q("Natur & Tiere", 3, "Womit fängt eine Qualle ihre Beute?", "Mit Nesselzellen", "Mit Zähnen", "Mit Saugnäpfen", "Mit einem Netz"),
+  q("Natur & Tiere", 3, "Wer trägt beim Seepferdchen den Nachwuchs aus?", "Das Männchen", "Das Weibchen", "Beide abwechselnd", "Keiner, die Eier treiben frei"),
+  q("Natur & Tiere", 3, "Was ist eine Koralle?", "Ein Tier", "Eine Pflanze", "Ein Gestein", "Eine Alge"),
+  q("Natur & Tiere", 4, "Wie viele Arme hat ein Krake?", "8", "6", "10", "12"),
+  q("Natur & Tiere", 4, "Wie atmen Delfine?", "Über ein Blasloch an der Luft", "Über Kiemen", "Über die Haut", "Über den Mund im Wasser"),
+  q("Natur & Tiere", 4, "Wodurch entsteht eine Perle in der Muschel?", "Durch einen Fremdkörper, den die Muschel umhüllt", "Durch Sonnenlicht", "Durch Salzkristalle", "Durch abgestorbene Eier")
+);
