@@ -559,3 +559,25 @@ kbd {
   background: rgba(255, 77, 141, .16);
   border-color: rgba(255, 77, 141, .45);
 }
+
+/* Nebenknöpfe unter Frage und Auflösung */
+.nebenknoepfe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.nebenknoepfe .btn {
+  flex: 0 1 auto;
+  color: var(--muted);
+}
+.nebenknoepfe .btn:hover:not(:disabled) { color: var(--text); }
+.nebenknoepfe .btn:disabled { opacity: .5; cursor: default; }
+
+.verdict-sub em { color: var(--accent); font-style: normal; }
+
+textarea.antwort-feld {
+  font-size: .85rem;
+  line-height: 1.5;
+}

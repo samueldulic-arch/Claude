@@ -13,6 +13,7 @@
   const sterne = s => '★'.repeat(s) + '☆'.repeat(4 - s);
   const SPEICHER = 'ddf-setup-v1';
   const GEDAECHTNIS = 'ddf-gestellt-v1';
+  const MELDUNGEN = 'ddf-gemeldet-v1';
 
   const app = document.getElementById('app');
   const alleKategorien = [...new Set(window.FRAGEN.map(f => f.k))];
@@ -47,6 +48,7 @@
     protokoll: [],             // gegebene Antworten seit der letzten Abstimmung
     abstimmung: null,          // { kandidaten, waehler, idx, stimmen }
     gestellt: new Set(),       // schon gestellte Fragen (auch über Spielabende hinweg)
+    gemeldet: [],              // als fehlerhaft gemeldete Fragen
     rausFolge: [],
     pool: [],
     aktuell: null,
@@ -122,7 +124,7 @@
      --------------------------------------------------------- */
   function passendeFragen() {
     const e = S.einstellungen;
-    let fragen = window.FRAGEN.filter(f => e.kategorien.includes(f.k));
+    let fragen = window.FRAGEN.filter(f => e.kategorien.includes(f.k) && !istGemeldet(f));
     if (!e.jaNein) fragen = fragen.filter(f => !f.jn);
     return fragen;
   }
@@ -144,6 +146,20 @@
   function speichereGestellt() {
     try { localStorage.setItem(GEDAECHTNIS, JSON.stringify([...S.gestellt])); } catch (e) { /* egal */ }
   }
+
+  function ladeGemeldet() {
+    try {
+      const roh = localStorage.getItem(MELDUNGEN);
+      S.gemeldet = roh ? JSON.parse(roh) : [];
+    } catch (e) { S.gemeldet = []; }
+    if (!Array.isArray(S.gemeldet)) S.gemeldet = [];
+  }
+
+  function speichereGemeldet() {
+    try { localStorage.setItem(MELDUNGEN, JSON.stringify(S.gemeldet)); } catch (e) { /* egal */ }
+  }
+
+  const istGemeldet = f => S.gemeldet.some(x => x.f === f.f);
 
   function poolAufbauen() {
     let fragen = passendeFragen();
@@ -348,6 +364,17 @@
             <button class="chip" id="gedaechtnisReset">Gedächtnis zurücksetzen</button>
           </div>
 
+          <div class="setting" id="meldungenSetting">
+            <span class="label">Gemeldete Fragen</span>
+            <p class="hint" id="meldungenHinweis" style="margin-bottom:8px"></p>
+            <textarea class="antwort-feld" id="meldungenText" rows="5" readonly
+                      style="margin:0 0 10px; resize:vertical"></textarea>
+            <div class="chips">
+              <button class="chip" id="meldungenKopieren">Liste kopieren</button>
+              <button class="chip" id="meldungenLeeren">Meldungen löschen</button>
+            </div>
+          </div>
+
           <div class="setting">
             <span class="label">Sonstiges</span>
             <div class="chips">
@@ -414,6 +441,26 @@
       speichern();
     }));
 
+    app.querySelector('#meldungenKopieren').addEventListener('click', () => {
+      const feld = app.querySelector('#meldungenText');
+      const knopf = app.querySelector('#meldungenKopieren');
+      feld.select();
+      const fertig = () => { knopf.textContent = 'Kopiert ✓'; setTimeout(() => knopf.textContent = 'Liste kopieren', 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(feld.value).then(fertig, () => {
+          knopf.textContent = 'Text ist markiert – mit Strg+C kopieren';
+        });
+      } else {
+        knopf.textContent = 'Text ist markiert – mit Strg+C kopieren';
+      }
+    });
+
+    app.querySelector('#meldungenLeeren').addEventListener('click', () => {
+      S.gemeldet = [];
+      speichereGemeldet();
+      aktualisiereSetupHinweise();
+    });
+
     app.querySelector('#gedaechtnisReset').addEventListener('click', () => {
       S.gestellt = new Set();
       speichereGestellt();
@@ -458,6 +505,21 @@
         ? 'Leben pro Spieler (1 = sofort raus)'
         : 'Leben pro Spieler';
     }
+    const meldSet = app.querySelector('#meldungenSetting');
+    if (meldSet) {
+      const anzahl = S.gemeldet.length;
+      meldSet.classList.toggle('hidden', anzahl === 0);
+      if (anzahl) {
+        app.querySelector('#meldungenHinweis').textContent =
+          `${anzahl} ${anzahl === 1 ? 'Frage wurde' : 'Fragen wurden'} als fehlerhaft gemeldet und kommen nicht mehr dran. Liste kopieren und weitergeben, dann lassen sie sich korrigieren.`;
+        app.querySelector('#meldungenText').value =
+          'Gemeldete Fragen aus „Der Dümmste fliegt“:\n' +
+          S.gemeldet.map((x, i) =>
+            `${i + 1}. [${x.k} · Stufe ${x.s}] ${x.f} → hinterlegte Antwort: ${x.r}`
+          ).join('\n');
+      }
+    }
+
     if (ged) {
       const gesamt = window.FRAGEN.length;
       ged.textContent = S.gestellt.size
@@ -586,10 +648,14 @@
               <span class="key">${KEYS[i]}</span><span>${esc(t)}</span>
             </button>`).join('')}
         </div>
+        <div class="nebenknoepfe">
+          <button class="btn ghost small" id="ueberspringen">↷ Andere Frage</button>
+        </div>
       </div>`;
 
     app.querySelectorAll('.answer').forEach(b =>
       b.addEventListener('click', () => antworten(Number(b.dataset.i))));
+    app.querySelector('#ueberspringen').addEventListener('click', frageUeberspringen);
 
     starteTimer();
   }
@@ -653,6 +719,10 @@
         ${e.zeit && !a.zeitGestartet
           ? `<button class="btn ghost block" id="zeitStart" style="margin-top:10px">Bedenkzeit starten (${e.zeit} s)</button>`
           : ''}
+        <div class="nebenknoepfe">
+          <button class="btn ghost small" id="ueberspringen">↷ Andere Frage</button>
+          <button class="btn ghost small" id="melden">⚑ Frage ist falsch</button>
+        </div>
         <p class="hint">Tastatur: <kbd>R</kbd> richtig, <kbd>F</kbd> falsch${a.optionenSichtbar ? ', <kbd>1</kbd>–<kbd>4</kbd> für die Antwort' : ''}.</p>
       </div>`;
 
@@ -681,6 +751,12 @@
     app.querySelector('#jaRichtig').addEventListener('click', () => wertung(true, { text: gesagt() }));
     app.querySelector('#jaFalsch').addEventListener('click', () => wertung(false, { text: gesagt() }));
 
+    app.querySelector('#ueberspringen').addEventListener('click', frageUeberspringen);
+    app.querySelector('#melden').addEventListener('click', () => {
+      frageMelden(a.frage);
+      frageUeberspringen();
+    });
+
     const zeit = app.querySelector('#zeitStart');
     if (zeit) zeit.addEventListener('click', () => {
       zeit.disabled = true;
@@ -690,6 +766,28 @@
       if (bar) bar.classList.remove('idle');
       starteTimer();
     });
+  }
+
+  /* Diese Frage passt nicht – neue für denselben Spieler ziehen */
+  function frageUeberspringen() {
+    if (S.screen !== 'frage') return;
+    stoppeTimer();
+    const alt = S.aktuell;
+    S.aktuell = Object.assign(frageZiehen(), {
+      pid: alt.pid,
+      gewaehlt: null,
+      start: Date.now(),
+      stechen: alt.stechen
+    });
+    zeigeFrage();
+  }
+
+  /* Frage als fehlerhaft melden: kommt nie wieder und landet in der Liste */
+  function frageMelden(frage) {
+    if (!S.gemeldet.some(x => x.f === frage.f)) {
+      S.gemeldet.push({ f: frage.f, k: frage.k, s: frage.s, r: frage.r });
+      speichereGemeldet();
+    }
   }
 
   function starteTimer(rest) {
@@ -772,6 +870,46 @@
     zeigeAufloesung(richtigIdx);
   }
 
+  /* Vertippt? Die letzte Wertung lässt sich umdrehen, solange nicht weitergeklickt wurde */
+  function wertungUmdrehen() {
+    if (S.screen !== 'aufloesung') return;
+    const a = S.aktuell;
+    const p = spielerVon(a.pid);
+    const e = S.einstellungen;
+    const lebenModus = e.modus === 'leben' && !a.stechen;
+
+    // Alte Auswirkung zurücknehmen
+    if (a.korrekt) {
+      p.richtig--;
+      if (!a.stechen) S.rundenPunkte[p.id] = Math.max(0, (S.rundenPunkte[p.id] || 0) - 1);
+    } else {
+      p.falsch--;
+      if (lebenModus) p.leben++;
+    }
+
+    // Umgekehrte Wertung anwenden
+    a.korrekt = !a.korrekt;
+    a.abgelaufen = false;
+    if (a.korrekt) {
+      p.richtig++;
+      if (!a.stechen) S.rundenPunkte[p.id] = (S.rundenPunkte[p.id] || 0) + 1;
+      Sound.richtig();
+    } else {
+      p.falsch++;
+      if (lebenModus) p.leben--;
+      Sound.falsch();
+    }
+    if (a.stechen) S.stechen.ergebnisse[p.id] = a.korrekt;
+
+    if (e.modus === 'voting' && !a.stechen && S.protokoll.length) {
+      const letzter = S.protokoll[S.protokoll.length - 1];
+      if (letzter.pid === p.id && letzter.frage === a.frage.f) letzter.korrekt = a.korrekt;
+    }
+
+    a.korrigiert = true;
+    zeigeAufloesung(a.antworten.indexOf(a.frage.r));
+  }
+
   function zeigeAufloesung(richtigIdx) {
     const a = S.aktuell;
     const p = spielerVon(a.pid);
@@ -815,11 +953,25 @@
           }).join('')}
         </div>`}
         <div class="verdict ${a.korrekt ? 'good' : 'bad'}">${a.korrekt ? 'Richtig! 🎉' : 'Falsch! 💀'}</div>
-        <div class="verdict-sub">${unter}</div>
+        <div class="verdict-sub">${unter}${a.korrigiert ? ' <em>(korrigiert)</em>' : ''}</div>
         <button class="btn block" id="weiter">Weiter</button>
+        <div class="nebenknoepfe">
+          <button class="btn ghost small" id="umdrehen">↺ ${a.korrekt ? 'Doch falsch' : 'Doch richtig'}</button>
+          <button class="btn ghost small" id="melden" ${istGemeldet(a.frage) ? 'disabled' : ''}>
+            ${istGemeldet(a.frage) ? '⚑ Gemeldet' : '⚑ Frage ist falsch'}
+          </button>
+        </div>
       </div>`;
 
     app.querySelector('#weiter').addEventListener('click', nachAufloesung);
+    app.querySelector('#umdrehen').addEventListener('click', wertungUmdrehen);
+
+    const melden = app.querySelector('#melden');
+    if (melden && !melden.disabled) melden.addEventListener('click', () => {
+      frageMelden(a.frage);
+      melden.disabled = true;
+      melden.textContent = '⚑ Gemeldet';
+    });
   }
 
   function nachAufloesung() {
@@ -1265,5 +1417,6 @@
      --------------------------------------------------------- */
   laden();
   ladeGestellt();
+  ladeGemeldet();
   zeigeSetup();
 })();

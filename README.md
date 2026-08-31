@@ -81,6 +81,21 @@ Textfeld steht), <kbd>1</kbd>–<kbd>4</kbd> für eine eingeblendete Antwort.
 
 Einstellungen und Namen werden im Browser gespeichert und beim nächsten Start wieder geladen.
 
+## Wenn etwas schiefgeht
+
+Zwei Knöpfe für den Ernstfall am Spieleabend:
+
+- **↺ Doch richtig / Doch falsch** — steht unter jeder Auflösung. Falsch getippt? Ein Klick dreht die
+  Wertung um: Punkt, Leben und Rundenstand werden zurückgerechnet, die Auflösung ist als
+  *(korrigiert)* markiert. Funktioniert, solange ihr nicht auf „Weiter“ geklickt habt, und beliebig
+  oft hin und her.
+- **↷ Andere Frage** — überspringt die aktuelle Frage und zieht eine neue für denselben Spieler.
+  Ohne Wertung, ohne Punktverlust.
+- **⚑ Frage ist falsch** — meldet eine fehlerhafte Frage. Sie kommt danach nie wieder dran und
+  landet in einer Liste im Einrichtungsbildschirm. Dort könnt ihr die Liste als Text kopieren und
+  weitergeben, damit die Fragen korrigiert werden. Der Knopf steht in der Moderatoransicht direkt
+  bei der Frage und nach jeder Auflösung.
+
 ## Fragengedächtnis
 
 Das Spiel merkt sich, welche Fragen auf diesem Gerät schon dran waren – auch über Spielabende hinweg.
