@@ -22,7 +22,7 @@ Auf dem Handy funktioniert es genauso.
 
 | Modus | Regel |
 | --- | --- |
-| **Rundenmodus** (Standard) | Jede Runde beantworten alle gleich viele Fragen. Wer am Rundenende die wenigsten richtig hat, **fliegt raus**. Bei Gleichstand gibt es ein **Stechen**: die Betroffenen bekommen Extrafragen, bis einer allein daneben liegt. |
+| **Rundenmodus** (Standard) | Jede Runde beantworten alle gleich viele Fragen. Wer am Rundenende die wenigsten richtig hat, **fliegt raus**. Bei Gleichstand gibt es ein **Stechen**: die Betroffenen bekommen Extrafragen, bis einer allein daneben liegt. Liegen alle richtig (oder alle falsch), wird jede weitere Stechrunde eine Stufe härter – bis hoch zu Ultra. |
 | **Abstimmungsmodus** | Erst wird gespielt, dann gerichtet. Nach einer einstellbaren Zahl Runden (Standard: 2) stimmen alle reihum ab, **welche Antwort die dümmste war**. Wer die meisten Stimmen kassiert, **verliert ein Leben** – wer keins mehr hat, fliegt raus. Bei Gleichstand entscheidet ein Stechen. |
 | **Lebenmodus** | Reihum eine Frage. Jede falsche Antwort kostet ein Leben (1–5 einstellbar). Wer keine Leben mehr hat, fliegt raus. |
 
@@ -159,12 +159,12 @@ Im Einrichtungsbildschirm steht, wie viele Fragen schon verbraucht sind; ein Kli
 
 ## Fragenkatalog
 
-Aktuell **3.000 deutsche Fragen** in 12 Kategorien:
+Aktuell **2.936 deutsche Fragen** in 12 Kategorien:
 
-- **2.804 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
-- **196 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
+- **2.755 Multiple-Choice-Fragen** mit je 4 Antwortmöglichkeiten
+- **181 Ja/Nein-Fragen** mit zwei großen Antwortknöpfen
 
-Vier Schwierigkeitsstufen: **427 leicht · 940 mittel · 935 schwer · 698 ★★★★ Ultra**.
+Vier Schwierigkeitsstufen: **418 leicht · 910 mittel · 919 schwer · 689 ★★★★ Ultra**.
 
 Ultra ist die Stufe für Leute, die sonst alles wissen – Jahreszahlen, Einheiten, Hauptstädte
 abseits der üblichen Verdächtigen. In der Moderatoransicht ist das die einzige Stufe, bei der

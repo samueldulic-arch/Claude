@@ -17,7 +17,6 @@
   --bg:           #0b0a1f;
   --bg-2:         #14103a;
   --panel:        rgba(255, 255, 255, 0.06);
-  --panel-solid:  #1b1740;
   --border:       rgba(255, 255, 255, 0.12);
   --text:         #f4f2ff;
   --muted:        #a49fd0;
@@ -680,8 +679,6 @@ window.FRAGEN = [
   q("Allgemeinwissen", 2, "Welche römische Zahl steht für 50?", "L", "C", "D", "X"),
   q("Allgemeinwissen", 2, "Wie viele Streifen hat die Flagge der USA?", "13", "50", "12", "15"),
   q("Allgemeinwissen", 2, "Wofür steht die Abkürzung „WLAN“?", "Wireless Local Area Network", "Wide Line Access Network", "Wireless Link And Net", "Web Local Access Node"),
-  q("Allgemeinwissen", 2, "Welche Blutgruppe gilt als Universalspender?", "0 negativ", "AB positiv", "A positiv", "B negativ"),
-  q("Allgemeinwissen", 2, "Wie viele Zähne hat ein erwachsener Mensch normalerweise?", "32", "28", "30", "36"),
   q("Allgemeinwissen", 2, "Wie viele Grad hat ein rechter Winkel?", "90", "45", "180", "120"),
   q("Allgemeinwissen", 2, "Was bedeutet „ASAP“?", "As soon as possible", "Always send a photo", "As said and posted", "After school, after practice"),
   q("Allgemeinwissen", 2, "Wie viele Sekunden hat ein Tag?", "86.400", "36.000", "144.000", "60.000"),
@@ -1005,7 +1002,6 @@ window.FRAGEN.push(
   jn("Wissenschaft", 1, "Ist die Sonne ein Stern?", true),
   jn("Wissenschaft", 2, "Ist Glas ein Metall?", false),
   jn("Wissenschaft", 2, "Könnte man auf dem Mond eine Explosion hören?", false),
-  jn("Wissenschaft", 2, "Ist Blut im Körper blau, solange es kein Sauerstoff berührt?", false),
   jn("Wissenschaft", 2, "Wiegt ein Kilogramm Federn genauso viel wie ein Kilogramm Blei?", true),
   jn("Wissenschaft", 2, "Gilt Pluto heute offiziell noch als Planet?", false),
 
@@ -2878,7 +2874,6 @@ window.FRAGEN.push(
   q("Geografie", 3, "In welchem Bundesland liegt die Insel Sylt?", "Schleswig-Holstein", "Niedersachsen", "Mecklenburg-Vorpommern", "Hamburg"),
   q("Geografie", 4, "Wie heißt der größte See in Bayern?", "Der Chiemsee", "Der Starnberger See", "Der Ammersee", "Der Tegernsee"),
   q("Geografie", 4, "Welches Mittelgebirge liegt zwischen Hessen und Thüringen?", "Die Rhön", "Der Harz", "Der Taunus", "Der Spessart"),
-  q("Geografie", 4, "Wie heißt die längste Insel Deutschlands?", "Rügen", "Usedom", "Fehmarn", "Sylt"),
 
   /* --- Wahrzeichen --- */
   q("Geografie", 2, "In welcher Stadt steht der Kölner Dom?", "Köln", "Bonn", "Aachen", "Düsseldorf"),
@@ -3013,7 +3008,7 @@ window.FRAGEN.push(
   q("Natur & Tiere", 3, "Wie viele Eier legt ein Legehuhn ungefähr pro Jahr?", "Rund 300", "Rund 50", "Rund 700", "Rund 100"),
   q("Natur & Tiere", 4, "Wie lange lebt eine Arbeiterbiene im Sommer ungefähr?", "Rund sechs Wochen", "Rund ein Jahr", "Rund sechs Monate", "Rund zwei Wochen"),
   q("Natur & Tiere", 4, "Wie viele Blüten muss eine Biene für ein Kilo Honig anfliegen?", "Mehrere Millionen", "Rund 10.000", "Rund 100.000", "Rund 500"),
-  q("Natur & Tiere", 3, "Welches Tier hat den größten Kopf im Verhältnis zum Körper unter den Landtieren?", "Der Elefant", "Das Nashorn", "Das Nilpferd", "Der Büffel"),
+  q("Natur & Tiere", 3, "Welches Landtier hat das schwerste Gehirn?", "Der Elefant", "Das Nilpferd", "Die Giraffe", "Das Nashorn"),
   q("Natur & Tiere", 4, "Wie viele Kammern hat das Herz eines Frosches?", "3", "2", "4", "1"),
   q("Natur & Tiere", 4, "Wie orientieren sich Zugvögel unter anderem?", "Am Magnetfeld der Erde", "Am Luftdruck", "An Duftspuren", "An Wasserläufen allein"),
 
@@ -4045,14 +4040,11 @@ window.FRAGEN.push(
 window.FRAGEN.push(
   q("Wissenschaft", 1, "Welches Organ nimmt beim Atmen den Sauerstoff auf?", "Die Lunge", "Der Magen", "Das Herz", "Die Milz"),
   q("Wissenschaft", 1, "Wie viele Zähne hat ein erwachsener Mensch normalerweise mit Weisheitszähnen?", "32", "28", "24", "36"),
-  q("Wissenschaft", 1, "Welches ist das größte Organ des Menschen?", "Die Haut", "Die Leber", "Der Darm", "Das Gehirn"),
-  q("Wissenschaft", 1, "Wo wird die Nahrung nach dem Schlucken zuerst hin transportiert?", "In den Magen", "In den Dickdarm", "In die Leber", "In die Blase"),
-  q("Wissenschaft", 2, "Welcher ist der längste Knochen im menschlichen Körper?", "Der Oberschenkelknochen", "Der Oberarmknochen", "Das Schienbein", "Das Schlüsselbein"),
+  q("Wissenschaft", 1, "In welches Organ gelangt die Nahrung nach der Speiseröhre?", "In den Magen", "In den Dickdarm", "In die Leber", "In die Blase"),
   q("Wissenschaft", 2, "Welche Blutzellen transportieren den Sauerstoff?", "Die roten Blutkörperchen", "Die weißen Blutkörperchen", "Die Blutplättchen", "Das Blutplasma"),
   q("Wissenschaft", 2, "Was misst man mit einem Blutdruckmessgerät?", "Den Druck in den Arterien", "Den Puls im Herzen", "Den Sauerstoff im Blut", "Die Körpertemperatur"),
   q("Wissenschaft", 2, "Wie heißt der Muskel, der beim Atmen die Lunge bewegt?", "Das Zwerchfell", "Der Bizeps", "Der Trizeps", "Der Wadenmuskel"),
-  q("Wissenschaft", 2, "Welches Organ filtert das Blut und produziert Urin?", "Die Nieren", "Die Leber", "Die Milz", "Die Lunge"),
-  q("Wissenschaft", 2, "Wie viele Kammern hat das menschliche Herz?", "Vier", "Zwei", "Drei", "Sechs"),
+  q("Wissenschaft", 2, "Wie viele Vorhöfe und Kammern hat das menschliche Herz zusammen?", "Vier", "Zwei", "Drei", "Sechs"),
   q("Wissenschaft", 2, "Welcher Mangel führt zu Skorbut?", "Vitamin-C-Mangel", "Eisenmangel", "Jodmangel", "Kalziummangel"),
   q("Wissenschaft", 2, "Welches Mineral steckt vor allem in Knochen und Zähnen?", "Kalzium", "Eisen", "Kalium", "Zink"),
   q("Wissenschaft", 3, "Welches Organ speichert Zucker als Glykogen?", "Die Leber", "Die Niere", "Die Milz", "Der Magen"),
@@ -4066,13 +4058,10 @@ window.FRAGEN.push(
   q("Wissenschaft", 3, "Welches Blutgruppensystem unterscheidet A, B, AB und 0?", "Das AB0-System", "Das Rhesus-System", "Das MN-System", "Das HLA-System"),
   q("Wissenschaft", 3, "Welche Blutgruppe gilt als Universalspender für rote Blutkörperchen?", "0 negativ", "AB positiv", "A positiv", "B negativ"),
   q("Wissenschaft", 3, "Wie heißt der längste Nerv im menschlichen Körper?", "Der Ischiasnerv", "Der Sehnerv", "Der Hörnerv", "Der Riechnerv"),
-  q("Wissenschaft", 3, "Welcher Teil des Gehirns steuert vor allem Gleichgewicht und Bewegungsabläufe?", "Das Kleinhirn", "Das Großhirn", "Der Hirnstamm", "Der Hypothalamus"),
   q("Wissenschaft", 3, "Wie heißt das Organ, das im Bauch links liegt und alte Blutzellen abbaut?", "Die Milz", "Die Leber", "Die Galle", "Der Blinddarm"),
   q("Wissenschaft", 4, "Wie nennt man die winzigen Bläschen in der Lunge, in denen der Gasaustausch stattfindet?", "Alveolen", "Bronchien", "Zilien", "Kapseln"),
   q("Wissenschaft", 4, "Wie heißt die Flüssigkeit, in der die roten und weißen Blutkörperchen schwimmen?", "Blutplasma", "Lymphe", "Serumfett", "Zellwasser"),
-  q("Wissenschaft", 4, "Welcher Wirkstoff wurde 1928 von Alexander Fleming entdeckt?", "Penicillin", "Aspirin", "Insulin", "Morphin"),
   q("Wissenschaft", 4, "Wie heißt der Prozess, bei dem Zellen sich zur Vermehrung teilen?", "Mitose", "Osmose", "Diffusion", "Fusion"),
-  q("Wissenschaft", 4, "Wie viele Chromosomenpaare hat der Mensch?", "23", "12", "46", "8"),
   q("Wissenschaft", 4, "Wie nennt man die Bausteine, aus denen Proteine bestehen?", "Aminosäuren", "Fettsäuren", "Nukleotide", "Enzyme"),
   q("Wissenschaft", 4, "Wie heißt der Teil des Gehirns, der Erinnerungen mitverwaltet?", "Der Hippocampus", "Die Hypophyse", "Die Amygdala", "Der Thalamus"),
   q("Wissenschaft", 4, "Welches Element braucht die Schilddrüse für ihre Hormone?", "Jod", "Eisen", "Fluor", "Zink"),
@@ -4092,14 +4081,13 @@ window.FRAGEN.push(
   q("Allgemeinwissen", 2, "Zu welcher Stadt pilgern Muslime bei der Hadsch?", "Nach Mekka", "Nach Jerusalem", "Nach Kairo", "Nach Istanbul"),
   q("Allgemeinwissen", 2, "Welcher Wochentag ist im Judentum der Ruhetag?", "Der Samstag", "Der Freitag", "Der Sonntag", "Der Montag"),
   q("Allgemeinwissen", 2, "Welche Religion hat die meisten Anhänger weltweit?", "Das Christentum", "Der Islam", "Der Hinduismus", "Der Buddhismus"),
-  q("Allgemeinwissen", 2, "Wie heißt das Oberhaupt der katholischen Kirche?", "Der Papst", "Der Patriarch", "Der Kardinal", "Der Bischof"),
   q("Allgemeinwissen", 2, "Wie heißt das christliche Fest 50 Tage nach Ostern?", "Pfingsten", "Fronleichnam", "Himmelfahrt", "Allerheiligen"),
   q("Allgemeinwissen", 2, "Welches Fest markiert im Christentum den Beginn der Fastenzeit?", "Aschermittwoch", "Karfreitag", "Palmsonntag", "Dreikönigstag"),
   q("Allgemeinwissen", 2, "Welches Fest feiert man am 6. Dezember?", "Nikolaus", "Silvester", "Martinstag", "Allerheiligen"),
   q("Allgemeinwissen", 2, "Wie heißt das jüdische Lichterfest?", "Chanukka", "Pessach", "Purim", "Sukkot"),
   q("Allgemeinwissen", 3, "Wie heißt das hinduistische Lichterfest?", "Diwali", "Holi", "Vesakh", "Songkran"),
   q("Allgemeinwissen", 3, "Bei welchem indischen Fest bewerfen sich die Menschen mit Farbpulver?", "Bei Holi", "Bei Diwali", "Bei Navratri", "Bei Onam"),
-  q("Allgemeinwissen", 3, "Welche Religion gründete Martin Luther mit seiner Reformation mit?", "Den Protestantismus", "Den Katholizismus", "Die Orthodoxie", "Den Anglikanismus"),
+  q("Allgemeinwissen", 3, "Welche Konfession entstand aus Martin Luthers Reformation?", "Der Protestantismus", "Der Katholizismus", "Die Orthodoxie", "Der Anglikanismus"),
   q("Allgemeinwissen", 3, "Wie viele Säulen hat der Islam?", "Fünf", "Drei", "Sieben", "Zehn"),
   q("Allgemeinwissen", 3, "Wie heißt das jüdische Neujahrsfest?", "Rosch ha-Schana", "Jom Kippur", "Pessach", "Schawuot"),
   q("Allgemeinwissen", 3, "Wie heißt der höchste jüdische Feiertag, der Versöhnungstag?", "Jom Kippur", "Chanukka", "Purim", "Sukkot"),
@@ -4109,10 +4097,9 @@ window.FRAGEN.push(
   q("Allgemeinwissen", 3, "Wie heißt das Fest, mit dem Muslime das Ende des Ramadan feiern?", "Das Zuckerfest", "Das Opferfest", "Aschura", "Mawlid"),
   q("Allgemeinwissen", 4, "Wie heißt die heilige Schriftensammlung des Hinduismus?", "Die Veden", "Der Talmud", "Das Avesta", "Das Tripitaka"),
   q("Allgemeinwissen", 4, "Welcher Fluss gilt Hindus als heilig?", "Der Ganges", "Der Nil", "Der Jordan", "Der Euphrat"),
-  q("Allgemeinwissen", 4, "Wie heißt das Oberhaupt der tibetischen Buddhisten?", "Der Dalai Lama", "Der Patriarch", "Der Guru Granth", "Der Ayatollah"),
   q("Allgemeinwissen", 4, "In welchem Land entstand die Religion des Sikhismus?", "In Indien", "In Persien", "In China", "In Ägypten"),
   q("Allgemeinwissen", 4, "Wie heißt die jüdische Gesetzessammlung neben der Tora?", "Der Talmud", "Der Koran", "Die Sutra", "Die Kabbala"),
-  q("Allgemeinwissen", 4, "Wie heißt das japanische Naturreligion genannte Glaubenssystem?", "Der Shintoismus", "Der Taoismus", "Der Konfuzianismus", "Der Zen"),
+  q("Allgemeinwissen", 4, "Wie heißt die traditionelle Religion Japans?", "Der Shintoismus", "Der Taoismus", "Der Konfuzianismus", "Der Hinduismus"),
   q("Allgemeinwissen", 4, "Welcher Feiertag erinnert an den Thesenanschlag Luthers?", "Der Reformationstag", "Der Buß- und Bettag", "Fronleichnam", "Allerseelen")
 );
 
@@ -4131,12 +4118,10 @@ window.FRAGEN.push(
   q("Allgemeinwissen", 2, "In welcher Stadt sitzt die Europäische Zentralbank?", "In Frankfurt am Main", "In Brüssel", "In Straßburg", "In Luxemburg"),
   q("Allgemeinwissen", 2, "Wie nennt man den allgemeinen Anstieg der Preise?", "Inflation", "Deflation", "Rezession", "Fusion"),
   q("Allgemeinwissen", 2, "Was bedeutet die Abkürzung MwSt.?", "Mehrwertsteuer", "Mindestwertsteuer", "Monatswertsteuer", "Mehrwertstelle"),
-  q("Allgemeinwissen", 2, "Wie hoch ist der normale Mehrwertsteuersatz in Deutschland?", "19 Prozent", "7 Prozent", "25 Prozent", "10 Prozent"),
   q("Allgemeinwissen", 3, "Wie hieß die Währung in Deutschland vor dem Euro?", "Die D-Mark", "Der Schilling", "Der Gulden", "Der Taler"),
   q("Allgemeinwissen", 3, "Wie hieß die Währung in Italien vor dem Euro?", "Die Lira", "Die Peseta", "Der Escudo", "Der Franc"),
   q("Allgemeinwissen", 3, "Wie hieß die Währung in Spanien vor dem Euro?", "Die Peseta", "Die Lira", "Der Escudo", "Die Drachme"),
   q("Allgemeinwissen", 3, "Wie hieß die Währung Österreichs vor dem Euro?", "Der Schilling", "Die Krone", "Die Mark", "Der Gulden"),
-  q("Allgemeinwissen", 3, "In welchem Jahr kam der Euro als Bargeld?", "2002", "1999", "2000", "2005"),
   q("Allgemeinwissen", 3, "Wie nennt man den Rückgang der Wirtschaftsleistung über mehrere Quartale?", "Rezession", "Inflation", "Expansion", "Emission"),
   q("Allgemeinwissen", 3, "Wofür steht die Abkürzung BIP?", "Bruttoinlandsprodukt", "Bundesinvestitionsplan", "Betriebsinterner Preis", "Basisinflationspunkt"),
   q("Allgemeinwissen", 3, "Wie heißt der wichtigste deutsche Aktienindex?", "Der DAX", "Der Dow Jones", "Der FTSE", "Der Nikkei"),
@@ -4145,45 +4130,21 @@ window.FRAGEN.push(
   q("Allgemeinwissen", 4, "Wie viele Unternehmen sind seit 2021 im DAX gelistet?", "40", "30", "50", "25"),
   q("Allgemeinwissen", 4, "Wie nennt man das Geld, das eine Bank für einen Kredit verlangt?", "Zinsen", "Dividende", "Rendite", "Provision"),
   q("Allgemeinwissen", 4, "Wie heißt die Gewinnausschüttung an Aktionäre?", "Die Dividende", "Der Zins", "Die Rendite", "Die Prämie"),
-  q("Allgemeinwissen", 4, "Welche Organisation vergibt Kredite an Staaten in Zahlungsnot?", "Der Internationale Währungsfonds", "Die WTO", "Die OPEC", "Die UNESCO"),
+  q("Allgemeinwissen", 4, "Welche Organisation vergibt Kredite an Staaten in Zahlungsnot?", "Der Internationale Währungsfonds", "Die WTO", "Die OPEC", "Die UNESCO")
 );
 
 // --- Deutschland im Detail ---
 window.FRAGEN.push(
-  q("Geografie", 1, "Welche Stadt ist die Hauptstadt von Bayern?", "München", "Nürnberg", "Augsburg", "Regensburg"),
-  q("Geografie", 1, "Welche Stadt ist die Hauptstadt von Nordrhein-Westfalen?", "Düsseldorf", "Köln", "Dortmund", "Essen"),
-  q("Geografie", 1, "Welche Stadt ist die Hauptstadt von Baden-Württemberg?", "Stuttgart", "Karlsruhe", "Freiburg", "Mannheim"),
-  q("Geografie", 1, "Welche Stadt ist die Hauptstadt von Hessen?", "Wiesbaden", "Frankfurt am Main", "Kassel", "Darmstadt"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Sachsen?", "Dresden", "Leipzig", "Chemnitz", "Zwickau"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Niedersachsen?", "Hannover", "Braunschweig", "Osnabrück", "Oldenburg"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Rheinland-Pfalz?", "Mainz", "Koblenz", "Trier", "Ludwigshafen"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Schleswig-Holstein?", "Kiel", "Lübeck", "Flensburg", "Husum"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Thüringen?", "Erfurt", "Weimar", "Jena", "Gera"),
-  q("Geografie", 2, "Welche Stadt ist die Hauptstadt von Brandenburg?", "Potsdam", "Cottbus", "Frankfurt an der Oder", "Brandenburg an der Havel"),
   q("Geografie", 2, "Welche Stadt ist die Hauptstadt des Saarlandes?", "Saarbrücken", "Homburg", "Neunkirchen", "Merzig"),
-  q("Geografie", 3, "Welche Stadt ist die Hauptstadt von Sachsen-Anhalt?", "Magdeburg", "Halle", "Dessau", "Wittenberg"),
-  q("Geografie", 3, "Welche Stadt ist die Hauptstadt von Mecklenburg-Vorpommern?", "Schwerin", "Rostock", "Greifswald", "Stralsund"),
-  q("Geografie", 2, "Welches Bundesland ist flächenmäßig das größte?", "Bayern", "Niedersachsen", "Nordrhein-Westfalen", "Brandenburg"),
   q("Geografie", 2, "Welches Bundesland hat die meisten Einwohner?", "Nordrhein-Westfalen", "Bayern", "Baden-Württemberg", "Niedersachsen"),
   q("Geografie", 2, "Welche drei deutschen Bundesländer sind Stadtstaaten?", "Berlin, Hamburg und Bremen", "Berlin, München und Köln", "Hamburg, Bremen und Kiel", "Berlin, Hamburg und Frankfurt"),
   q("Geografie", 2, "Welche ist die größte Stadt Deutschlands nach Einwohnern?", "Berlin", "Hamburg", "München", "Köln"),
   q("Geografie", 2, "Welche ist die drittgrößte Stadt Deutschlands?", "München", "Köln", "Frankfurt am Main", "Stuttgart"),
-  q("Geografie", 2, "An welchem Fluss liegt Köln?", "Am Rhein", "An der Elbe", "An der Donau", "Am Main"),
-  q("Geografie", 2, "An welchem Fluss liegt Hamburg?", "An der Elbe", "An der Weser", "An der Ems", "An der Havel"),
-  q("Geografie", 2, "An welchem Fluss liegt Dresden?", "An der Elbe", "An der Spree", "An der Saale", "An der Mulde"),
-  q("Geografie", 2, "An welchem Fluss liegt Frankfurt am Main?", "Am Main", "Am Rhein", "An der Lahn", "An der Nidda"),
-  q("Geografie", 3, "An welchem Fluss liegt Bremen?", "An der Weser", "An der Elbe", "An der Ems", "An der Aller"),
-  q("Geografie", 3, "Welcher Berg ist der höchste Deutschlands?", "Die Zugspitze", "Der Brocken", "Der Feldberg", "Der Watzmann"),
-  q("Geografie", 3, "Welcher Berg ist der höchste im Harz?", "Der Brocken", "Der Wurmberg", "Der Achtermann", "Der Bruchberg"),
-  q("Geografie", 3, "Welcher See ist der größte ganz in Deutschland liegende See?", "Die Müritz", "Der Chiemsee", "Der Starnberger See", "Der Ammersee"),
   q("Geografie", 3, "In welchem Bundesland liegt die Lüneburger Heide?", "In Niedersachsen", "In Schleswig-Holstein", "In Brandenburg", "In Mecklenburg-Vorpommern"),
-  q("Geografie", 3, "Welche deutsche Insel ist die größte?", "Rügen", "Sylt", "Usedom", "Fehmarn"),
   q("Geografie", 3, "Zu welchem Bundesland gehört die Insel Sylt?", "Zu Schleswig-Holstein", "Zu Niedersachsen", "Zu Hamburg", "Zu Mecklenburg-Vorpommern"),
   q("Geografie", 3, "Wie heißt die deutsche Insel weit draußen in der Nordsee?", "Helgoland", "Norderney", "Borkum", "Amrum"),
   q("Geografie", 3, "Welches Mittelgebirge liegt zwischen Sachsen und Tschechien?", "Das Erzgebirge", "Der Thüringer Wald", "Der Bayerische Wald", "Das Fichtelgebirge"),
-  q("Geografie", 4, "Welcher Fluss ist der längste, der ausschließlich durch Deutschland fließt?", "Die Weser", "Die Elbe", "Der Main", "Die Saale"),
   q("Geografie", 4, "Wie viele Nachbarländer hat Deutschland?", "Neun", "Sieben", "Elf", "Fünf"),
-  q("Geografie", 4, "Welches ist der südlichste Punkt Deutschlands?", "Das Haldenwanger Eck bei Oberstdorf", "Die Zugspitze", "Der Bodensee", "Berchtesgaden"),
   q("Geografie", 4, "Welche deutsche Stadt hat den größten Hafen?", "Hamburg", "Bremerhaven", "Rostock", "Kiel"),
   q("Geografie", 4, "Welche deutsche Stadt hat den größten Flughafen nach Passagieren?", "Frankfurt am Main", "München", "Berlin", "Düsseldorf"),
   q("Geografie", 4, "Welches Bundesland hat die wenigsten Einwohner?", "Bremen", "Saarland", "Mecklenburg-Vorpommern", "Hamburg")
@@ -4192,7 +4153,6 @@ window.FRAGEN.push(
 // --- Fußball und Sportgeschichte ---
 window.FRAGEN.push(
   q("Sport", 1, "Wie viele Spieler stehen bei Fußball pro Mannschaft auf dem Feld?", "Elf", "Zehn", "Zwölf", "Neun"),
-  q("Sport", 1, "Wie lange dauert ein Fußballspiel ohne Verlängerung?", "90 Minuten", "60 Minuten", "80 Minuten", "120 Minuten"),
   q("Sport", 1, "Welche Farbe hat die Karte für einen Platzverweis?", "Rot", "Gelb", "Blau", "Schwarz"),
   q("Sport", 1, "Wie oft findet die Fußball-Weltmeisterschaft statt?", "Alle vier Jahre", "Alle zwei Jahre", "Jedes Jahr", "Alle fünf Jahre"),
   q("Sport", 2, "Wie viele Weltmeistertitel hat die deutsche Männer-Nationalmannschaft?", "Vier", "Drei", "Fünf", "Zwei"),
@@ -4208,19 +4168,17 @@ window.FRAGEN.push(
   q("Sport", 3, "Wer war Kapitän der deutschen Weltmeister von 1990?", "Lothar Matthäus", "Rudi Völler", "Jürgen Klinsmann", "Andreas Brehme"),
   q("Sport", 3, "Wer schoss das Siegtor im WM-Finale 2014?", "Mario Götze", "Thomas Müller", "Miroslav Klose", "André Schürrle"),
   q("Sport", 3, "Wer ist Rekordtorschütze bei Fußball-Weltmeisterschaften?", "Miroslav Klose", "Ronaldo", "Gerd Müller", "Pelé"),
-  q("Sport", 3, "Wie viele Mannschaften spielen in der Fußball-Bundesliga?", "18", "20", "16", "22"),
   q("Sport", 3, "Wie heißt der deutsche Pokalwettbewerb im Fußball?", "Der DFB-Pokal", "Der Supercup", "Die Meisterschale", "Der Ligapokal"),
   q("Sport", 3, "Wie heißt die Trophäe für den deutschen Fußballmeister?", "Die Meisterschale", "Der Pokal", "Die Salatschüssel-Trophäe", "Der Goldene Ball"),
-  q("Sport", 3, "Welcher Verein gewann 1997 als bislang zweiter deutscher Klub die Champions League?", "Borussia Dortmund", "Schalke 04", "Bayer Leverkusen", "Werder Bremen"),
+  q("Sport", 3, "Welcher deutsche Verein gewann 1997 die Champions League?", "Borussia Dortmund", "Schalke 04", "Bayer Leverkusen", "Werder Bremen"),
   q("Sport", 3, "Welches Stadion heißt im Volksmund Westfalenstadion?", "Das Stadion von Borussia Dortmund", "Das Stadion von Schalke 04", "Das Stadion des HSV", "Das Stadion von Bayern München"),
-  q("Sport", 3, "Welcher Spieler wird Kaiser genannt?", "Franz Beckenbauer", "Gerd Müller", "Uwe Seeler", "Sepp Maier"),
   q("Sport", 3, "Wer wurde als Bomber der Nation bekannt?", "Gerd Müller", "Karl-Heinz Rummenigge", "Rudi Völler", "Jürgen Klinsmann"),
-  q("Sport", 4, "In welchem Jahr wurde die Fußball-Bundesliga gegründet?", "1963", "1954", "1970", "1949"),
+  q("Sport", 4, "In welchem Jahr startete die erste Bundesliga-Saison?", "1963", "1954", "1970", "1949"),
   q("Sport", 4, "Welcher Verein war der erste deutsche Meister der Bundesliga-Ära?", "1. FC Köln", "Bayern München", "Borussia Dortmund", "Eintracht Frankfurt"),
   q("Sport", 4, "Welcher Verein gewann als erster deutscher Klub den Europapokal der Landesmeister?", "Bayern München", "Borussia Dortmund", "Hamburger SV", "Borussia Mönchengladbach"),
   q("Sport", 4, "Wer ist Rekordtorschütze der Fußball-Bundesliga?", "Gerd Müller", "Robert Lewandowski", "Klaus Fischer", "Jupp Heynckes"),
   q("Sport", 4, "Wie viele Weltmeistertitel hat die deutsche Frauen-Nationalmannschaft im Fußball?", "Zwei", "Einen", "Drei", "Vier"),
-  q("Sport", 4, "Wo fand das legendäre EM-Halbfinale 1982 Nacht von Sevilla statt?", "In Spanien", "In Italien", "In Mexiko", "In Frankreich")
+  q("Sport", 4, "Bei welchem Turnier fand 1982 das als Nacht von Sevilla bekannte Halbfinale statt?", "Bei der Fußball-WM", "Bei der Fußball-EM", "Bei Olympia", "Beim Confed-Cup")
 );
 
 // --- Film, Serie und Fernsehen ---
@@ -4228,13 +4186,9 @@ window.FRAGEN.push(
   q("Film & TV", 1, "Wie heißt der Zauberlehrling aus den Büchern von J. K. Rowling?", "Harry Potter", "Frodo Beutlin", "Percy Jackson", "Bilbo Beutlin"),
   q("Film & TV", 1, "Welcher Film handelt von einem sinkenden Luxusdampfer im Jahr 1912?", "Titanic", "Poseidon", "Der Sturm", "Life of Pi"),
   q("Film & TV", 1, "In welcher Stadt spielt Batman?", "In Gotham City", "In Metropolis", "In Star City", "In Central City"),
-  q("Film & TV", 2, "Wie heißt der Zauberer in Der Herr der Ringe mit grauem Bart?", "Gandalf", "Saruman", "Radagast", "Merlin"),
-  q("Film & TV", 2, "Wie heißt die Schule der Zauberei bei Harry Potter?", "Hogwarts", "Beauxbatons", "Durmstrang", "Ilvermorny"),
   q("Film & TV", 2, "Wie heißt der Vater von Luke Skywalker?", "Darth Vader", "Obi-Wan Kenobi", "Han Solo", "Kaiser Palpatine"),
   q("Film & TV", 2, "Welche Serie spielt in der Stadt Springfield mit einer gelben Familie?", "Die Simpsons", "Family Guy", "South Park", "Futurama"),
-  q("Film & TV", 2, "In welcher Serie kämpfen Häuser um den Eisernen Thron?", "Game of Thrones", "Vikings", "The Witcher", "Rome"),
   q("Film & TV", 2, "Wie heißt die Netflix-Serie mit dem Mädchen Elfi und dem Upside Down?", "Stranger Things", "Dark", "Wednesday", "The OA"),
-  q("Film & TV", 2, "Welche deutsche Netflix-Serie spielt im Ort Winden?", "Dark", "Biohackers", "How to Sell Drugs Online", "Barbaren"),
   q("Film & TV", 2, "Welcher Disney-Film handelt von zwei Schwestern und einer Eiskönigin?", "Die Eiskönigin", "Rapunzel", "Vaiana", "Merida"),
   q("Film & TV", 3, "Wie heißt der Regisseur von Jurassic Park und E.T.?", "Steven Spielberg", "James Cameron", "George Lucas", "Ridley Scott"),
   q("Film & TV", 3, "Welcher Film gewann als erster Animationsfilm eine Oscar-Nominierung als bester Film?", "Die Schöne und das Biest", "Der König der Löwen", "Toy Story", "Shrek"),
@@ -4243,17 +4197,12 @@ window.FRAGEN.push(
   q("Film & TV", 3, "Wie heißt der Hauptpreis der Berlinale?", "Der Goldene Bär", "Die Goldene Palme", "Der Goldene Löwe", "Der Silberne Stern"),
   q("Film & TV", 3, "Wie heißt der Hauptpreis der Filmfestspiele von Venedig?", "Der Goldene Löwe", "Der Goldene Bär", "Die Goldene Palme", "Der Silberne Löwe"),
   q("Film & TV", 3, "Welcher Fernsehpreis zeichnet Serien in den USA aus?", "Der Emmy", "Der Oscar", "Der Grammy", "Der Tony"),
-  q("Film & TV", 3, "Welche Krimireihe läuft sonntags im Ersten?", "Tatort", "Polizeiruf 110", "Ein Fall für zwei", "SOKO"),
   q("Film & TV", 3, "In welcher ARD-Reihe ermitteln jeden Sonntagabend wechselnde Kommissarteams?", "Im Tatort", "Im Polizeiruf 110", "In der SOKO", "Im Großstadtrevier"),
   q("Film & TV", 3, "Welche Filmreihe dreht sich um den britischen Geheimagenten 007?", "James Bond", "Mission Impossible", "Jason Bourne", "Kingsman"),
-  q("Film & TV", 3, "Wie heißt der Schauspieler, der Jack Sparrow spielt?", "Johnny Depp", "Orlando Bloom", "Brad Pitt", "Colin Farrell"),
-  q("Film & TV", 4, "Welcher Film gewann 2020 als erster nicht englischsprachiger Film den Oscar als bester Film?", "Parasite", "Roma", "Amour", "Drive My Car"),
-  q("Film & TV", 4, "Wie viele Oscars gewann der Film Titanic?", "11", "7", "9", "14"),
   q("Film & TV", 4, "Welcher Regisseur gilt als Meister des japanischen Animationsfilms?", "Hayao Miyazaki", "Akira Kurosawa", "Takeshi Kitano", "Satoshi Kon"),
   q("Film & TV", 4, "Welches Studio produzierte Chihiros Reise ins Zauberland?", "Studio Ghibli", "Toei Animation", "Pixar", "Madhouse"),
   q("Film & TV", 4, "Welcher deutsche Film gewann 2007 den Oscar als bester fremdsprachiger Film?", "Das Leben der Anderen", "Nirgendwo in Afrika", "Toni Erdmann", "Der Untergang"),
-  q("Film & TV", 4, "Welcher Stummfilmstar trug Melone, Stock und Schnurrbart?", "Charlie Chaplin", "Buster Keaton", "Harold Lloyd", "Stan Laurel"),
-  q("Film & TV", 4, "Wie heißt der erste abendfüllende Zeichentrickfilm von Disney?", "Schneewittchen und die sieben Zwerge", "Bambi", "Dumbo", "Pinocchio")
+  q("Film & TV", 4, "Welcher Stummfilmstar trug Melone, Stock und Schnurrbart?", "Charlie Chaplin", "Buster Keaton", "Harold Lloyd", "Stan Laurel")
 );
 
 // --- Ja/Nein Runde ---
@@ -4267,29 +4216,15 @@ window.FRAGEN.push(
   jn("Wissenschaft", 3, "Hat jeder Mensch einen einzigartigen Fingerabdruck?", true),
   jn("Wissenschaft", 3, "Ist Blut im Körper blau, solange es keinen Sauerstoff hat?", false),
   jn("Allgemeinwissen", 1, "Wird Weihnachten in Deutschland am 24. Dezember gefeiert?", true),
-  jn("Allgemeinwissen", 2, "Ist der Ramadan ein Fastenmonat?", true),
   jn("Allgemeinwissen", 2, "Ist der Papst das Oberhaupt der evangelischen Kirche?", false),
-  jn("Allgemeinwissen", 2, "Bezahlt man in Schweden mit dem Euro?", false),
   jn("Allgemeinwissen", 2, "Bezahlt man in Österreich mit dem Euro?", true),
-  jn("Allgemeinwissen", 3, "Sitzt die Europäische Zentralbank in Brüssel?", false),
   jn("Allgemeinwissen", 3, "Bedeutet Inflation, dass Geld an Kaufkraft verliert?", true),
-  jn("Geografie", 1, "Ist Berlin die Hauptstadt von Deutschland?", true),
-  jn("Geografie", 1, "Liegt Hamburg am Meer?", false),
-  jn("Geografie", 2, "Hat Deutschland mehr als zehn Nachbarländer?", false),
-  jn("Geografie", 2, "Ist Bayern das flächenmäßig größte Bundesland?", true),
-  jn("Geografie", 2, "Fließt der Rhein durch Köln?", true),
+  jn("Geografie", 1, "Liegt Hamburg direkt an der Nordsee?", false),
   jn("Geografie", 3, "Ist die Zugspitze höher als 3.000 Meter?", false),
   jn("Geografie", 3, "Gehört Rügen zu Mecklenburg-Vorpommern?", true),
-  jn("Sport", 1, "Dauert ein Fußballspiel regulär 90 Minuten?", true),
-  jn("Sport", 2, "Hat Deutschland die Fußball-WM 2014 gewonnen?", true),
-  jn("Sport", 2, "Spielen in der Fußball-Bundesliga 20 Mannschaften?", false),
-  jn("Sport", 3, "Ist Brasilien Rekordweltmeister im Fußball?", true),
   jn("Sport", 3, "Wurde die Bundesliga vor dem Zweiten Weltkrieg gegründet?", false),
-  jn("Film & TV", 1, "Spielen Die Simpsons in Springfield?", true),
-  jn("Film & TV", 2, "Ist Darth Vader der Vater von Luke Skywalker?", true),
   jn("Film & TV", 2, "Wurde der Film Titanic von Steven Spielberg gedreht?", false),
-  jn("Film & TV", 3, "Hat ein nicht englischsprachiger Film schon einmal den Oscar als bester Film gewonnen?", true),
-  jn("Film & TV", 3, "Ist der Goldene Bär der Hauptpreis der Berlinale?", true)
+  jn("Film & TV", 3, "Hat ein nicht englischsprachiger Film schon einmal den Oscar als bester Film gewonnen?", true)
 );
 
 </script>
@@ -4510,9 +4445,16 @@ window.FRAGEN.push(
     return Math.min(4, Math.max(1, stufe));
   }
 
+  /* Zieht sich ein Stechen hin, weil alle richtig oder alle falsch liegen,
+     wird jede weitere Stechrunde eine Stufe härter – sonst dreht es sich ewig. */
+  function stechStufe() {
+    const d = S.stechen && S.stechen.durchgang;
+    return d ? Math.min(4, 2 + d) : 0;
+  }
+
   function frageZiehen(spieler) {
     if (!S.pool.length) poolAufbauen();
-    const stufe = zielStufe(spieler);
+    const stufe = stechStufe() || zielStufe(spieler);
     let idx = 0;
     if (stufe) {
       idx = S.pool.findIndex(f => f.s === stufe);
@@ -5905,7 +5847,7 @@ window.FRAGEN.push(
      Stechen bei Gleichstand
      --------------------------------------------------------- */
   function stechenStarten(kandidaten) {
-    S.stechen = { kandidaten, ergebnisse: {}, reihe: kandidaten.slice(), idx: 0 };
+    S.stechen = { kandidaten, ergebnisse: {}, reihe: kandidaten.slice(), idx: 0, durchgang: 0 };
     stechenZug();
   }
 
@@ -5921,10 +5863,12 @@ window.FRAGEN.push(
     if (falsche.length > 1 && falsche.length < st.kandidaten.length) {
       st.kandidaten = falsche;
     }
-    // alle richtig oder alle falsch: neue Stechrunde mit denselben Kandidaten
+    // alle richtig oder alle falsch: neue Stechrunde mit denselben Kandidaten,
+    // eine Stufe härter, damit sich die Sache nicht ewig zieht
     st.ergebnisse = {};
     st.reihe = st.kandidaten.slice();
     st.idx = 0;
+    st.durchgang = (st.durchgang || 0) + 1;
 
     S.screen = 'stechinfo';
     app.innerHTML = kopf() + `
@@ -5932,6 +5876,7 @@ window.FRAGEN.push(
         <span class="emoji" style="font-size:3rem">⚔️</span>
         <h2>Weiter im Stechen!</h2>
         <p class="hint">Noch dabei: ${st.kandidaten.map(id => esc(spielerVon(id).name)).join(', ')}</p>
+        <p class="hint">Jetzt wird es härter: ${STUFEN[stechStufe()]} ${sterne(stechStufe())}</p>
         <br>
         <button class="btn" id="weiter">Nächste Stechfrage</button>
       </div>`;

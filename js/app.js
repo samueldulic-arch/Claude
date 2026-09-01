@@ -214,9 +214,16 @@
     return Math.min(4, Math.max(1, stufe));
   }
 
+  /* Zieht sich ein Stechen hin, weil alle richtig oder alle falsch liegen,
+     wird jede weitere Stechrunde eine Stufe härter – sonst dreht es sich ewig. */
+  function stechStufe() {
+    const d = S.stechen && S.stechen.durchgang;
+    return d ? Math.min(4, 2 + d) : 0;
+  }
+
   function frageZiehen(spieler) {
     if (!S.pool.length) poolAufbauen();
-    const stufe = zielStufe(spieler);
+    const stufe = stechStufe() || zielStufe(spieler);
     let idx = 0;
     if (stufe) {
       idx = S.pool.findIndex(f => f.s === stufe);
@@ -1609,7 +1616,7 @@
      Stechen bei Gleichstand
      --------------------------------------------------------- */
   function stechenStarten(kandidaten) {
-    S.stechen = { kandidaten, ergebnisse: {}, reihe: kandidaten.slice(), idx: 0 };
+    S.stechen = { kandidaten, ergebnisse: {}, reihe: kandidaten.slice(), idx: 0, durchgang: 0 };
     stechenZug();
   }
 
@@ -1625,10 +1632,12 @@
     if (falsche.length > 1 && falsche.length < st.kandidaten.length) {
       st.kandidaten = falsche;
     }
-    // alle richtig oder alle falsch: neue Stechrunde mit denselben Kandidaten
+    // alle richtig oder alle falsch: neue Stechrunde mit denselben Kandidaten,
+    // eine Stufe härter, damit sich die Sache nicht ewig zieht
     st.ergebnisse = {};
     st.reihe = st.kandidaten.slice();
     st.idx = 0;
+    st.durchgang = (st.durchgang || 0) + 1;
 
     S.screen = 'stechinfo';
     app.innerHTML = kopf() + `
@@ -1636,6 +1645,7 @@
         <span class="emoji" style="font-size:3rem">⚔️</span>
         <h2>Weiter im Stechen!</h2>
         <p class="hint">Noch dabei: ${st.kandidaten.map(id => esc(spielerVon(id).name)).join(', ')}</p>
+        <p class="hint">Jetzt wird es härter: ${STUFEN[stechStufe()]} ${sterne(stechStufe())}</p>
         <br>
         <button class="btn" id="weiter">Nächste Stechfrage</button>
       </div>`;
