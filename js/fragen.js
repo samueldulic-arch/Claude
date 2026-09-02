@@ -5301,3 +5301,156 @@ window.FRAGEN.push(
   q("Essen & Trinken", 3, "Was ist Feuerzangenbowle?", "Glühwein mit einem brennenden Zuckerhut", "Ein Kartoffelgericht", "Ein Kuchen", "Ein Cocktail mit Wodka"),
   q("Essen & Trinken", 3, "Welches Biermischgetränk heißt in Norddeutschland „Alsterwasser“ und in Bayern anders?", "Radler", "Diesel", "Berliner Weiße", "Bockbier")
 );
+
+// --- Chemie und Physik im Alltag ---
+window.FRAGEN.push(
+  q("Wissenschaft", 3, "Warum brennt eine Kerze?", "Das geschmolzene Wachs verdampft und verbrennt am Docht", "Der Docht selbst brennt allein", "Das Wachs brennt fest", "Die Luft brennt"),
+  q("Wissenschaft", 3, "Was braucht ein Feuer außer Brennstoff und Wärme?", "Sauerstoff", "Stickstoff", "Wasser", "Kohlendioxid"),
+  q("Wissenschaft", 3, "Warum löscht ein Feuerlöscher mit Kohlendioxid?", "Er verdrängt den Sauerstoff", "Er kühlt allein", "Er bindet den Brennstoff", "Er erhöht den Druck"),
+  q("Wissenschaft", 3, "Warum darf man Fettbrände nicht mit Wasser löschen?", "Das Wasser verdampft schlagartig und schleudert brennendes Fett umher", "Das Wasser leitet Strom", "Das Fett kühlt zu stark ab", "Das Wasser entzündet sich"),
+  q("Wissenschaft", 3, "Warum steigt heiße Luft nach oben?", "Weil sie eine geringere Dichte hat als kalte Luft", "Weil sie leichter beschleunigt", "Weil sie mehr Sauerstoff enthält", "Weil sie trockener ist"),
+  q("Wissenschaft", 3, "Warum beschlägt eine Brille beim Betreten eines warmen Raums?", "Warme feuchte Luft kondensiert am kalten Glas", "Das Glas dehnt sich aus", "Der Staub setzt sich ab", "Die Beschichtung reagiert"),
+  q("Wissenschaft", 3, "Warum schwitzt eine kalte Flasche im Sommer außen?", "Luftfeuchtigkeit kondensiert an der kalten Oberfläche", "Die Flasche ist undicht", "Das Glas gibt Wasser ab", "Das Getränk dringt durch"),
+  q("Wissenschaft", 3, "Warum kocht Wasser im Gebirge schon unter 100 Grad?", "Weil der Luftdruck niedriger ist", "Weil die Luft kälter ist", "Weil weniger Sauerstoff da ist", "Weil das Wasser reiner ist"),
+  q("Wissenschaft", 3, "Warum streut man im Winter Salz auf die Straße?", "Weil Salzwasser erst unter null Grad gefriert", "Weil Salz Wärme erzeugt", "Weil Salz das Eis auflöst wie Säure", "Weil Salz rau macht"),
+  q("Wissenschaft", 3, "Warum knallt es, wenn ein Luftballon platzt?", "Die Luft entweicht schlagartig und erzeugt eine Druckwelle", "Das Gummi reißt hörbar", "Die Luft wird heiß", "Der Ballon schwingt nach"),
+  q("Wissenschaft", 3, "Warum sieht man beim Ausatmen im Winter eine Wolke?", "Der Wasserdampf im Atem kondensiert in der kalten Luft", "Man atmet Rauch aus", "Der Sauerstoff wird sichtbar", "Der Atem gefriert sofort"),
+  q("Wissenschaft", 3, "Warum ist ein Regenbogen rund gebogen?", "Weil das Licht in Wassertropfen unter einem festen Winkel gebrochen wird", "Weil die Erde rund ist", "Weil die Wolken rund sind", "Weil die Sonne rund ist"),
+  q("Wissenschaft", 3, "Warum sinkt ein Stein und schwimmt ein Schiff aus Stahl?", "Das Schiff verdrängt genug Wasser für den Auftrieb", "Stahl ist leichter als Stein", "Das Schiff ist innen hohl und daher leichter als Luft", "Das Wasser trägt große Flächen immer"),
+  q("Wissenschaft", 3, "Wer entdeckte das Prinzip des Auftriebs?", "Archimedes", "Newton", "Galilei", "Pascal"),
+  q("Wissenschaft", 3, "Warum fliegt ein Flugzeug?", "Die Tragflächen erzeugen bei Fahrt Auftrieb", "Weil es leichter als Luft ist", "Weil die Triebwerke nach unten blasen", "Weil die Erdanziehung in der Höhe fehlt"),
+  q("Wissenschaft", 3, "Warum leuchtet eine Glühlampe?", "Ein Draht wird durch Strom so heiß, dass er glüht", "Ein Gas verbrennt", "Der Strom leuchtet selbst", "Die Beschichtung reagiert chemisch"),
+  q("Wissenschaft", 3, "Warum ist eine LED sparsamer als eine Glühlampe?", "Sie erzeugt viel weniger Abwärme", "Sie leuchtet schwächer", "Sie braucht mehr Spannung", "Sie hält nur kurz"),
+  q("Wissenschaft", 3, "Was passiert in einem Kühlschrank physikalisch?", "Wärme wird von innen nach außen transportiert", "Kälte wird erzeugt und eingeblasen", "Die Luft wird komprimiert und bleibt drin", "Das Wasser wird entzogen"),
+  q("Wissenschaft", 3, "Warum wärmt eine Daunenjacke?", "Weil eingeschlossene Luft schlecht Wärme leitet", "Weil Federn Wärme erzeugen", "Weil sie schwer ist", "Weil sie Feuchtigkeit anzieht"),
+  q("Wissenschaft", 3, "Warum fühlt sich Metall kälter an als Holz bei gleicher Temperatur?", "Weil Metall die Wärme schneller ableitet", "Weil Metall wirklich kälter ist", "Weil Holz Wärme erzeugt", "Weil Metall glatter ist"),
+  q("Wissenschaft", 3, "Was ist Rost chemisch gesehen?", "Eine Verbindung von Eisen mit Sauerstoff", "Eine Verbindung mit Stickstoff", "Ein Pilzbefall", "Eine Salzablagerung"),
+  q("Wissenschaft", 3, "Warum wird ein angeschnittener Apfel braun?", "Durch Reaktion mit Sauerstoff", "Durch Bakterien", "Durch Austrocknung allein", "Durch Licht allein"),
+  q("Wissenschaft", 3, "Was hilft, damit ein angeschnittener Apfel nicht braun wird?", "Zitronensaft", "Zucker", "Salz in großen Mengen", "Wärme"),
+  q("Wissenschaft", 3, "Warum sprudelt Backpulver in Essig?", "Es entsteht Kohlendioxid", "Es entsteht Sauerstoff", "Es entsteht Wasserstoff", "Es entsteht Stickstoff"),
+  q("Wissenschaft", 3, "Was ist Seife chemisch?", "Ein Stoff, der Fett und Wasser verbindet", "Eine Säure", "Ein Salz ohne Wirkung", "Ein Alkohol"),
+  q("Wissenschaft", 3, "Warum wirkt Seife gegen Viren mit Hülle?", "Sie zerstört die Fetthülle", "Sie tötet sie mit Säure", "Sie spült sie nur ab", "Sie erhitzt sie")
+);
+
+// --- Bildung, Medien und Symbole ---
+window.FRAGEN.push(
+  q("Allgemeinwissen", 3, "Wie viele Schuljahre umfasst die Grundschule in den meisten Bundesländern?", "Vier", "Fünf", "Sechs", "Drei"),
+  q("Allgemeinwissen", 3, "Wie heißt der höchste Schulabschluss in Deutschland?", "Das Abitur", "Die mittlere Reife", "Der Hauptschulabschluss", "Das Fachabitur"),
+  q("Allgemeinwissen", 3, "Wie nennt man den Abschluss nach zehn Schuljahren üblicherweise?", "Die mittlere Reife", "Das Abitur", "Den Realabschluss der Universität", "Das Diplom"),
+  q("Allgemeinwissen", 3, "Welcher akademische Grad kommt vor dem Master?", "Der Bachelor", "Der Doktor", "Das Diplom", "Der Magister"),
+  q("Allgemeinwissen", 3, "Wie heißt der höchste akademische Grad, den man durch Forschung erwirbt?", "Die Promotion zum Doktor", "Der Master", "Das Staatsexamen", "Der Bachelor"),
+  q("Allgemeinwissen", 3, "Wie nennt man die Zulassung als Professor durch eine zweite große Arbeit?", "Die Habilitation", "Die Promotion", "Die Immatrikulation", "Die Exmatrikulation"),
+  q("Allgemeinwissen", 3, "Was bedeutet „immatrikulieren“?", "Sich an einer Hochschule einschreiben", "Eine Prüfung ablegen", "Die Hochschule verlassen", "Ein Stipendium beantragen"),
+  q("Allgemeinwissen", 3, "Wie heißt das europäische Austauschprogramm für Studierende?", "Erasmus", "Sokrates", "Comenius", "Leonardo"),
+  q("Allgemeinwissen", 3, "Wie heißt die staatliche Studienförderung in Deutschland umgangssprachlich?", "BAföG", "Hartz", "Kindergeld", "Wohngeld"),
+  q("Allgemeinwissen", 3, "Wofür steht die Abkürzung „PISA“ bei Schulvergleichen?", "Für eine internationale Schulleistungsstudie", "Für eine italienische Universität", "Für ein Prüfungsformat", "Für eine Schulform"),
+  q("Allgemeinwissen", 3, "Was ist die Vierte Gewalt im Staat umgangssprachlich?", "Die Presse", "Die Polizei", "Das Militär", "Die Verwaltung"),
+  q("Allgemeinwissen", 3, "Welche drei Gewalten teilt die Gewaltenteilung?", "Gesetzgebung, Regierung und Rechtsprechung", "Presse, Polizei und Gericht", "Bund, Länder und Gemeinden", "Wirtschaft, Staat und Kirche"),
+  q("Allgemeinwissen", 3, "Was bedeutet Pressefreiheit?", "Medien dürfen ohne staatliche Zensur berichten", "Zeitungen sind kostenlos", "Journalisten zahlen keine Steuern", "Jeder darf alles behaupten"),
+  q("Allgemeinwissen", 3, "Was ist ein Impressum?", "Die Pflichtangabe, wer für eine Veröffentlichung verantwortlich ist", "Ein Inhaltsverzeichnis", "Ein Vorwort", "Eine Werbeseite"),
+  q("Allgemeinwissen", 3, "Was ist der Unterschied zwischen Nachricht und Kommentar?", "Die Nachricht berichtet, der Kommentar bewertet", "Es gibt keinen", "Der Kommentar ist kürzer", "Die Nachricht steht immer hinten"),
+  q("Allgemeinwissen", 3, "Was ist eine Nachrichtenagentur?", "Ein Dienst, der Medien mit Meldungen beliefert", "Eine Werbeagentur", "Ein Zeitungsverlag", "Eine Behörde"),
+  q("Allgemeinwissen", 3, "Wofür steht die Abkürzung „dpa“?", "Deutsche Presse-Agentur", "Deutscher Presseausschuss", "Deutsche Publizistische Anstalt", "Deutsches Pressearchiv"),
+  q("Allgemeinwissen", 3, "Wie finanziert sich der öffentlich-rechtliche Rundfunk in Deutschland hauptsächlich?", "Über den Rundfunkbeitrag", "Über Werbung allein", "Über Steuern direkt", "Über Spenden"),
+  q("Allgemeinwissen", 3, "Was bedeutet das Recht am eigenen Bild?", "Fotos von Personen dürfen nicht ohne Weiteres veröffentlicht werden", "Jeder darf jedes Bild nutzen", "Bilder gehören immer dem Fotografen allein", "Bilder dürfen nie gezeigt werden"),
+  q("Allgemeinwissen", 3, "Wofür steht die Abkürzung „DSGVO“?", "Datenschutz-Grundverordnung", "Deutsche Sicherheitsgrundverordnung", "Digitale Speicher- und Geräteverordnung", "Datenschutzgesetz für Verbraucher"),
+  q("Allgemeinwissen", 3, "Was ist ein Urheberrecht?", "Der Schutz eines eigenen Werks vor unerlaubter Nutzung", "Das Recht, alles zu veröffentlichen", "Ein Namensrecht", "Ein Erbrecht"),
+  q("Allgemeinwissen", 3, "Was bedeutet das Symbol mit dem durchgestrichenen Handy im Verkehr?", "Ein Handyverbot am Steuer", "Kein Empfang", "Kein Laden erlaubt", "Ein Fotografierverbot"),
+  q("Allgemeinwissen", 3, "Was bedeutet der grüne Punkt auf Verpackungen?", "Der Hersteller beteiligt sich an einem Entsorgungssystem", "Die Verpackung ist essbar", "Das Produkt ist biologisch", "Die Verpackung ist aus Papier"),
+  q("Allgemeinwissen", 3, "Was kennzeichnet das CE-Zeichen auf Produkten?", "Die Übereinstimmung mit EU-Vorgaben", "Die Herkunft aus China", "Eine besondere Qualität", "Eine Umweltfreundlichkeit"),
+  q("Allgemeinwissen", 3, "Was bedeutet das Zeichen mit dem Männchen und dem Mülleimer auf Verpackungen?", "Eine Aufforderung, Abfall in den Eimer zu werfen", "Eine Recyclingpflicht", "Ein Warnhinweis", "Eine Altersfreigabe")
+);
+
+// --- Sprache, Marken und Serien, Nachschlag ---
+window.FRAGEN.push(
+  q("Sprache & Wörter", 3, "Was bedeutet „etwas anzetteln“?", "Etwas heimlich in Gang setzen", "Etwas beenden", "Etwas aufschreiben", "Etwas zerreißen"),
+  q("Sprache & Wörter", 3, "Was bedeutet „jemandem Paroli bieten“?", "Ihm entschlossen widersprechen", "Ihm zustimmen", "Ihn loben", "Ihn ignorieren"),
+  q("Sprache & Wörter", 3, "Was bedeutet „etwas über die Bühne bringen“?", "Etwas erfolgreich abwickeln", "Etwas verschieben", "Etwas verlieren", "Etwas aufführen im Theater"),
+  q("Sprache & Wörter", 3, "Was bedeutet „im Eimer sein“?", "Kaputt oder erledigt sein", "Voll sein", "Sauber sein", "Bereit sein"),
+  q("Sprache & Wörter", 3, "Was bedeutet „das ist ein alter Hut“?", "Das ist längst bekannt", "Das ist wertvoll", "Das ist kaputt", "Das ist neu"),
+  q("Sprache & Wörter", 3, "Was bedeutet „auf Anhieb“?", "Sofort beim ersten Versuch", "Nach langem Üben", "Zufällig", "Mit Hilfe"),
+  q("Sprache & Wörter", 3, "Was bedeutet „mit Ach und Krach“?", "Gerade eben noch geschafft", "Sehr laut", "Mühelos", "Mit Streit"),
+  q("Sprache & Wörter", 3, "Was bedeutet „Hals- und Beinbruch“?", "Ein Glückwunsch vor einer schwierigen Aufgabe", "Eine Drohung", "Eine Diagnose", "Ein Abschied"),
+  q("Sprache & Wörter", 3, "Was bedeutet „das A und O“?", "Das Wichtigste an einer Sache", "Der Anfang allein", "Das Ende allein", "Eine Abkürzung"),
+  q("Sprache & Wörter", 3, "Was bedeutet „durch die Blume sagen“?", "Etwas nur andeuten statt direkt zu sagen", "Etwas laut sagen", "Etwas aufschreiben", "Etwas verschweigen"),
+  q("Sprache & Wörter", 4, "Was bedeutet „prekär“?", "Unsicher und schwierig", "Sehr genau", "Besonders teuer", "Freundlich"),
+  q("Sprache & Wörter", 4, "Was bedeutet „substanziell“?", "Wesentlich und gehaltvoll", "Oberflächlich", "Vorläufig", "Zufällig"),
+  q("Sprache & Wörter", 4, "Was bedeutet „marginal“?", "Nebensächlich und geringfügig", "Entscheidend", "Riesig", "Auffällig"),
+  q("Sprache & Wörter", 4, "Was bedeutet „diffus“?", "Unscharf und verschwommen", "Klar umrissen", "Sehr hell", "Sehr schnell"),
+  q("Sprache & Wörter", 3, "Was bedeutet „autark“?", "Unabhängig und selbstversorgend", "Abhängig", "Automatisch", "Streng"),
+  q("Sprache & Wörter", 3, "Was ist ein Plagiat?", "Die Übernahme fremder Arbeit als eigene", "Eine Übersetzung", "Eine Zusammenfassung", "Ein Zitat mit Quelle")
+);
+
+window.FRAGEN.push(
+  q("Marken & Logos", 3, "Welche Marke stellt Actionkameras für Sport und Outdoor her?", "GoPro", "Canon", "Nikon", "Leica"),
+  q("Marken & Logos", 3, "Welche deutsche Kameramarke aus Wetzlar ist für teure Messsucherkameras bekannt?", "Leica", "Zeiss", "Rollei", "Agfa"),
+  q("Marken & Logos", 3, "Welche deutsche Marke aus Jena steht für Mikroskope und optische Geräte?", "Zeiss", "Leica", "Rodenstock", "Schott"),
+  q("Marken & Logos", 3, "Welche Marke stellt Saugroboter und Akkusauger mit dem Namen eines Erfinders her?", "Dyson", "Vorwerk", "Miele", "Bosch"),
+  q("Marken & Logos", 3, "Welche Marke wurde mit Energieriegeln für Ausdauersportler bekannt?", "Powerbar", "Clif", "Nutrixxion", "Dextro"),
+  q("Marken & Logos", 3, "Welche Marke steht für Traubenzucker in Würfelform aus Deutschland?", "Dextro Energy", "Haribo", "Katjes", "Storck"),
+  q("Marken & Logos", 3, "Welcher Süßwarenhersteller steht hinter Toffifee und Merci?", "Storck", "Haribo", "Katjes", "Ferrero"),
+  q("Marken & Logos", 3, "Welcher Hersteller steht hinter Kinderschokolade und Duplo?", "Ferrero", "Storck", "Milka", "Ritter Sport"),
+  q("Marken & Logos", 3, "Welche Marke steht für Fruchtgummi ohne tierische Gelatine mit grünem Auftritt?", "Katjes", "Haribo", "Trolli", "Storck"),
+  q("Marken & Logos", 3, "Welche Biermarke wirbt mit einem Segelschiff im Logo?", "Beck’s", "Krombacher", "Warsteiner", "Bitburger"),
+  q("Marken & Logos", 3, "Aus welcher Stadt stammt die Biermarke Beck’s?", "Aus Bremen", "Aus Hamburg", "Aus Dortmund", "Aus München"),
+  q("Marken & Logos", 3, "Welche Biermarke wirbt mit einer Insel in einem See?", "Krombacher", "Warsteiner", "Jever", "Radeberger")
+);
+
+window.FRAGEN.push(
+  q("Film & TV", 3, "In welcher Serie fahren zwei Brüder in einem schwarzen Chevrolet Impala und jagen Dämonen?", "Supernatural", "The X-Files", "Grimm", "Constantine"),
+  q("Film & TV", 3, "In welcher Serie untersuchen zwei FBI-Agenten unerklärliche Fälle?", "Akte X", "Fringe", "Bones", "Criminal Minds"),
+  q("Film & TV", 3, "In welcher Serie strandet eine Gruppe nach einem Flugzeugabsturz auf einer Insel?", "Lost", "The 100", "Yellowjackets", "Manifest"),
+  q("Film & TV", 3, "In welcher Serie lebt eine Familie mit Zeitreisen in einer Kleinstadt namens Winden?", "Dark", "Stranger Things", "The OA", "Sense8"),
+  q("Film & TV", 3, "In welcher Serie leitet Walter White ein Drogenimperium unter dem Namen Heisenberg?", "Breaking Bad", "Ozark", "Narcos", "Weeds"),
+  q("Film & TV", 3, "In welcher Comedyserie sind Chandler, Joey und Ross Freunde?", "Friends", "How I Met Your Mother", "New Girl", "Seinfeld"),
+  q("Film & TV", 3, "In welcher Serie geht es um eine Anwaltskanzlei und die Figur Harvey Specter?", "Suits", "Better Call Saul", "The Good Wife", "Boston Legal"),
+  q("Film & TV", 3, "In welcher Serie spielt der Ort Hawkins in Indiana die Hauptrolle?", "Stranger Things", "Riverdale", "Twin Peaks", "Wayward Pines"),
+  q("Film & TV", 3, "In welcher Serie regieren Drachen und ein Haus namens Targaryen die Vorgeschichte?", "House of the Dragon", "Game of Thrones", "The Witcher", "The Rings of Power"),
+  q("Film & TV", 3, "In welcher Serie kämpft ein Hexer namens Geralt gegen Monster?", "The Witcher", "Shadow and Bone", "The Wheel of Time", "His Dark Materials"),
+  q("Film & TV", 3, "In welcher Serie geht es um die Herrschaft über Mittelerde vor dem Ringkrieg?", "Die Ringe der Macht", "House of the Dragon", "The Witcher", "Shannara")
+);
+
+// --- Geografie und Geschichte, Nachschlag 2 ---
+window.FRAGEN.push(
+  q("Geografie", 3, "Welches Bundesland grenzt an die meisten anderen Bundesländer?", "Niedersachsen", "Bayern", "Hessen", "Thüringen"),
+  q("Geografie", 3, "Welches Bundesland grenzt nur an ein einziges anderes Bundesland?", "Berlin", "Bremen", "Hamburg", "Das Saarland"),
+  q("Geografie", 3, "Welche deutschen Bundesländer grenzen an die Niederlande?", "Niedersachsen und Nordrhein-Westfalen", "Nordrhein-Westfalen und Rheinland-Pfalz", "Niedersachsen und Schleswig-Holstein", "Hessen und Niedersachsen"),
+  q("Geografie", 3, "Welches deutsche Bundesland grenzt an Frankreich, Luxemburg und Belgien?", "Rheinland-Pfalz", "Baden-Württemberg", "Saarland", "Hessen"),
+  q("Geografie", 3, "In welchem Bundesland liegt der Nationalpark Wattenmeer an der Nordsee unter anderem?", "In Schleswig-Holstein", "In Mecklenburg-Vorpommern", "In Brandenburg", "In Sachsen"),
+  q("Geografie", 3, "Was ist das Wattenmeer?", "Ein Küstenbereich, der bei Ebbe trockenfällt", "Ein tiefes Meeresbecken", "Ein Süßwassersee", "Ein Gletschergebiet"),
+  q("Geografie", 3, "Wie oft gibt es an der Nordsee täglich Ebbe und Flut ungefähr?", "Zweimal", "Einmal", "Dreimal", "Viermal"),
+  q("Geografie", 3, "Welche Inselgruppe liegt vor der niedersächsischen Nordseeküste?", "Die Ostfriesischen Inseln", "Die Nordfriesischen Inseln", "Die Halligen", "Die Kanalinseln"),
+  q("Geografie", 3, "Was sind Halligen?", "Kleine, nicht eingedeichte Marschinseln in der Nordsee", "Sandbänke ohne Bewohner", "Gletscherreste", "Vulkaninseln"),
+  q("Geografie", 3, "In welchem Bundesland liegt die Sächsische Schweiz?", "In Sachsen", "In Thüringen", "In Sachsen-Anhalt", "In Brandenburg"),
+  q("Geografie", 3, "In welchem Bundesland liegt der Spreewald?", "In Brandenburg", "In Sachsen", "In Berlin", "In Mecklenburg-Vorpommern"),
+  q("Geografie", 3, "Wofür ist der Spreewald bekannt?", "Für seine Fließe und die Gurken", "Für Weinberge", "Für Bergwerke", "Für Vulkane"),
+  q("Geografie", 3, "Welches deutsche Weinbaugebiet liegt an einem Nebenfluss des Rheins mit vielen Steillagen?", "Die Mosel", "Die Pfalz", "Rheinhessen", "Franken"),
+  q("Geografie", 3, "Welches ist das größte deutsche Weinanbaugebiet nach Fläche?", "Rheinhessen", "Die Pfalz", "Baden", "Die Mosel"),
+  q("Geografie", 3, "Welche deutsche Region ist für den Bergbau und das spätere Ende der Zechen bekannt?", "Das Ruhrgebiet", "Der Schwarzwald", "Die Lüneburger Heide", "Das Allgäu"),
+  q("Geografie", 3, "Welcher Fluss gab dem Ruhrgebiet seinen Namen?", "Die Ruhr", "Die Emscher", "Der Rhein", "Die Lippe"),
+  q("Geografie", 3, "Wie heißt die Region im Süden Bayerns mit Alpen und Milchwirtschaft?", "Das Allgäu", "Die Oberpfalz", "Franken", "Niederbayern"),
+  q("Geografie", 3, "In welchem Bundesland liegt das Erzgebirge?", "In Sachsen", "In Thüringen", "In Bayern", "In Brandenburg")
+);
+
+window.FRAGEN.push(
+  q("Geschichte", 3, "Wie hieß die Währung der DDR?", "Die Mark der DDR", "Der Ostschilling", "Die Reichsmark", "Der Ostrubel"),
+  q("Geschichte", 3, "Wie hieß das bekannteste in der DDR gebaute Auto?", "Der Trabant", "Der Lada", "Der Skoda", "Der Moskwitsch"),
+  q("Geschichte", 3, "Wie hieß der Staatssicherheitsdienst der DDR umgangssprachlich?", "Die Stasi", "Die Volkspolizei", "Die NVA", "Der Kadergarde"),
+  q("Geschichte", 3, "Wie hieß die Jugendorganisation der DDR für ältere Jugendliche?", "Die FDJ", "Die Jungpioniere", "Die Thälmannpioniere", "Der Komsomol"),
+  q("Geschichte", 3, "Was war der Palast der Republik in Ost-Berlin?", "Sitz der Volkskammer und Kulturhaus", "Ein Museum", "Ein Bahnhof", "Ein Kaufhaus"),
+  q("Geschichte", 3, "Welche Demonstrationen in Leipzig trugen 1989 zur Wende bei?", "Die Montagsdemonstrationen", "Die Sonntagsmärsche", "Die Freitagsproteste", "Die Maiaufmärsche"),
+  q("Geschichte", 3, "Welcher Satz von Günter Schabowski leitete am 9. November 1989 die Grenzöffnung mit ein?", "Die Reiseregelung gelte „sofort, unverzüglich“", "Die Mauer sei gefallen", "Der Staat sei aufgelöst", "Die Grenze bleibe zu"),
+  q("Geschichte", 3, "Wie nennt man die Zeit des Umbruchs in der DDR 1989 und 1990?", "Die Wende", "Die Reform", "Die Revolution von oben", "Der Umsturz"),
+  q("Geschichte", 3, "Welcher Vertrag regelte 1990 die äußeren Bedingungen der deutschen Einheit?", "Der Zwei-plus-Vier-Vertrag", "Der Élysée-Vertrag", "Der Warschauer Vertrag", "Der Grundlagenvertrag"),
+  q("Geschichte", 3, "Wann trat die deutsche Wiedervereinigung formal in Kraft?", "Am 3. Oktober 1990", "Am 9. November 1989", "Am 1. Juli 1990", "Am 1. Januar 1991"),
+  q("Geschichte", 3, "Was geschah am 1. Juli 1990 in beiden deutschen Staaten?", "Die Währungsunion trat in Kraft", "Die Mauer fiel", "Die DDR trat der NATO bei", "Die Wahlen fanden statt"),
+  q("Geschichte", 3, "Welcher Vertrag von 1963 besiegelte die deutsch-französische Freundschaft?", "Der Élysée-Vertrag", "Der Vertrag von Rom", "Der Zwei-plus-Vier-Vertrag", "Der Vertrag von Maastricht"),
+  q("Geschichte", 3, "Welcher Kanzler kniete 1970 in Warschau vor dem Ghetto-Denkmal?", "Willy Brandt", "Konrad Adenauer", "Helmut Schmidt", "Helmut Kohl"),
+  q("Geschichte", 3, "Wie nannte man Willy Brandts Politik gegenüber dem Osten?", "Die neue Ostpolitik", "Die Westbindung", "Die Blockfreiheit", "Die Entspannungslehre"),
+  q("Geschichte", 3, "Welche Terrorgruppe erschütterte die Bundesrepublik in den 1970er Jahren?", "Die RAF", "Die Brigate Rosse", "Die IRA", "Die ETA"),
+  q("Geschichte", 3, "Wie nannte man den Herbst 1977 mit Entführung und Anschlägen in Deutschland?", "Den Deutschen Herbst", "Den Heißen Herbst", "Den Roten Herbst", "Den Krisenherbst"),
+  q("Geschichte", 3, "In welcher Stadt fand 1972 das Attentat auf israelische Sportler bei Olympia statt?", "In München", "In Berlin", "In Frankfurt", "In Hamburg"),
+  q("Geschichte", 3, "Welches Land trat 1973 gemeinsam mit Irland und Dänemark der Europäischen Gemeinschaft bei?", "Großbritannien", "Spanien", "Portugal", "Griechenland"),
+  q("Geschichte", 3, "In welcher Stadt wurden 1957 die Verträge zur Europäischen Wirtschaftsgemeinschaft unterschrieben?", "In Rom", "In Paris", "In Brüssel", "In Maastricht"),
+  q("Geschichte", 3, "Welche sechs Staaten gründeten die Europäische Wirtschaftsgemeinschaft?", "Deutschland, Frankreich, Italien und die Benelux-Staaten", "Deutschland, Frankreich, Großbritannien und Skandinavien", "Deutschland, Österreich, Schweiz und Italien", "Frankreich, Spanien, Portugal und Italien")
+);
